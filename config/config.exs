@@ -9,9 +9,7 @@ use Mix.Config
 config :snowball, Snowball.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  render_errors: [accepts: ~w(json)],
-  pubsub: [name: Snowball.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  render_errors: [accepts: ~w(json)]
 
 # Configures Elixir's Logger
 config :logger, :console,
