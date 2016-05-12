@@ -9,7 +9,6 @@ use Mix.Config
 config :snowball, Snowball.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  secret_key_base: "m0sECUtYlclvYAO+Ll6ONrJtiotsBjPKe2w/efllahcI+QR5iIqaPcfdceu9F2m1",
   render_errors: [accepts: ~w(json)],
   pubsub: [name: Snowball.PubSub,
            adapter: Phoenix.PubSub.PG2]
