@@ -35,7 +35,6 @@ defmodule Snowball.Web do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Snowball.Router.Helpers
-      import Snowball.Gettext
     end
   end
 
@@ -47,8 +46,6 @@ defmodule Snowball.Web do
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
 
       import Snowball.Router.Helpers
-      import Snowball.ErrorHelpers
-      import Snowball.Gettext
     end
   end
 

@@ -6,7 +6,7 @@ defmodule Snowball.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
+     compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases,
@@ -18,8 +18,7 @@ defmodule Snowball.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Snowball, []},
-     applications: [:phoenix, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+     applications: [:phoenix, :cowboy, :logger, :phoenix_ecto, :postgrex]]
   end
 
   # Specifies which paths to compile per environment.
@@ -33,7 +32,6 @@ defmodule Snowball.Mixfile do
     [{:phoenix, "~> 1.1.4"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_ecto, "~> 2.0"},
-     {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"}]
   end
 
