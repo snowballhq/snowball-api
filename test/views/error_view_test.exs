@@ -1,10 +1,9 @@
 defmodule Snowball.ErrorViewTest do
   use Snowball.ConnCase, async: true
 
-  # Bring render/3 and render_to_string/3 for testing custom views
   import Phoenix.View
 
-  test "renders 404.json" do
+  test "render 404.json" do
     assert render(Snowball.ErrorView, "404.json", []) ==
            %{errors: %{detail: "Page not found"}}
   end
