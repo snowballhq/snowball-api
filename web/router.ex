@@ -7,5 +7,7 @@ defmodule Snowball.Router do
 
   scope "/api", Snowball do
     pipe_through :api
+
+    get "/", HomeController, :index
   end
 end
