@@ -37,6 +37,6 @@ defmodule Snowball.ConnCase do
       Ecto.Adapters.SQL.restart_test_transaction(Snowball.Repo, [])
     end
 
-    {:ok, conn: Phoenix.ConnTest.conn()}
+    :ok
   end
 end

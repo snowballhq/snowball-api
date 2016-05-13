@@ -9,5 +9,6 @@ defmodule Snowball.Router do
     pipe_through :api
 
     get "/", HomeController, :index
+    resources "/users", UserController, except: [:new, :edit]
   end
 end
