@@ -31,7 +31,7 @@ defmodule Snowball.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.1.4"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 2.0"},
+     {:phoenix_ecto, "~> 3.0.0-beta"},
      {:cowboy, "~> 1.0"}]
   end
 

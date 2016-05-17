@@ -26,11 +26,7 @@ defmodule Snowball.ModelCase do
   end
 
   setup tags do
-    unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Snowball.Repo, [])
-    end
-
-    :ok
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snowball.Repo)
   end
 
   @doc """

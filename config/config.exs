@@ -5,6 +5,9 @@
 # is restricted to this project.
 use Mix.Config
 
+config :snowball,
+  ecto_repos: [Snowball.Repo]
+
 # Configures the endpoint
 config :snowball, Snowball.Endpoint,
   url: [host: "localhost"],
