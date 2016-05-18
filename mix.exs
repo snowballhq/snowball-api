@@ -32,7 +32,8 @@ defmodule Snowball.Mixfile do
     [{:phoenix, "~> 1.1.4"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_ecto, "~> 3.0.0-beta"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

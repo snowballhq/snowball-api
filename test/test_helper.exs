@@ -1,3 +1,5 @@
+{:ok, _} = Application.ensure_all_started(:ex_machina)
+
 ExUnit.start
 
 Mix.Task.run "ecto.create", ~w(-r Snowball.Repo --quiet)
