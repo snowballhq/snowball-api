@@ -6,6 +6,7 @@ defmodule Snowball.User do
   # under the "Schema attributes" seciton
   @primary_key {:id, :binary_id, read_after_writes: true}
   @foreign_key_type :binary_id
+  @timestamps_opts [inserted_at: :created_at]
 
   schema "users" do
     field :username, :string

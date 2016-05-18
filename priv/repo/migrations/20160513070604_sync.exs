@@ -9,7 +9,7 @@ defmodule Snowball.Repo.Migrations.Sync do
       add :username, :string
       add :email, :string
 
-      timestamps
+      timestamps [inserted_at: :created_at]
     end
   end
 end
