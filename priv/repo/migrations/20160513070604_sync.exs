@@ -20,5 +20,10 @@ defmodule Snowball.Repo.Migrations.Sync do
       add :avatar_file_size, :string
       add :avatar_updated_at, :datetime
     end
+
+    create index(:users, [:auth_token], name: :index_users_on_auth_token)
+    create index(:users, [:email], name: :index_users_on_email)
+    create index(:users, [:reset_password_token], name: :index_users_on_reset_password_token)
+    create index(:users, [:username], name: :index_users_on_username)
   end
 end
