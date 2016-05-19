@@ -25,10 +25,9 @@ defmodule Snowball.UserControllerTest do
   end
 
   test "POST /users" do
-    user_params = params_for(:user)
+    user_params = params_for(:user_before_registration)
     conn = post conn, user_path(conn, :create), user: user_params
-    user = Repo.get_by(User, user_params)
-    assert user
+    user = Repo.one(from x in User, order_by: [desc: x.id], limit: 1)
     assert json_response(conn, 201)["data"] == user_response(user)
   end
 
@@ -38,14 +37,11 @@ defmodule Snowball.UserControllerTest do
     # assert json_response(conn, 422)["errors"] != %{}
   end
 
-  # TODO: This should probably check real changes to the user, once
-  # ex_machina is in
   test "PATCH /users/:id" do
-    user_params = params_for(:user)
-    user = insert(:user, user_params)
-    conn = patch conn, user_path(conn, :update, user), user: user_params
-    user = Repo.get_by(User, user_params)
-    assert user
+    user = insert(:user)
+    params = %{email: "example1@example.com"}
+    conn = patch conn, user_path(conn, :update, user), user: params
+    user = Repo.get(User, user.id)
     assert json_response(conn, 200)["data"] == user_response(user)
   end
 

@@ -29,8 +29,54 @@ defmodule Snowball.User do
   @required_fields ~w(username email password)
   @optional_fields ~w()
 
-  def changeset(model, params \\ :empty) do
+  # TODO: Add validations
+  def insert_changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> hash_password
+    |> generate_auth_token
+  end
+
+  # TODO: Add validations
+  def update_changeset(model, params \\ :empty) do
+    required_fields = @required_fields
+    if params[:password] == nil do
+      required_fields = required_fields
+      |> List.delete("password")
+    end
+
+    model
+    |> cast(params, required_fields, @optional_fields)
+    |> hash_password
+  end
+
+  # TODO: Ensure this is compatible with current production
+  defp hash_password(changeset) do
+    if password = get_change(changeset, :password) do
+      changeset
+      |> put_change(:password_digest, Comeonin.Bcrypt.hashpwsalt(password))
+    else
+      changeset
+    end
+  end
+
+  # TODO: Ensure auth token is unique
+  defp generate_auth_token(changeset) do
+    if !get_field(changeset, :auth_token) do
+      length = 20
+      rlength = (length * 3) / 4
+
+      auth_token = SecureRandom.urlsafe_base64(round(rlength))
+      |> String.replace("lIO0", "sxyz")
+      |> String.replace("l", "s")
+      |> String.replace("I", "x")
+      |> String.replace("O", "y")
+      |> String.replace("0", "z")
+
+      changeset
+      |> put_change(:auth_token, auth_token)
+    else
+      changeset
+    end
   end
 end

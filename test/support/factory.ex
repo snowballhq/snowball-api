@@ -5,7 +5,16 @@ defmodule Snowball.Factory do
     %Snowball.User{
       username: "username",
       email: "example@example.com",
-      password: "password"
+      password_digest: "password_digest",
+      auth_token: "auth_token"
+    }
+  end
+
+  def user_before_registration_factory do
+    %Snowball.User{
+      username: "username",
+      email: "example@example.com",
+      password: "test"
     }
   end
 end

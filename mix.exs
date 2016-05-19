@@ -18,7 +18,7 @@ defmodule Snowball.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Snowball, []},
-     applications: [:phoenix, :cowboy, :logger, :phoenix_ecto, :postgrex]]
+     applications: [:phoenix, :cowboy, :logger, :phoenix_ecto, :postgrex, :comeonin]]
   end
 
   # Specifies which paths to compile per environment.
@@ -33,6 +33,8 @@ defmodule Snowball.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:phoenix_ecto, "~> 3.0.0-beta"},
      {:cowboy, "~> 1.0"},
+     {:comeonin, "~> 2.4"},
+     {:secure_random, "~> 0.2"},
      {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test}]
   end
 
