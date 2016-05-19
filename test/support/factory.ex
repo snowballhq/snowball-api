@@ -3,18 +3,18 @@ defmodule Snowball.Factory do
 
   def user_factory do
     %Snowball.User{
-      username: "username",
-      email: "example@example.com",
-      password_digest: "password_digest",
-      auth_token: "auth_token"
+      username: Faker.Internet.user_name(),
+      email: Faker.Internet.email(),
+      password_digest: to_string(Faker.Lorem.characters()),
+      auth_token: to_string(Faker.Lorem.characters())
     }
   end
 
   def user_before_registration_factory do
     %Snowball.User{
-      username: "username",
-      email: "example@example.com",
-      password: "password"
+      username: Faker.Internet.user_name(),
+      email: Faker.Internet.email(),
+      password: to_string(Faker.Lorem.characters())
     }
   end
 end

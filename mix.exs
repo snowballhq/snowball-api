@@ -35,7 +35,8 @@ defmodule Snowball.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.4"},
      {:secure_random, "~> 0.2"},
-     {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test}]
+     {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test},
+     {:faker, "~> 0.5", only: :test}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
