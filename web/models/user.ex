@@ -26,28 +26,19 @@ defmodule Snowball.User do
     timestamps [inserted_at: :created_at]
   end
 
-  @required_fields ~w(username email password)
-  @optional_fields ~w()
-
   # TODO: Add validations
-  def insert_changeset(model, params \\ :empty) do
+  def changeset(model, params \\ :empty) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, ~w(username email), ~w(password))
     |> hash_password
-    |> generate_auth_token
   end
 
   # TODO: Add validations
-  def update_changeset(model, params \\ :empty) do
-    required_fields = @required_fields
-    if params[:password] == nil do
-      required_fields = required_fields
-      |> List.delete("password")
-    end
-
+  def registration_changeset(model, params \\ :empty) do
     model
-    |> cast(params, required_fields, @optional_fields)
-    |> hash_password
+    |> changeset(params)
+    |> cast(params, ~w(password), [])
+    |> generate_auth_token
   end
 
   # TODO: Ensure this is compatible with current production

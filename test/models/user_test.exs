@@ -3,23 +3,23 @@ defmodule Snowball.UserTest do
 
   alias Snowball.User
 
-  test "insert changeset with valid attributes" do
-    changeset = User.insert_changeset(build(:user_before_registration), %{})
+  test "changeset with valid attributes" do
+    changeset = User.changeset(build(:user), %{})
     assert changeset.valid?
   end
 
-  test "insert changeset with invalid attributes" do
-    changeset = User.insert_changeset(%User{}, %{})
+  test "changeset with invalid attributes" do
+    changeset = User.changeset(%User{}, %{})
     refute changeset.valid?
   end
 
-  test "update changeset with valid attributes" do
-    changeset = User.update_changeset(build(:user), %{})
+  test "registration changeset with valid attributes" do
+    changeset = User.registration_changeset(build(:user_before_registration), %{})
     assert changeset.valid?
   end
 
-  test "update changeset with invalid attributes" do
-    changeset = User.update_changeset(%User{}, %{})
+  test "registration changeset with invalid attributes" do
+    changeset = User.registration_changeset(%User{}, %{})
     refute changeset.valid?
   end
 end

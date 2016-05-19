@@ -11,7 +11,7 @@ defmodule Snowball.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = User.insert_changeset(%User{}, user_params)
+    changeset = User.registration_changeset(%User{}, user_params)
 
     case Repo.insert(changeset) do
       {:ok, user} ->
@@ -33,7 +33,7 @@ defmodule Snowball.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Repo.get!(User, id)
-    changeset = User.update_changeset(user, user_params)
+    changeset = User.changeset(user, user_params)
 
     case Repo.update(changeset) do
       {:ok, user} ->
