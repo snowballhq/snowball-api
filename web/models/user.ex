@@ -26,19 +26,26 @@ defmodule Snowball.User do
     timestamps [inserted_at: :created_at]
   end
 
-  # TODO: Add validations
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, ~w(username email), ~w(password))
     |> hash_password
+    |> generate_auth_token
+    |> validate_required([:email, :username, :auth_token])
+    |> validate_format(:email, ~r/\A[^@\s]+@([^@\s]+\.)+[^@\W]+\z/)
+    |> validate_format(:username, ~r/\A[a-zA-Z0-9_]{3,15}\z/)
+    |> validate_length(:username, min: 3, max: 15)
+    |> validate_length(:password, min: 5)
+    |> unique_constraint(:email) # TODO: should be case insensitive
+    |> unique_constraint(:username) # TODO: should be case insensitive
+    |> unique_constraint(:auth_token)
   end
 
-  # TODO: Add validations
   def registration_changeset(model, params \\ :empty) do
     model
     |> changeset(params)
     |> cast(params, ~w(password), [])
-    |> generate_auth_token
+    |> validate_required([:password])
   end
 
   # TODO: Ensure this is compatible with current production

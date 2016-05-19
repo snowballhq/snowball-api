@@ -14,7 +14,7 @@ defmodule Snowball.Factory do
     %Snowball.User{
       username: "username",
       email: "example@example.com",
-      password: "test"
+      password: "password"
     }
   end
 end
