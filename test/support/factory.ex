@@ -4,7 +4,8 @@ defmodule Snowball.Factory do
   def user_factory do
     %Snowball.User{
       username: "username",
-      email: "example@example.com"
+      email: "example@example.com",
+      password: "password"
     }
   end
 end
