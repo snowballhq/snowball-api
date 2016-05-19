@@ -27,6 +27,8 @@ defmodule Snowball.ConnCase do
 
       import Snowball.Router.Helpers
 
+      import Snowball.Factory
+
       # The default endpoint for testing
       @endpoint Snowball.Endpoint
     end
