@@ -54,5 +54,19 @@ defmodule Snowball.ModelCase do
   """
   def errors_on(model, data) do
     model.__struct__.changeset(model, data).errors
+    |> Enum.map(fn {field, {message, opts}} ->
+      message = message
+      |> replace_opts(opts)
+      {field, message}
+    end)
+  end
+
+  defp replace_opts(message, opts) do
+    key = opts
+    |> Keyword.keys
+    |> List.first
+    value = opts[key]
+    message
+    |> String.replace("%{#{key}}", to_string(value))
   end
 end
