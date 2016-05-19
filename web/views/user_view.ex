@@ -9,9 +9,20 @@ defmodule Snowball.UserView do
     %{data: render_one(user, Snowball.UserView, "user.json")}
   end
 
+  def render("show-auth.json", %{user: user}) do
+    %{data: render_one(user, Snowball.UserView, "user-auth.json")}
+  end
+
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,
       email: user.email}
+  end
+
+  def render("user-auth.json", %{user: user}) do
+    %{id: user.id,
+      username: user.username,
+      email: user.email,
+      auth_token: user.auth_token}
   end
 end
