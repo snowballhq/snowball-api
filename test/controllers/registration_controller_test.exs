@@ -3,7 +3,7 @@ defmodule Snowball.RegistrationControllerTest do
 
   alias Snowball.User
 
-  test "POST /users/sign-up" do
+  test "POST /users/sign-up", %{conn: conn} do
     user_params = params_for(:user_before_registration)
     conn = post conn, registration_path(conn, :create), user: user_params
     user = Repo.one(from x in User, order_by: [desc: x.id], limit: 1)
@@ -11,7 +11,7 @@ defmodule Snowball.RegistrationControllerTest do
   end
 
   # TODO: Figure out error handling
-  test "POST /users/sign-up with invalid params" do
+  test "POST /users/sign-up with invalid params", %{conn: _conn} do
     # conn = post conn, user_path(conn, :create), user: @invalid_attrs
     # assert json_response(conn, 422)["errors"] != %{}
   end

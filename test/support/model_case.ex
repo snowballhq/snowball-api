@@ -28,6 +28,12 @@ defmodule Snowball.ModelCase do
 
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snowball.Repo)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Snowball.Repo, {:shared, self()})
+    end
+
+    :ok
   end
 
   @doc """
@@ -52,8 +58,8 @@ defmodule Snowball.ModelCase do
       iex> {:password, "is unsafe"} in changeset.errors
       true
   """
-  def errors_on(model, data) do
-    model.__struct__.changeset(model, data).errors
+  def errors_on(struct, data) do
+    struct.__struct__.changeset(struct, data).errors
     |> Enum.map(fn {field, {message, opts}} ->
       message = message
       |> replace_opts(opts)

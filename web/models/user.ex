@@ -26,8 +26,8 @@ defmodule Snowball.User do
     timestamps [inserted_at: :created_at]
   end
 
-  def changeset(model, params \\ :empty) do
-    model
+  def changeset(struct, params \\ %{}) do
+    struct
     |> cast(params, ~w(username email), ~w(password))
     |> hash_password
     |> generate_auth_token
@@ -41,8 +41,8 @@ defmodule Snowball.User do
     |> unique_constraint(:auth_token)
   end
 
-  def registration_changeset(model, params \\ :empty) do
-    model
+  def registration_changeset(struct, params \\ %{}) do
+    struct
     |> changeset(params)
     |> cast(params, ~w(password), [])
     |> validate_required([:password])
