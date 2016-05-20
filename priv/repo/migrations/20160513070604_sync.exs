@@ -25,5 +25,12 @@ defmodule Snowball.Repo.Migrations.Sync do
     create index(:users, [:email], name: :index_users_on_email)
     create index(:users, [:reset_password_token], name: :index_users_on_reset_password_token)
     create index(:users, [:username], name: :index_users_on_username)
+
+    create table(:follows, primary_key: false) do
+      add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
+      add :following_id, :uuid, null: false
+      add :follower_id, :uuid, null: false
+      timestamps [inserted_at: :created_at]
+    end
   end
 end

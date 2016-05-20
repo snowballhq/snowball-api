@@ -1,6 +1,13 @@
 defmodule Snowball.Factory do
   use ExMachina.Ecto, repo: Snowball.Repo
 
+  def follow_factory do
+    %Snowball.Follow{
+      follower: build(:user),
+      following: build(:user)
+    }
+  end
+
   def user_factory do
     %Snowball.User{
       username: Faker.Name.first_name(),
