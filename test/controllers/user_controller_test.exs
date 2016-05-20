@@ -3,8 +3,6 @@ defmodule Snowball.UserControllerTest do
 
   alias Snowball.User
 
-  # TODO: Convert these tests to use ex_machina (Factory Girl alternative)
-
   test "GET /users", %{conn: conn} do
     user = insert(:user)
     conn = get conn, user_path(conn, :index)
