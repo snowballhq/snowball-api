@@ -5,12 +5,14 @@ defmodule Snowball.UserControllerTest do
 
   test "GET /users", %{conn: conn} do
     user = insert(:user)
+    conn = conn |> authenticate(user.auth_token)
     conn = get conn, user_path(conn, :index)
     assert json_response(conn, 200)["data"] == [user_response(user)]
   end
 
   test "GET /users/:id", %{conn: conn} do
     user = insert(:user)
+    conn = conn |> authenticate(user.auth_token)
     conn = get conn, user_path(conn, :show, user)
     assert json_response(conn, 200)["data"] == user_response(user)
   end
@@ -38,6 +40,7 @@ defmodule Snowball.UserControllerTest do
   test "PATCH /users/:id", %{conn: conn} do
     user = insert(:user)
     params = %{email: "example1@example.com"}
+    conn = conn |> authenticate(user.auth_token)
     conn = patch conn, user_path(conn, :update, user), user: params
     user = Repo.get(User, user.id)
     assert json_response(conn, 200)["data"] == user_response(user)
@@ -52,6 +55,7 @@ defmodule Snowball.UserControllerTest do
 
   test "DELETE /users/:id", %{conn: conn} do
     user = insert(:user)
+    conn = conn |> authenticate(user.auth_token)
     conn = delete conn, user_path(conn, :delete, user)
     assert response(conn, 204)
     refute Repo.get(User, user.id)

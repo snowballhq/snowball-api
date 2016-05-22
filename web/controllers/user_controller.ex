@@ -3,6 +3,7 @@ defmodule Snowball.UserController do
 
   alias Snowball.User
 
+  plug Snowball.Plug.Authenticate when action in [:index, :show, :update, :delete]
   plug :scrub_params, "user" when action in [:create, :update]
 
   def index(conn, _params) do

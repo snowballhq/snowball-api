@@ -31,6 +31,12 @@ defmodule Snowball.ConnCase do
 
       # The default endpoint for testing
       @endpoint Snowball.Endpoint
+
+      # TODO: Should this go here?
+      def authenticate(conn, auth_token) do
+        header_content = "Basic " <> Base.encode64("#{auth_token}:")
+        conn |> put_req_header("authorization", header_content)
+      end
     end
   end
 
