@@ -9,7 +9,10 @@ defmodule Snowball.Router do
     pipe_through :api
 
     get "/", HomeController, :index
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit] do
+      post "/follow", FollowController, :create
+      delete "/follow", FollowController, :delete
+    end
     post "/users/sign-up", RegistrationController, :create
     post "/users/sign-in", SessionController, :create
   end

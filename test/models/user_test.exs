@@ -36,4 +36,30 @@ defmodule Snowball.UserTest do
     changeset = User.registration_changeset(%User{}, %{})
     refute changeset.valid?
   end
+
+  test "follow_for/2" do
+    follow = insert(:follow)
+    assert follow.id == User.follow_for(follow.follower, follow.following).id
+  end
+
+  test "following?/2" do
+    follow = insert(:follow)
+    assert User.following?(follow.follower, follow.following)
+    refute User.following?(follow.following, follow.follower)
+  end
+
+  test "follow/2" do
+    follower = insert(:user)
+    followed = insert(:user)
+    refute User.following?(follower, followed)
+    User.follow(follower, followed)
+    assert User.following?(follower, followed)
+  end
+
+  test "unfollow/2" do
+    follow = insert(:follow)
+    assert User.following?(follow.follower, follow.following)
+    User.unfollow(follow.follower, follow.following)
+    refute User.following?(follow.follower, follow.following)
+  end
 end

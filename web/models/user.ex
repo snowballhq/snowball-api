@@ -1,6 +1,8 @@
 defmodule Snowball.User do
   use Snowball.Web, :model
 
+  alias Snowball.{Follow, Repo}
+
   # TODO: Create a "super" model
   # See this link: https://hexdocs.pm/ecto/2.0.0-rc.5/Ecto.Schema.html
   # under the "Schema attributes" seciton
@@ -59,6 +61,7 @@ defmodule Snowball.User do
   end
 
   # TODO: Ensure auth token is unique
+  # TODO: Ensure this is compatible with current production
   defp generate_auth_token(changeset) do
     if !get_field(changeset, :auth_token) do
       length = 20
@@ -75,6 +78,44 @@ defmodule Snowball.User do
       |> put_change(:auth_token, auth_token)
     else
       changeset
+    end
+  end
+
+  def follow_for(follower, followed) do
+    Repo.get_by(Follow,
+      follower_id: follower.id,
+      following_id: followed.id
+    )
+  end
+
+  def following?(follower, followed) do
+    if follow_for(follower, followed) do
+      true
+    end
+  end
+
+  def follow(follower, followed) do
+    follow = follow_for(follower, followed)
+    unless follow do
+      follow_params = %{
+        follower_id: follower.id,
+        following_id: followed.id
+      }
+      changeset = Follow.changeset(%Follow{}, follow_params)
+      case Repo.insert(changeset) do
+        {:ok, _follow} -> true
+        {:error, _changeset} -> false
+      end
+    end
+  end
+
+  def unfollow(follower, followed) do
+    follow = follow_for(follower, followed)
+    if follow do
+      case Repo.delete(follow) do
+        {:ok, _follow} -> true
+        {:error, _changeset} -> false
+      end
     end
   end
 end
