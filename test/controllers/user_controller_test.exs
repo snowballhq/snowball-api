@@ -7,14 +7,14 @@ defmodule Snowball.UserControllerTest do
     user = insert(:user)
     conn = conn |> authenticate(user.auth_token)
     conn = get conn, user_path(conn, :index)
-    assert json_response(conn, 200)["data"] == [user_response(user)]
+    assert json_response(conn, 200) == [user_response(user)]
   end
 
   test "GET /users/:id", %{conn: conn} do
     user = insert(:user)
     conn = conn |> authenticate(user.auth_token)
     conn = get conn, user_path(conn, :show, user)
-    assert json_response(conn, 200)["data"] == user_response(user)
+    assert json_response(conn, 200) == user_response(user)
   end
 
   # TODO: Figure out error handling
@@ -28,7 +28,7 @@ defmodule Snowball.UserControllerTest do
     user_params = params_for(:user_before_registration)
     conn = post conn, user_path(conn, :create), user: user_params
     user = Repo.one(from x in User, order_by: [desc: x.id], limit: 1)
-    assert json_response(conn, 201)["data"] == user_response(user)
+    assert json_response(conn, 201) == user_response(user)
   end
 
   # TODO: Figure out error handling
@@ -43,7 +43,7 @@ defmodule Snowball.UserControllerTest do
     conn = conn |> authenticate(user.auth_token)
     conn = patch conn, user_path(conn, :update, user), user: params
     user = Repo.get(User, user.id)
-    assert json_response(conn, 200)["data"] == user_response(user)
+    assert json_response(conn, 200) == user_response(user)
   end
 
   # TODO: Figure out error handling
