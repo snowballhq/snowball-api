@@ -15,11 +15,11 @@ defmodule Snowball.SessionController do
       user ->
         conn
         |> put_status(:unauthorized)
-        |> render(Snowball.UserView, "error-auth-password.json", %{})
+        |> render(Snowball.ErrorView, "error-auth-password.json", %{})
       true ->
         conn
         |> put_status(:unauthorized)
-        |> render(Snowball.UserView, "error-auth-email.json", %{})
+        |> render(Snowball.ErrorView, "error-auth-email.json", %{})
     end
   end
 end

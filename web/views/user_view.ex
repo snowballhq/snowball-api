@@ -13,14 +13,6 @@ defmodule Snowball.UserView do
     render_one(user, Snowball.UserView, "user-auth.json")
   end
 
-  def render("error-auth-email.json", %{}) do
-    %{error: %{message: "Invalid email"}}
-  end
-
-  def render("error-auth-password.json", %{}) do
-    %{error: %{message: "Invalid password"}}
-  end
-
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,

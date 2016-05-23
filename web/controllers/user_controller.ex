@@ -23,7 +23,7 @@ defmodule Snowball.UserController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Snowball.ChangesetView, "error.json", changeset: changeset)
+        |> render(Snowball.ErrorView, "error-changeset.json", changeset: changeset)
     end
   end
 
@@ -42,7 +42,7 @@ defmodule Snowball.UserController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Snowball.ChangesetView, "error.json", changeset: changeset)
+        |> render(Snowball.ErrorView, "error-changeset.json", changeset: changeset)
     end
   end
 

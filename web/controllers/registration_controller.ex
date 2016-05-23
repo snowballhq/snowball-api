@@ -16,7 +16,7 @@ defmodule Snowball.RegistrationController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Snowball.ChangesetView, "error.json", changeset: changeset)
+        |> render(Snowball.ErrorView, "error-changeset.json", changeset: changeset)
     end
   end
 end
