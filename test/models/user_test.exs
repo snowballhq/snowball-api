@@ -24,6 +24,11 @@ defmodule Snowball.UserTest do
     assert {:username, "should be at least 3 character(s)"} in errors_on(%User{}, %{username: ""})
     assert {:username, "should be at most 15 character(s)"} in errors_on(%User{}, %{username: "aaaaaaaaaaaaaaaa"})
     assert {:password, "should be at least 5 character(s)"} in errors_on(%User{}, %{password: ""})
+    assert {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "123"})
+    assert {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "415123456"})
+    refute {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "2025550197"})
+    refute {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "+353872942731"}) # Ireland
+    refute {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "+491622797078"}) # Germany
     # TODO: Add uniqueness validations
   end
 

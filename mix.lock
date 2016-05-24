@@ -6,6 +6,7 @@
   "decimal": {:hex, :decimal, "1.1.2", "79a769d4657b2d537b51ef3c02d29ab7141d2b486b516c109642d453ee08e00c", [:mix], []},
   "ecto": {:hex, :ecto, "2.0.0-rc.5", "a95184a260edb89669be7746b3b270725ce6940e378b05d19df82eecf52544cb", [:mix], [{:sbroker, "~> 0.7", [hex: :sbroker, optional: true]}, {:postgrex, "~> 0.11.1", [hex: :postgrex, optional: true]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: false]}, {:poison, "~> 1.5 or ~> 2.0", [hex: :poison, optional: true]}, {:mariaex, "~> 0.7.1", [hex: :mariaex, optional: true]}, {:decimal, "~> 1.0", [hex: :decimal, optional: false]}]},
   "ex_machina": {:git, "https://github.com/thoughtbot/ex_machina.git", "a24c02618b460094bb81ea90f41e052355383e5a", []},
+  "ex_phone_number": {:git, "https://github.com/socialpaymentsbv/ex_phone_number.git", "e54df3f15f9306f699351e1ecbdb4256be2d7224", [branch: :develop]},
   "faker": {:hex, :faker, "0.6.0", "2d2ff0879d6b10fab5fb47eb2c1149b811e4af780a17022aa249deb3a7156d2b", [:mix], []},
   "phoenix": {:hex, :phoenix, "1.2.0-rc.0", "ebb73fbd758ea246af26efcb90f549bb624a9eb1a0155aba7def0b7c33ddd28b", [:mix], [{:poison, "~> 1.5 or ~> 2.0", [hex: :poison, optional: false]}, {:plug, "~> 1.0", [hex: :plug, optional: false]}, {:phoenix_pubsub, "~> 1.0.0-rc", [hex: :phoenix_pubsub, optional: false]}, {:cowboy, "~> 1.0", [hex: :cowboy, optional: true]}]},
   "phoenix_ecto": {:hex, :phoenix_ecto, "3.0.0-rc.0", "c4a482a326dd61b7b4fd1a130cc560020fc6e5e1c1ec845b3cb528af93f829c8", [:mix], [{:poison, "~> 1.5 or ~> 2.0", [hex: :poison, optional: true]}, {:phoenix_html, "~> 2.5", [hex: :phoenix_html, optional: true]}, {:ecto, "~> 2.0.0-rc", [hex: :ecto, optional: false]}]},
@@ -15,4 +16,5 @@
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []},
   "postgrex": {:hex, :postgrex, "0.11.1", "f48af70c0a58b9bfd1aaa456ec4273624554cfb837726b6a7f0701da4a94b2dd", [:mix], [{:decimal, "~> 1.0", [hex: :decimal, optional: false]}, {:db_connection, "~> 0.2", [hex: :db_connection, optional: false]}, {:connection, "~> 1.0", [hex: :connection, optional: false]}]},
   "ranch": {:hex, :ranch, "1.2.1", "a6fb992c10f2187b46ffd17ce398ddf8a54f691b81768f9ef5f461ea7e28c762", [:make], []},
-  "secure_random": {:hex, :secure_random, "0.3.0", "3091ffcf1b5323b1739be87efa0ba51f27207ab09c200f36dd70c00f685bf735", [:mix], []}}
+  "secure_random": {:hex, :secure_random, "0.3.0", "3091ffcf1b5323b1739be87efa0ba51f27207ab09c200f36dd70c00f685bf735", [:mix], []},
+  "sweet_xml": {:hex, :sweet_xml, "0.6.1", "a56f235171f35a32807ce44798dedc748ce249fca574674fecd29c1321cab0de", [:mix], []}}

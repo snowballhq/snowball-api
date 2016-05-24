@@ -30,7 +30,7 @@ defmodule Snowball.User do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, ~w(username email), ~w(password))
+    |> cast(params, ~w(username email), ~w(password phone_number))
     |> hash_password
     |> generate_auth_token
     |> validate_required([:email, :username, :auth_token])
@@ -38,6 +38,7 @@ defmodule Snowball.User do
     |> validate_format(:username, ~r/\A[a-zA-Z0-9_]{3,15}\z/)
     |> validate_length(:username, min: 3, max: 15)
     |> validate_length(:password, min: 5)
+    |> validate_phone_number
     |> unique_constraint(:email) # TODO: should be case insensitive
     |> unique_constraint(:username) # TODO: should be case insensitive
     |> unique_constraint(:auth_token)
@@ -76,6 +77,25 @@ defmodule Snowball.User do
 
       changeset
       |> put_change(:auth_token, auth_token)
+    else
+      changeset
+    end
+  end
+
+  defp validate_phone_number(changeset) do
+    if phone_number_string = get_change(changeset, :phone_number) do
+      case ExPhoneNumber.parse(phone_number_string, "US") do
+        {:ok, phone_number} ->
+          if ExPhoneNumber.is_valid_number?(phone_number) do
+            changeset
+          else
+            changeset
+            |> add_error(:phone_number, "is invalid")
+          end
+        {:error, _message} ->
+          changeset
+          |> add_error(:phone_number, "is invalid")
+      end
     else
       changeset
     end
