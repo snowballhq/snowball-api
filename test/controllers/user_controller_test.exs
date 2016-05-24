@@ -1,5 +1,5 @@
 defmodule Snowball.UserControllerTest do
-  use Snowball.ConnCase
+  use Snowball.ConnCase, async: true
 
   alias Snowball.User
 

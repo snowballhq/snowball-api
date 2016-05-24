@@ -1,5 +1,5 @@
 defmodule Snowball.SessionControllerTest do
-  use Snowball.ConnCase
+  use Snowball.ConnCase, async: true
 
   test "POST /users/sign-up", %{conn: conn} do
     password = "somepassword"
