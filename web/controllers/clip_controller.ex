@@ -7,21 +7,19 @@ defmodule Snowball.ClipController do
 
   def index(conn, params) do
     current_user = conn.assigns.current_user
-    user_ids = if user_id = params["user_id"] do
-      [user_id]
+    clips = if user_id = params["user_id"] do
+      Repo.all(
+        from clip in Clip,
+        where: clip.user_id == ^user_id,
+        order_by: [desc: clip.created_at]
+      )
     else
       Repo.all(
-        from follow in Follow,
-        where: follow.follower_id == ^current_user.id,
-        select: follow.following_id
-      ) ++ [current_user.id]
+        from clip in Clip,
+        join: follow in Follow, on: clip.user_id == follow.following_id or clip.user_id == ^current_user.id,
+        order_by: [desc: clip.created_at]
+      )
     end
-    # TODO: Optimize this into a single query
-    clips = Repo.all(
-      from clip in Clip,
-      where: clip.user_id in ^user_ids,
-      order_by: [desc: clip.created_at]
-    )
     render(conn, "index.json", clips: clips)
   end
 
