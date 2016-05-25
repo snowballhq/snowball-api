@@ -12,6 +12,23 @@ defmodule Snowball.ClipControllerTest do
     assert json_response(conn, 200) == [clip_response(my_clip), clip_response(following_clip)]
   end
 
+  test "DELETE /clips/:id", %{conn: conn} do
+    clip = insert(:clip)
+    conn = conn |> authenticate(clip.user.auth_token)
+    conn = delete conn, clip_path(conn, :delete, clip)
+    assert json_response(conn, 200) == clip_response(clip)
+    refute Repo.get(Snowball.Clip, clip.id)
+  end
+
+  test "DELETE /clips/:id where user is not authorized", %{conn: conn} do
+    clip = insert(:clip)
+    another_user = insert(:user)
+    conn = conn |> authenticate(another_user.auth_token)
+    conn = delete conn, clip_path(conn, :delete, clip)
+    assert json_response(conn, 401)
+    assert Repo.get(Snowball.Clip, clip.id)
+  end
+
   defp clip_response(clip) do
     %{"id" => clip.id}
   end
