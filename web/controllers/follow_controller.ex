@@ -21,9 +21,7 @@ defmodule Snowball.FollowController do
     followed = Repo.get(User, user_id)
     if followed do
       User.unfollow(follower, followed)
-      conn
-      |> put_status(:ok) # TODO: Should this status be something else?
-      |> render(Snowball.UserView, "show.json", user: followed)
+      render(conn, Snowball.UserView, "show.json", user: followed)
     end
   end
 end
