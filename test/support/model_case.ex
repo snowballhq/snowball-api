@@ -24,7 +24,11 @@ defmodule Snowball.ModelCase do
   end
 
   def errors_on(struct, data) do
-    struct.__struct__.changeset(struct, data).errors
+    errors_on(struct, &struct.__struct__.changeset/2, data)
+  end
+
+  def errors_on(struct, changeset_function, data) do
+    changeset_function.(struct, data).errors
     |> Enum.map(fn {field, {message, opts}} ->
       message = message
       |> replace_opts(opts)

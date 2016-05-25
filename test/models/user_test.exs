@@ -3,16 +3,6 @@ defmodule Snowball.UserTest do
 
   alias Snowball.User
 
-  test "changeset with valid attributes" do
-    changeset = User.changeset(build(:user), %{})
-    assert changeset.valid?
-  end
-
-  test "changeset with invalid attributes" do
-    changeset = User.changeset(%User{}, %{})
-    refute changeset.valid?
-  end
-
   test "changeset validations" do
     assert {:email, "can't be blank"} in errors_on(%User{}, %{email: nil})
     assert {:username, "can't be blank"} in errors_on(%User{}, %{username: nil})
@@ -32,14 +22,8 @@ defmodule Snowball.UserTest do
     # TODO: Add uniqueness validations
   end
 
-  test "registration changeset with valid attributes" do
-    changeset = User.registration_changeset(build(:user_before_registration), %{})
-    assert changeset.valid?
-  end
-
-  test "registration changeset with invalid attributes" do
-    changeset = User.registration_changeset(%User{}, %{})
-    refute changeset.valid?
+  test "registration changeset validations" do
+    assert {:password, "can't be blank"} in errors_on(%User{}, &User.registration_changeset/2, %{password: nil})
   end
 
   test "follow_for/2" do
