@@ -32,5 +32,19 @@ defmodule Snowball.Repo.Migrations.Sync do
       add :follower_id, :uuid, null: false
       timestamps [inserted_at: :created_at]
     end
+
+    create table(:clips, primary_key: false) do
+      add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
+      add :user_id, :uuid, null: false
+      add :video_file_name, :string, null: false
+      add :video_content_type, :string, null: false
+      add :thumbnail_file_name, :string, null: false
+      add :thumbnail_content_type, :string, null: false
+      timestamps [inserted_at: :created_at]
+      add :video_file_size, :string
+      add :thumbnail_file_size, :string
+      add :video_updated_at, :datetime
+      add :thumbnail_updated_at, :datetime
+    end
   end
 end

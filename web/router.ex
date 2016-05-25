@@ -15,5 +15,6 @@ defmodule Snowball.Router do
     end
     post "/users/sign-up", RegistrationController, :create
     post "/users/sign-in", SessionController, :create
+    get "/clips/stream", ClipController, :index
   end
 end

@@ -1,6 +1,16 @@
 defmodule Snowball.Factory do
   use ExMachina.Ecto, repo: Snowball.Repo
 
+  def clip_factory do
+    %Snowball.Clip{
+      user: build(:user),
+      video_file_name: "video_file_name",
+      video_content_type: "video_content_type",
+      thumbnail_file_name: "thumbnail_file_name",
+      thumbnail_content_type: "thumbnail_content_type"
+    }
+  end
+
   def follow_factory do
     %Snowball.Follow{
       follower: build(:user),
