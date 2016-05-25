@@ -13,7 +13,6 @@ defmodule Snowball.Plug.Authenticate do
     else
       conn
       |> put_status(:unauthorized)
-      # TODO: Maybe this should not send a view back
       |> render(Snowball.ErrorView, "error-auth-required.json", %{})
       |> halt
     end
