@@ -13,7 +13,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :snowball, Snowball.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "example.com", port: 80]
+  url: [scheme: "https", host: "localhost", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -59,6 +60,9 @@ config :logger, level: :info
 #
 #     config :snowball, Snowball.Endpoint, root: "."
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
+# Configure your database
+config :snowball, Snowball.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: System.get_env("DATABASE_URL"),
+  pool_size: 20,
+  ssl: true
