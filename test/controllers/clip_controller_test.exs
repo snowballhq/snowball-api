@@ -12,6 +12,15 @@ defmodule Snowball.ClipControllerTest do
     assert json_response(conn, 200) == [clip_response(my_clip), clip_response(following_clip)]
   end
 
+  test "GET user/:user_id/clips/stream", %{conn: conn} do
+    # TODO: Check pagination
+    insert(:clip) # Random clip, random user, should not exist in stream
+    clip = insert(:clip)
+    conn = conn |> authenticate(clip.user.auth_token)
+    conn = get conn, clip_path(conn, :index, user_id: clip.user.id)
+    assert json_response(conn, 200) == [clip_response(clip)]
+  end
+
   test "DELETE /clips/:id", %{conn: conn} do
     clip = insert(:clip)
     conn = conn |> authenticate(clip.user.auth_token)

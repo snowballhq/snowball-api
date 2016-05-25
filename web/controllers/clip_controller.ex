@@ -5,15 +5,18 @@ defmodule Snowball.ClipController do
 
   plug Snowball.Plug.Authenticate when action in [:index, :delete]
 
-  def index(conn, _params) do
+  def index(conn, params) do
     current_user = conn.assigns.current_user
-    # TODO: Optimize these queries into a single query
-    user_ids = Repo.all(
-      from follow in Follow,
-      where: follow.follower_id == ^current_user.id,
-      select: follow.following_id
-    )
-    user_ids = user_ids ++ [current_user.id]
+    user_ids = if user_id = params["user_id"] do
+      [user_id]
+    else
+      Repo.all(
+        from follow in Follow,
+        where: follow.follower_id == ^current_user.id,
+        select: follow.following_id
+      ) ++ [current_user.id]
+    end
+    # TODO: Optimize this into a single query
     clips = Repo.all(
       from clip in Clip,
       where: clip.user_id in ^user_ids,
