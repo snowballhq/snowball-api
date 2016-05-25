@@ -3,13 +3,6 @@ defmodule Snowball.User do
 
   alias Snowball.{Follow, Repo}
 
-  # TODO: Create a "super" model
-  # See this link: https://hexdocs.pm/ecto/2.0.0-rc.5/Ecto.Schema.html
-  # under the "Schema attributes" seciton
-  @primary_key {:id, :binary_id, read_after_writes: true}
-  @foreign_key_type :binary_id
-  @timestamps_opts [inserted_at: :created_at]
-
   schema "users" do
     field :username, :string
     field :password, :string, virtual: true
