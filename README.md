@@ -29,3 +29,7 @@ TODO: Add environment variable config
 
 1. `heroku git:remote -a snowball-api`
 1. `git push heroku`
+
+### Remote Console
+
+1. `heroku run iex -S mix`
