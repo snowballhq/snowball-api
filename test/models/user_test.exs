@@ -4,12 +4,11 @@ defmodule Snowball.UserTest do
   alias Snowball.User
 
   test "changeset validations" do
-    assert {:email, "can't be blank"} in errors_on(%User{}, %{email: nil})
-    assert {:username, "can't be blank"} in errors_on(%User{}, %{username: nil})
+    assert {:email, "can't be blank"} in errors_on(%User{}, %{})
+    assert {:username, "can't be blank"} in errors_on(%User{}, %{})
     # Since auth token is created on validation, not sure if this is a worthless test, but it doesn't work
     # assert {:auth_token, "can't be blank"} in errors_on(%User{}, %{auth_token: nil})
     assert {:email, "has invalid format"} in errors_on(%User{}, %{email: ""})
-    assert {:username, "has invalid format"} in errors_on(%User{}, %{username: ""})
     assert {:username, "has invalid format"} in errors_on(%User{}, %{username: ""})
     assert {:username, "should be at least 3 character(s)"} in errors_on(%User{}, %{username: ""})
     assert {:username, "should be at most 15 character(s)"} in errors_on(%User{}, %{username: "aaaaaaaaaaaaaaaa"})

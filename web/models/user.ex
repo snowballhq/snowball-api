@@ -18,12 +18,16 @@ defmodule Snowball.User do
     field :avatar_file_size, :string
     field :avatar_updated_at, Ecto.DateTime
 
+    # has_many :follows, Follow
+    # has_many :followers, through: [:follows, :follower]
+    # has_many :followeds, through: [:follows, :following]
+
     timestamps [inserted_at: :created_at]
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, ~w(username email), ~w(password phone_number))
+    |> cast(params, [:username, :email], [:password, :phone_number])
     |> hash_password
     |> generate_auth_token
     |> validate_required([:email, :username, :auth_token])
@@ -40,7 +44,7 @@ defmodule Snowball.User do
   def registration_changeset(struct, params \\ %{}) do
     struct
     |> changeset(params)
-    |> cast(params, ~w(password), [])
+    |> cast(params, [:password], [])
     |> validate_required([:password])
   end
 
@@ -110,11 +114,10 @@ defmodule Snowball.User do
   def follow(follower, followed) do
     follow = follow_for(follower, followed)
     unless follow do
-      follow_params = %{
+      changeset = Follow.changeset(%Follow{}, %{
         follower_id: follower.id,
         following_id: followed.id
-      }
-      changeset = Follow.changeset(%Follow{}, follow_params)
+      })
       case Repo.insert(changeset) do
         {:ok, _follow} -> true
         {:error, _changeset} -> false

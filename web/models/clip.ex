@@ -17,7 +17,6 @@ defmodule Snowball.Clip do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:user_id])
-    |> validate_required([:video_file_name, :video_content_type, :thumbnail_file_name, :thumbnail_content_type])
-    # |> validate_required([:user_id]) # TODO: Bring this back. See https://github.com/elixir-lang/ecto/issues/1265
+    |> validate_required([:video_file_name, :video_content_type, :thumbnail_file_name, :thumbnail_content_type, :user_id])
   end
 end

@@ -10,6 +10,6 @@ defmodule Snowball.Follow do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:follower_id, :following_id])
-    # |> validate_required([:follower_id, :following_id]) # TODO: Bring this back. See https://github.com/elixir-lang/ecto/issues/1265
+    |> validate_required([:follower_id, :following_id])
   end
 end
