@@ -9,43 +9,34 @@ defmodule Snowball.ErrorView do
     %{message: "Server internal error"}
   end
 
-  def render("error-auth-required.json", _assigns) do
-    %{message: "Authentication required"}
-  end
-
-  def render("error-auth-email.json", _assigns) do
-    %{message: "Invalid email"}
-  end
-
-  def render("error-auth-password.json", _assigns) do
-    %{message: "Invalid password"}
-  end
-
-  def render("error-changeset.json", %{changeset: changeset}) do
-    errors = Enum.map(changeset.errors, fn {field, detail} ->
-      %{
-        field: field,
-        message: render_detail(detail)
-      }
-    end)
-
-    %{
-      message: "Validation Failed",
-      errors: errors
-    }
-  end
-
-  defp render_detail({message, values}) do
-    Enum.reduce(values, message, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", to_string(value))
-    end)
-  end
-
-  defp render_detail(message) do
-    message
-  end
-
   def template_not_found(_template, assigns) do
     render "500.json", assigns
+  end
+
+  def render("error.json", assigns) do
+    cond do
+      assigns.message ->
+        %{message: assigns.message}
+      assigns.changeset ->
+        render_changeset_errors(assigns.changeset)
+      true ->
+        render "500.json", assigns
+    end
+  end
+
+  defp render_changeset_errors(%{changeset: changeset}) do
+    errors = Enum.map(changeset.errors, fn {field, {message, values}} ->
+      %{
+        field: field,
+        message:
+          Enum.reduce(values, message, fn {key, value}, acc ->
+            String.replace(acc, "%{#{key}}", to_string(value))
+          end)
+      }
+    end)
+    %{
+      message: "Validation failed",
+      errors: errors
+    }
   end
 end
