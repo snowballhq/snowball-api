@@ -5,9 +5,9 @@ defmodule Snowball.FollowController do
 
   plug Snowball.Plug.Authenticate when action in [:create, :delete]
 
-  def create(conn, %{"user_id" => user_id}) do
+  def create(conn, %{"id" => id}) do
     follower = conn.assigns.current_user
-    followed = Repo.get(User, user_id)
+    followed = Repo.get(User, id)
     if followed do
       User.follow(follower, followed)
       conn
@@ -16,9 +16,9 @@ defmodule Snowball.FollowController do
     end
   end
 
-  def delete(conn, %{"user_id" => user_id}) do
+  def delete(conn, %{"id" => id}) do
     follower = conn.assigns.current_user
-    followed = Repo.get(User, user_id)
+    followed = Repo.get(User, id)
     if followed do
       User.unfollow(follower, followed)
       render(conn, Snowball.UserView, "show.json", user: followed)
