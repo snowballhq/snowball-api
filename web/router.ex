@@ -10,7 +10,7 @@ defmodule Snowball.Router do
 
     get "/", HomeController, :index
 
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, only: [:show, :update] 
     post "/users/sign-up", RegistrationController, :create
     post "/users/sign-in", SessionController, :create
     put "/users/:id/follow", FollowController, :create
