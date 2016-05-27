@@ -9,10 +9,6 @@ defmodule Snowball.ErrorView do
     %{message: "Server internal error"}
   end
 
-  def template_not_found(_template, assigns) do
-    render "500.json", assigns
-  end
-
   def render("error.json", assigns) do
     cond do
       assigns.message ->
@@ -38,5 +34,9 @@ defmodule Snowball.ErrorView do
       message: "Validation failed",
       errors: errors
     }
+  end
+
+  def template_not_found(_template, assigns) do
+    render "500.json", assigns
   end
 end

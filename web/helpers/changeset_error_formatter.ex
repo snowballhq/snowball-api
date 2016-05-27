@@ -33,9 +33,9 @@ defmodule Snowball.ChangesetErrorFormatter do
     value = opts[key]
     message = message |> String.replace("%{#{key}}", to_string(value))
     if value == 1 do
-      message = message |> String.replace("(s)", "")
+      message |> String.replace("(s)", "")
     else
-      message = message |> String.replace("(s)", "s")
+      message |> String.replace("(s)", "s")
     end
   end
 end
