@@ -3,8 +3,8 @@ defmodule Snowball.FollowTest do
 
   alias Snowball.Follow
 
-  test "changeset validations" do
-    assert {:follower_id, "can't be blank"} in errors_on(%Follow{}, %{})
-    assert {:following_id, "can't be blank"} in errors_on(%Follow{}, %{})
+  test "changeset/2" do
+    assert "can't be blank" in errors_on(%Follow{}, :follower_id)
+    assert "can't be blank" in errors_on(%Follow{}, :following_id)
   end
 end

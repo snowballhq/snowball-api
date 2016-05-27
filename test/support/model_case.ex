@@ -23,25 +23,23 @@ defmodule Snowball.ModelCase do
     :ok
   end
 
-  def errors_on(struct, data) do
-    errors_on(struct, &struct.__struct__.changeset/2, data)
+  # TODO: Should this be extracted into its own module? Probably!
+  def errors_on(struct, attribute, value \\ nil) do
+    errors_on(struct, &struct.__struct__.changeset/2, attribute, value)
   end
 
-  def errors_on(struct, changeset_function, data) do
-    changeset_function.(struct, data).errors
-    |> Enum.map(fn {field, {message, opts}} ->
-      message = message
-      |> replace_opts(opts)
-      {field, message}
-    end)
-  end
-
-  defp replace_opts(message, opts) do
-    key = opts
-    |> Keyword.keys
-    |> List.first
-    value = opts[key]
-    message
-    |> String.replace("%{#{key}}", to_string(value))
+  def errors_on(struct, changeset_function, attribute, value) do
+    params = if value do
+      %{attribute => value}
+    else
+      %{}
+    end
+    errors = changeset_function.(struct, params).errors
+    |> Snowball.ChangesetErrorFormatter.reformat_errors
+    if errors && errors[attribute] do
+      errors[attribute]
+    else
+      []
+    end
   end
 end

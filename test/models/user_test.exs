@@ -3,26 +3,26 @@ defmodule Snowball.UserTest do
 
   alias Snowball.User
 
-  test "changeset validations" do
-    assert {:email, "can't be blank"} in errors_on(%User{}, %{})
-    assert {:username, "can't be blank"} in errors_on(%User{}, %{})
-    # Since auth token is created on validation, not sure if this is a worthless test, but it doesn't work
-    # assert {:auth_token, "can't be blank"} in errors_on(%User{}, %{auth_token: nil})
-    assert {:email, "has invalid format"} in errors_on(%User{}, %{email: ""})
-    assert {:username, "has invalid format"} in errors_on(%User{}, %{username: ""})
-    assert {:username, "should be at least 3 character(s)"} in errors_on(%User{}, %{username: ""})
-    assert {:username, "should be at most 15 character(s)"} in errors_on(%User{}, %{username: "aaaaaaaaaaaaaaaa"})
-    assert {:password, "should be at least 5 character(s)"} in errors_on(%User{}, %{password: ""})
-    assert {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "123"})
-    assert {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "415123456"})
-    refute {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "2025550197"})
-    refute {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "+353872942731"}) # Ireland
-    refute {:phone_number, "is invalid"} in errors_on(%User{}, %{phone_number: "+491622797078"}) # Germany
+  test "changeset/2" do
+    assert "can't be blank" in errors_on(%User{}, :email)
+    assert "can't be blank" in errors_on(%User{}, :username)
+    assert "has invalid format" in errors_on(%User{}, :email, "")
+    assert "has invalid format" in errors_on(%User{}, :email, "example@example")
+    assert "has invalid format" in errors_on(%User{}, :username, "")
+    assert "should be at least 3 characters" in errors_on(%User{}, :username, "")
+    assert "should be at most 15 characters"in errors_on(%User{}, :username, "aaaaaaaaaaaaaaaa")
+    assert "should be at least 5 characters" in errors_on(%User{}, :password, "")
+    assert "is invalid" in errors_on(%User{}, :phone_number, "123")
+    assert "is invalid" in errors_on(%User{}, :phone_number, "415123456")
+    refute "is invalid" in errors_on(%User{}, :phone_number, "2025550197")
+    refute "is invalid" in errors_on(%User{}, :phone_number, "+353872942731") # Ireland
+    refute "is invalid" in errors_on(%User{}, :phone_number, "+491622797078") # Germany
     # TODO: Add uniqueness validations
   end
 
-  test "registration changeset validations" do
-    assert {:password, "can't be blank"} in errors_on(%User{}, &User.registration_changeset/2, %{password: nil})
+  test "registration_changeset/2" do
+    # TODO: Can I also check that this runs changeset/2?
+    assert "can't be blank" in errors_on(%User{}, &User.registration_changeset/2, :password, nil)
   end
 
   test "follow_for/2" do
