@@ -1,5 +1,5 @@
 defmodule Snowball.FollowTest do
-  use Snowball.ModelCase
+  use Snowball.ModelCase, async: true
 
   alias Snowball.Follow
 

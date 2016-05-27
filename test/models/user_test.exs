@@ -1,5 +1,5 @@
 defmodule Snowball.UserTest do
-  use Snowball.ModelCase
+  use Snowball.ModelCase, async: true
 
   alias Snowball.User
 

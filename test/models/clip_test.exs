@@ -1,5 +1,5 @@
 defmodule Snowball.ClipTest do
-  use Snowball.ModelCase
+  use Snowball.ModelCase, async: true
 
   alias Snowball.Clip
 
