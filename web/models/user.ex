@@ -61,11 +61,14 @@ defmodule Snowball.User do
   # TODO: Ensure auth token is unique
   # TODO: Ensure this is compatible with current production
   defp generate_auth_token(changeset) do
-    if !get_field(changeset, :auth_token) do
+    if get_field(changeset, :auth_token) do
+      changeset
+    else
       length = 20
       rlength = (length * 3) / 4
-
       auth_token = SecureRandom.urlsafe_base64(round(rlength))
+
+      auth_token
       |> String.replace("lIO0", "sxyz")
       |> String.replace("l", "s")
       |> String.replace("I", "x")
@@ -74,8 +77,6 @@ defmodule Snowball.User do
 
       changeset
       |> put_change(:auth_token, auth_token)
-    else
-      changeset
     end
   end
 

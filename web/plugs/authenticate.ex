@@ -18,8 +18,9 @@ defmodule Snowball.Plug.Authenticate do
     end
   end
 
-  defp user_for_credentials(["Basic " <> encoded_auth_token]) do
-    auth_token = Base.decode64!(encoded_auth_token) |> String.split(":") |> List.first
+  defp user_for_credentials(["Basic " <> encoded_credentials]) do
+    decoded_credentials = Base.decode64!(encoded_credentials)
+    auth_token = decoded_credentials |> String.split(":") |> List.first
     Repo.get_by(User, %{auth_token: auth_token})
   end
 
