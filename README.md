@@ -25,6 +25,10 @@ TODO: Add environment variable config
 
 1. `mix test`
 
+### Linting
+
+1. `mix credo`
+
 ### Deployment Instructions
 
 1. `heroku git:remote -a snowball-api`
