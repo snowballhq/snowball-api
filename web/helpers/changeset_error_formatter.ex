@@ -1,21 +1,10 @@
 defmodule Snowball.ChangesetErrorFormatter do
-  # TODO: Clean up this file when not sleepy :(
-
   def reformat_errors(errors) do
-    errors
-    |> get_keys_for_errors
-    |> get_messages_for_keys(errors)
-    |> Enum.into(%{})
-  end
-
-  defp get_keys_for_errors(errors) do
-    errors
+    keys = errors
     |> Keyword.new
     |> Keyword.keys
-  end
 
-  defp get_messages_for_keys(keys, errors) do
-    keys
+    formatted_errors = keys
     |> Enum.map(fn(key) ->
       values = errors
       |> Keyword.get_values(key)
@@ -24,6 +13,8 @@ defmodule Snowball.ChangesetErrorFormatter do
       end)
       {key, values}
     end)
+
+    formatted_errors |> Enum.into(%{})
   end
 
   defp replace_message_opts(message, opts) do
