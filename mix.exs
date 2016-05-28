@@ -10,8 +10,7 @@ defmodule Snowball.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases,
-     deps: deps,
-     preferred_cli_env: [espec: :test]]
+     deps: deps]
   end
 
   def application do
@@ -19,7 +18,7 @@ defmodule Snowball.Mixfile do
      applications: [:phoenix, :cowboy, :logger, :phoenix_ecto, :postgrex, :comeonin]]
   end
 
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support", "spec/support"]
+  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
@@ -30,7 +29,6 @@ defmodule Snowball.Mixfile do
      {:comeonin, "~> 2.4"},
      {:secure_random, "~> 0.2"},
      {:ex_phone_number, github: "socialpaymentsbv/ex_phone_number", branch: :develop},
-     {:espec, "~> 0.8.21", only: [:dev, :test]},
      {:credo, "~> 0.3", only: [:dev, :test]},
      {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test},
      {:faker, "~> 0.5", only: :test}]
