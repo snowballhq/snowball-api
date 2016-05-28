@@ -40,4 +40,13 @@ defmodule Snowball.ConnCaseHelpers do
   def error_unauthorized_response do
     %{"message" => "Unauthorized"}
   end
+
+  defmacro test_authentication_required_for(method, path_name, action, options \\ []) do
+    quote do
+      test "#{unquote(action)}/2 requires authentication", %{conn: conn} do
+        path = apply(Snowball.Router.Helpers, unquote(path_name), [conn, unquote(action), unquote(options)])
+        assert dispatch(conn, @endpoint, unquote(method), path) |> json_response(401)
+      end
+    end
+  end
 end
