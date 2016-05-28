@@ -3,27 +3,21 @@ defmodule Snowball.ModelCase do
 
   using do
     quote do
-      alias Snowball.Repo
+      use Snowball.TestCase
 
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query, only: [from: 1, from: 2]
       import Snowball.ModelCase
-      import Snowball.Factory
+      import Snowball.ModelCaseHelpers
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snowball.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Snowball.Repo, {:shared, self()})
-    end
+    Snowball.TestCase.setup(tags)
 
     :ok
   end
+end
 
-  # TODO: Should this be extracted into its own module? Probably!
+defmodule Snowball.ModelCaseHelpers do
   def errors_on(struct, attribute, value \\ nil) do
     errors_on(struct, &struct.__struct__.changeset/2, attribute, value)
   end

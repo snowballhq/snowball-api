@@ -1,8 +1,6 @@
 defmodule Snowball.ClipTest do
   use Snowball.ModelCase, async: true
 
-  alias Snowball.Clip
-
   test "changeset/2" do
     assert "can't be blank" in errors_on(%Clip{}, :video_file_name)
     assert "can't be blank" in errors_on(%Clip{}, :video_content_type)

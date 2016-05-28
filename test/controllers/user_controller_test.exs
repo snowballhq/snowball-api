@@ -1,8 +1,6 @@
 defmodule Snowball.UserControllerTest do
   use Snowball.ConnCase, async: true
 
-  alias Snowball.User
-
   test "GET /users/:id", %{conn: conn} do
     user = insert(:user)
     conn = conn |> authenticate(user.auth_token)

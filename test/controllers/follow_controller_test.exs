@@ -1,8 +1,6 @@
 defmodule Snowball.FollowControllerTest do
   use Snowball.ConnCase, async: true
 
-  alias Snowball.User
-
   test "PUT /users/:id/follow", %{conn: conn} do
     follower = insert(:user)
     followed = insert(:user)

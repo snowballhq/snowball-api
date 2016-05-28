@@ -115,7 +115,6 @@ defmodule Snowball.User do
   end
 
   def follow(follower, followed) do
-    trying_to_follow_self = (follower.id == followed.id)
     cond do
       follower.id == followed.id -> false
       follow_for(follower, followed) -> false

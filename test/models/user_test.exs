@@ -1,8 +1,6 @@
 defmodule Snowball.UserTest do
   use Snowball.ModelCase, async: true
 
-  alias Snowball.User
-
   test "changeset/2" do
     assert "can't be blank" in errors_on(%User{}, :email)
     assert "can't be blank" in errors_on(%User{}, :username)
