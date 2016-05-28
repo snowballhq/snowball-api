@@ -109,20 +109,25 @@ defmodule Snowball.User do
   def following?(follower, followed) do
     if follow_for(follower, followed) do
       true
+    else
+      false
     end
   end
 
   def follow(follower, followed) do
-    follow = follow_for(follower, followed)
-    unless follow do
-      changeset = Follow.changeset(%Follow{}, %{
-        follower_id: follower.id,
-        following_id: followed.id
-      })
-      case Repo.insert(changeset) do
-        {:ok, _follow} -> true
-        {:error, _changeset} -> false
-      end
+    trying_to_follow_self = (follower.id == followed.id)
+    cond do
+      follower.id == followed.id -> false
+      follow_for(follower, followed) -> false
+      true ->
+        changeset = Follow.changeset(%Follow{}, %{
+          follower_id: follower.id,
+          following_id: followed.id
+        })
+        case Repo.insert(changeset) do
+          {:ok, _follow} -> true
+          {:error, _changeset} -> false
+        end
     end
   end
 
@@ -133,6 +138,8 @@ defmodule Snowball.User do
         {:ok, _follow} -> true
         {:error, _changeset} -> false
       end
+    else
+      false
     end
   end
 end

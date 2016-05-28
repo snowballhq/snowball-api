@@ -24,16 +24,19 @@ defmodule Snowball.ClipController do
   end
 
   def delete(conn, %{"id" => id}) do
-    clip = Repo.get!(Clip, id)
-    if clip.user_id == conn.assigns.current_user.id do
-      # TODO: When deleting clip, ensure that file is removed from S3
-      Repo.delete!(clip)
-      render(conn, "show.json", clip: clip)
-    else
-      # TODO: Render more appropriate error
-      conn
-      |> put_status(:unauthorized)
-      |> render(Snowball.ErrorView, "error-auth-required.json", %{})
+    clip = Repo.get(Clip, id)
+    cond do
+      clip == nil ->
+        conn
+        |> put_status(:not_found)
+        |> render(Snowball.ErrorView, "404.json", %{})
+      clip.user_id == conn.assigns.current_user.id ->
+        Repo.delete!(clip)
+        render(conn, "show.json", clip: clip)
+      true ->
+        conn
+        |> put_status(:unauthorized)
+        |> render(Snowball.ErrorView, "401.json", %{})
     end
   end
 end

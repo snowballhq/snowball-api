@@ -13,7 +13,7 @@ defmodule Snowball.Plug.Authenticate do
     else
       conn
       |> put_status(:unauthorized)
-      |> render(Snowball.ErrorView, "error-auth-required.json", %{})
+      |> render(Snowball.ErrorView, "401.json", %{})
       |> halt
     end
   end

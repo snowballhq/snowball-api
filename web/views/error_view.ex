@@ -1,8 +1,12 @@
 defmodule Snowball.ErrorView do
   use Snowball.Web, :view
 
+  def render("401.json", _assigns) do
+    %{message: "Unauthorized"}
+  end
+
   def render("404.json", _assigns) do
-    %{message: "Page not found"}
+    %{message: "Not found"}
   end
 
   def render("500.json", _assigns) do
