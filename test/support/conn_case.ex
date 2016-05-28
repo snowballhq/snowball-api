@@ -33,11 +33,21 @@ defmodule Snowball.ConnCaseHelpers do
     %{"id" => clip.id}
   end
 
-
   def user_response(user) do
     %{"id" => user.id,
     "username" => user.username,
     "email" => user.email}
+  end
+
+  def user_auth_response(user) do
+    %{"id" => user.id,
+    "username" => user.username,
+    "email" => user.email,
+    "auth_token" => user.auth_token}
+  end
+
+  def error_changeset_response(field, message) do
+    %{"message" => "Validation failed", "errors" => [%{"message" => message, "field" => Atom.to_string(field)}]}
   end
 
   def error_bad_request_response do

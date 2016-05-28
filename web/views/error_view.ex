@@ -19,24 +19,21 @@ defmodule Snowball.ErrorView do
 
   def render("error.json", assigns) do
     cond do
-      assigns.message ->
+      assigns[:message] ->
         %{message: assigns.message}
-      assigns.changeset ->
-        render_changeset_errors(assigns.changeset)
+      assigns[:changeset] ->
+        render_changeset_errors(assigns[:changeset])
       true ->
         render "500.json", assigns
     end
   end
 
-  defp render_changeset_errors(%{changeset: changeset}) do
-    errors = Enum.map(changeset.errors, fn {field, {message, values}} ->
-      %{
-        field: field,
-        message:
-          Enum.reduce(values, message, fn {key, value}, acc ->
-            String.replace(acc, "%{#{key}}", to_string(value))
-          end)
-      }
+  defp render_changeset_errors(changeset) do
+    errors = Snowball.ChangesetErrorFormatter.reformat_errors(changeset.errors)
+    errors = errors
+    |> Map.keys
+    |> Enum.map(fn(key) ->
+      %{field: key, message: List.first(errors[key])}
     end)
     %{
       message: "Validation failed",

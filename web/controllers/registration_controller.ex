@@ -7,7 +7,6 @@ defmodule Snowball.RegistrationController do
 
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
-
     case Repo.insert(changeset) do
       {:ok, user} ->
         conn
@@ -16,7 +15,7 @@ defmodule Snowball.RegistrationController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Snowball.ErrorView, "error-changeset.json", changeset: changeset)
+        |> render(Snowball.ErrorView, "error.json", changeset: changeset)
     end
   end
 end
