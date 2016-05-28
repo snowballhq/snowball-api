@@ -23,29 +23,61 @@ defmodule Snowball.UserTest do
     assert "can't be blank" in errors_on(%User{}, &User.registration_changeset/2, :password, nil)
   end
 
-  test "follow_for/2" do
+  test "follow_for/2 when the follow exists returns the follow" do
     follow = insert(:follow)
-    assert follow.id == User.follow_for(follow.follower, follow.following).id
+    assert User.follow_for(follow.follower, follow.following).id == follow.id
   end
 
-  test "following?/2" do
+  test "follow_for/2 when the follow does not exist returns nil" do
+    follower = insert(:user)
+    followed = insert(:user)
+    refute User.follow_for(follower, followed)
+  end
+
+  test "following?/2 when the follow exists returns true" do
     follow = insert(:follow)
     assert User.following?(follow.follower, follow.following)
-    refute User.following?(follow.following, follow.follower)
   end
 
-  test "follow/2" do
+  test "following?/2 when the follow does not exist returns false" do
     follower = insert(:user)
     followed = insert(:user)
     refute User.following?(follower, followed)
-    User.follow(follower, followed)
+  end
+
+  test "follow/2 when not following follows the user and returns true" do
+    follower = insert(:user)
+    followed = insert(:user)
+    refute User.following?(follower, followed)
+    assert User.follow(follower, followed)
     assert User.following?(follower, followed)
   end
 
-  test "unfollow/2" do
+  test "follow/2 when following does not create a duplicate follow and returns false" do
     follow = insert(:follow)
     assert User.following?(follow.follower, follow.following)
-    User.unfollow(follow.follower, follow.following)
+    refute User.follow(follow.follower, follow.following)
+    assert Repo.one(from f in Follow, select: count(f.id)) == 1
+  end
+
+  test "follow/2 when trying to follow self does not create a follow and returns false" do
+    user = insert(:user)
+    refute User.follow(user, user)
+    assert Repo.one(from f in Follow, select: count(f.id)) == 0
+  end
+
+  test "unfollow/2 when following unfollows the user and returns true" do
+    follow = insert(:follow)
+    assert User.following?(follow.follower, follow.following)
+    assert User.unfollow(follow.follower, follow.following)
     refute User.following?(follow.follower, follow.following)
+  end
+
+  test "unfollow/2 when not following returns false" do
+    follower = insert(:user)
+    followed = insert(:user)
+    refute User.following?(follower, followed)
+    refute User.unfollow(follower, followed)
+    refute User.following?(follower, followed)
   end
 end
