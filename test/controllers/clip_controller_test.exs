@@ -1,6 +1,8 @@
 defmodule Snowball.ClipControllerTest do
   use Snowball.ConnCase, async: true
 
+  test_authentication_required_for(:delete, :clip_path, :index)
+
   test "index/2 returns the main clip stream", %{conn: conn} do
     # TODO: Check pagination
     insert(:clip) # Random clip, random user, not following, should not exist in stream
@@ -23,12 +25,7 @@ defmodule Snowball.ClipControllerTest do
     assert json_response(conn, 200) == [clip_response(clip)]
   end
 
-  test "index/2 requires authentication", %{conn: conn} do
-    # TODO: Extract this into a shared test
-    conn = conn
-    |> delete(clip_path(conn, :index))
-    assert json_response(conn, 401) == error_unauthorized_response
-  end
+  test_authentication_required_for(:delete, :clip_path, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
 
   test "delete/2 with valid params deletes the specified clip", %{conn: conn} do
     clip = insert(:clip)
@@ -55,12 +52,5 @@ defmodule Snowball.ClipControllerTest do
     |> delete(clip_path(conn, :delete, clip.id))
     assert json_response(conn, 401) == error_unauthorized_response
     assert Snowball.Repo.get(Clip, clip.id)
-  end
-
-  test "delete/2 requires authentication", %{conn: conn} do
-    # TODO: Extract this into a shared test
-    conn = conn
-    |> delete(clip_path(conn, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
-    assert json_response(conn, 401) == error_unauthorized_response
   end
 end

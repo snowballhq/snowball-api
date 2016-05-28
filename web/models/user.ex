@@ -117,7 +117,7 @@ defmodule Snowball.User do
   def follow(follower, followed) do
     cond do
       follower.id == followed.id -> false
-      follow_for(follower, followed) -> false
+      follow_for(follower, followed) -> true
       true ->
         changeset = Follow.changeset(%Follow{}, %{
           follower_id: follower.id,
@@ -131,14 +131,13 @@ defmodule Snowball.User do
   end
 
   def unfollow(follower, followed) do
-    follow = follow_for(follower, followed)
-    if follow do
+    if follow = follow_for(follower, followed) do
       case Repo.delete(follow) do
         {:ok, _follow} -> true
         {:error, _changeset} -> false
       end
     else
-      false
+      true
     end
   end
 end

@@ -1,38 +1,70 @@
 defmodule Snowball.FollowControllerTest do
   use Snowball.ConnCase, async: true
 
-  test "PUT /users/:id/follow", %{conn: conn} do
+  test_authentication_required_for(:put, :follow_path, :create, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+
+  test "create/2 when not following follows and returns the user", %{conn: conn} do
     follower = insert(:user)
     followed = insert(:user)
-    refute User.following?(follower, followed)
-    conn = conn |> authenticate(follower.auth_token)
-    conn = put conn, follow_path(conn, :create, followed)
+    conn = conn
+    |> authenticate(follower.auth_token)
+    |> put(follow_path(conn, :create, followed))
     assert json_response(conn, 201) == user_response(followed)
     assert User.following?(follower, followed)
   end
 
-  # TODO: Figure out error handling
-  # test "POST /users/:id/follow with invalid params", %{conn: conn} do
-  # end
-
-  test "DELETE /users/:id/follow", %{conn: conn} do
+  test "create/2 when already following returns the user", %{conn: conn} do
     follow = insert(:follow)
-    follower = follow.follower
-    followed = follow.following
-    assert User.following?(follower, followed)
-    conn = conn |> authenticate(follower.auth_token)
-    conn = delete conn, follow_path(conn, :delete, followed)
+    conn = conn
+    |> authenticate(follow.follower.auth_token)
+    |> put(follow_path(conn, :create, follow.following))
+    assert json_response(conn, 201) == user_response(follow.following)
+    assert User.following?(follow.follower, follow.following)
+  end
+
+  test "create/2 when trying to follow self returns an error", %{conn: conn} do
+    user = insert(:user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> put(follow_path(conn, :create, user))
+    assert json_response(conn, 400) == error_bad_request_response
+  end
+
+  test "create/2 when the user does not exist returns an error", %{conn: conn} do
+    user = insert(:user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> put(follow_path(conn, :create, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
+    assert json_response(conn, 400) == error_bad_request_response
+  end
+
+  test_authentication_required_for(:delete, :follow_path, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+
+  test "delete/2 when following unfollows and returns the user", %{conn: conn} do
+    follow = insert(:follow)
+    assert User.following?(follow.follower, follow.following)
+    conn = conn
+    |> authenticate(follow.follower.auth_token)
+    |> delete(follow_path(conn, :delete, follow.following))
+    assert json_response(conn, 200) == user_response(follow.following)
+    refute User.following?(follow.follower, follow.following)
+  end
+
+  test "delete/2 when not following returns the user", %{conn: conn} do
+    follower = insert(:user)
+    followed = insert(:user)
+    conn = conn
+    |> authenticate(follower.auth_token)
+    |> delete(follow_path(conn, :delete, followed))
     assert json_response(conn, 200) == user_response(followed)
     refute User.following?(follower, followed)
   end
 
-  # TODO: Figure out error handling
-  # test "DELETE /users/:id/follow with invalid params", %{conn: conn} do
-  # end
-
-  defp user_response(user) do
-    %{"id" => user.id,
-    "username" => user.username,
-    "email" => user.email}
+  test "delete/2 when the user does not exist returns an error", %{conn: conn} do
+    user = insert(:user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> delete(follow_path(conn, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
+    assert json_response(conn, 400) == error_bad_request_response
   end
 end

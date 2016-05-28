@@ -7,21 +7,37 @@ defmodule Snowball.FollowController do
 
   def create(conn, %{"id" => id}) do
     follower = conn.assigns.current_user
-    followed = Repo.get(User, id)
-    if followed do
-      User.follow(follower, followed)
+    if followed = Repo.get(User, id) do
+      if User.follow(follower, followed) do
+        conn
+        |> put_status(:created)
+        |> render(Snowball.UserView, "show.json", user: followed)
+      else
+        conn
+        |> put_status(:bad_request)
+        |> render(Snowball.ErrorView, "400.json")
+      end
+    else
       conn
-      |> put_status(:created)
-      |> render(Snowball.UserView, "show.json", user: followed)
+      |> put_status(:bad_request)
+      |> render(Snowball.ErrorView, "400.json")
     end
   end
 
   def delete(conn, %{"id" => id}) do
     follower = conn.assigns.current_user
-    followed = Repo.get(User, id)
-    if followed do
-      User.unfollow(follower, followed)
-      render(conn, Snowball.UserView, "show.json", user: followed)
+    if followed = Repo.get(User, id) do
+      if User.unfollow(follower, followed) do
+        render(conn, Snowball.UserView, "show.json", user: followed)
+      else
+        conn
+        |> put_status(:bad_request)
+        |> render(Snowball.ErrorView, "400.json")
+      end
+    else
+      conn
+      |> put_status(:bad_request)
+      |> render(Snowball.ErrorView, "400.json")
     end
   end
 end

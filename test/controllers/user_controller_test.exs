@@ -30,10 +30,4 @@ defmodule Snowball.UserControllerTest do
     # conn = put conn, user_path(conn, :update, user), user: @invalid_attrs
     # assert json_response(conn, 422)["errors"] != %{}
   end
-
-  defp user_response(user) do
-    %{"id" => user.id,
-    "username" => user.username,
-    "email" => user.email}
-  end
 end

@@ -53,10 +53,10 @@ defmodule Snowball.UserTest do
     assert User.following?(follower, followed)
   end
 
-  test "follow/2 when following does not create a duplicate follow and returns false" do
+  test "follow/2 when following does not create a duplicate follow and returns true" do
     follow = insert(:follow)
     assert User.following?(follow.follower, follow.following)
-    refute User.follow(follow.follower, follow.following)
+    assert User.follow(follow.follower, follow.following)
     assert Repo.one(from f in Follow, select: count(f.id)) == 1
   end
 
@@ -73,11 +73,11 @@ defmodule Snowball.UserTest do
     refute User.following?(follow.follower, follow.following)
   end
 
-  test "unfollow/2 when not following returns false" do
+  test "unfollow/2 when not following returns true" do
     follower = insert(:user)
     followed = insert(:user)
     refute User.following?(follower, followed)
-    refute User.unfollow(follower, followed)
+    assert User.unfollow(follower, followed)
     refute User.following?(follower, followed)
   end
 end
