@@ -69,9 +69,14 @@ defmodule Snowball.ConnCaseHelpers do
   defmacro test_authentication_required_for(method, path_name, action, options \\ []) do
     quote do
       test "#{unquote(action)}/2 requires authentication", %{conn: conn} do
-        path = apply(Snowball.Router.Helpers, unquote(path_name), [conn, unquote(action), unquote(options)])
-        assert dispatch(conn, @endpoint, unquote(method), path) |> json_response(401)
+        conn = make_request(conn, @endpoint, unquote(method), unquote(path_name), unquote(action), unquote(options))
+        assert conn |> json_response(401)
       end
     end
+  end
+
+  def make_request(conn, endpoint, method, path_name, action, options) do
+    path = apply(Snowball.Router.Helpers, path_name, [conn, action, options])
+    dispatch(conn, endpoint, method, path)
   end
 end
