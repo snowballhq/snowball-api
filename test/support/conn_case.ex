@@ -17,7 +17,7 @@ defmodule Snowball.ConnCase do
   setup tags do
     Snowball.TestCase.setup(tags)
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    {:ok, conn: Phoenix.ConnTest.build_conn}
   end
 end
 

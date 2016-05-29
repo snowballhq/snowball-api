@@ -15,7 +15,7 @@ defmodule Snowball.TestCase do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Snowball.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Snowball.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Snowball.Repo, {:shared, self})
     end
   end
 end
