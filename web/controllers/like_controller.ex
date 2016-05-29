@@ -5,7 +5,7 @@ defmodule Snowball.LikeController do
 
   plug Snowball.Plug.Authenticate when action in [:create, :delete]
 
-  def create(conn, %{"id" => id}) do
+  def create(conn, %{"clip_id" => id}) do
     user = conn.assigns.current_user
     if clip = Repo.get(Clip, id) do
       if User.like(user, clip) do
@@ -24,7 +24,7 @@ defmodule Snowball.LikeController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"clip_id" => id}) do
     user = conn.assigns.current_user
     if clip = Repo.get(Clip, id) do
       if User.unlike(user, clip) do

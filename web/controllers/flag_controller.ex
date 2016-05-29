@@ -5,7 +5,7 @@ defmodule Snowball.FlagController do
 
   plug Snowball.Plug.Authenticate when action in [:create]
 
-  def create(conn, %{"id" => id}) do
+  def create(conn, %{"clip_id" => id}) do
     user = conn.assigns.current_user
     if clip = Repo.get(Clip, id) do
       if User.flag(user, clip) do
