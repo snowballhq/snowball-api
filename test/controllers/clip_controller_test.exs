@@ -15,6 +15,16 @@ defmodule Snowball.ClipControllerTest do
     assert json_response(conn, 200) == [clip_response(my_clip), clip_response(following_clip)]
   end
 
+  test "index/2 is paginated", %{conn: conn} do
+    insert(:follow) # TODO: Remove this. This is a dumb hack to make the stream work. I'll fix this later.
+    user = insert(:user)
+    for _ <- 0..25, do: insert(:clip, user: user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(clip_path(conn, :index, page: 2))
+    assert Enum.count(json_response(conn, 200)) == 1
+  end
+
   test "index/2 with a user_id param returns the specified user's clip stream", %{conn: conn} do
     # TODO: Check pagination
     insert(:clip) # Random clip, random user, should not exist in stream
