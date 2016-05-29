@@ -19,6 +19,7 @@ defmodule Snowball.Router do
     resources "/clips", ClipController, only: [:delete]
     put "/clips/:id/like", LikeController, :create
     delete "/clips/:id/like", LikeController, :delete
+    put "/clips/:id/flag", FlagController, :create
     get "/clips/stream", ClipController, :index
   end
 end

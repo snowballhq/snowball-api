@@ -53,5 +53,11 @@ defmodule Snowball.Repo.Migrations.Sync do
       add :clip_id, :uuid, null: false
       timestamps [inserted_at: :created_at]
     end
+
+    create table(:flags, primary_key: false) do
+      add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
+      add :clip_id, :uuid, null: false
+      timestamps [inserted_at: :created_at]
+    end
   end
 end

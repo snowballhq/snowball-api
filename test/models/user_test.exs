@@ -132,4 +132,15 @@ defmodule Snowball.UserTest do
     assert User.unlike(user, clip)
     refute User.likes?(user, clip)
   end
+
+  test "flag/2 creates a flag and returns true" do
+    clip = insert(:clip)
+    assert User.flag(clip.user, clip)
+  end
+
+  test "flag/2 when a clip does not exist does not create a flag and returns false" do
+    user = insert(:user)
+    clip = build(:clip, user: user)
+    refute User.flag(user, clip)
+  end
 end

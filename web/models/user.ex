@@ -1,7 +1,7 @@
 defmodule Snowball.User do
   use Snowball.Web, :model
 
-  alias Snowball.{Follow, Like, Repo}
+  alias Snowball.{Flag, Follow, Like, Repo}
 
   schema "users" do
     field :username, :string
@@ -179,6 +179,16 @@ defmodule Snowball.User do
       end
     else
       true
+    end
+  end
+
+  def flag(_user, clip) do
+    changeset = Flag.changeset(%Flag{}, %{
+      clip_id: clip.id
+    })
+    case Repo.insert(changeset) do
+      {:ok, _flag} -> true
+      {:error, _changeset} -> false
     end
   end
 end
