@@ -1,7 +1,7 @@
 defmodule Snowball.UserControllerTest do
   use Snowball.ConnCase, async: true
 
-  test_authentication_required_for(:get, :user_path, :show, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+  test_authentication_required_for(:get, :user_path, :show, generic_uuid)
 
   test "show/2 returns the user if the user exists", %{conn: conn} do
     user = insert(:user)
@@ -15,11 +15,11 @@ defmodule Snowball.UserControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> get(user_path(conn, :show, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
+    |> get(user_path(conn, :show, generic_uuid))
     assert json_response(conn, 404) == error_not_found_response
   end
 
-  test_authentication_required_for(:patch, :user_path, :update, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+  test_authentication_required_for(:patch, :user_path, :update, generic_uuid)
 
   test "update/2 updates and returns the user if the user exists", %{conn: conn} do
     user = insert(:user)

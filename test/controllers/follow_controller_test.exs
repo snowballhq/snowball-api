@@ -1,7 +1,7 @@
 defmodule Snowball.FollowControllerTest do
   use Snowball.ConnCase, async: true
 
-  test_authentication_required_for(:put, :follow_path, :create, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+  test_authentication_required_for(:put, :follow_path, :create, generic_uuid)
 
   test "create/2 when not following follows and returns the user", %{conn: conn} do
     follower = insert(:user)
@@ -34,11 +34,11 @@ defmodule Snowball.FollowControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(follow_path(conn, :create, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
+    |> put(follow_path(conn, :create, generic_uuid))
     assert json_response(conn, 400) == error_bad_request_response
   end
 
-  test_authentication_required_for(:delete, :follow_path, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+  test_authentication_required_for(:delete, :follow_path, :delete, generic_uuid)
 
   test "delete/2 when following unfollows and returns the user", %{conn: conn} do
     follow = insert(:follow)
@@ -64,7 +64,7 @@ defmodule Snowball.FollowControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> delete(follow_path(conn, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
+    |> delete(follow_path(conn, :delete, generic_uuid))
     assert json_response(conn, 400) == error_bad_request_response
   end
 end

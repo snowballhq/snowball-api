@@ -24,6 +24,10 @@ end
 defmodule Snowball.ConnCaseHelpers do
   use Phoenix.ConnTest
 
+  def generic_uuid do
+    "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"
+  end
+
   def authenticate(conn, auth_token) do
     header_content = "Basic " <> Base.encode64("#{auth_token}:")
     conn |> put_req_header("authorization", header_content)

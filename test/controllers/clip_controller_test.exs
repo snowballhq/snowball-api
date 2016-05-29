@@ -25,7 +25,7 @@ defmodule Snowball.ClipControllerTest do
     assert json_response(conn, 200) == [clip_response(clip)]
   end
 
-  test_authentication_required_for(:delete, :clip_path, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984")
+  test_authentication_required_for(:delete, :clip_path, :delete, generic_uuid)
 
   test "delete/2 with valid params deletes the specified clip", %{conn: conn} do
     clip = insert(:clip)
@@ -40,7 +40,7 @@ defmodule Snowball.ClipControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> delete(clip_path(conn, :delete, "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"))
+    |> delete(clip_path(conn, :delete, generic_uuid))
     assert json_response(conn, 404) == error_not_found_response
   end
 
