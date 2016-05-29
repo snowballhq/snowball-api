@@ -1,7 +1,7 @@
 defmodule Snowball.ClipControllerTest do
   use Snowball.ConnCase, async: true
 
-  test_authentication_required_for(:delete, :clip_path, :index)
+  test_authentication_required_for(:get, :clip_path, :index)
 
   test "index/2 returns the main clip stream", %{conn: conn} do
     # TODO: Check pagination
