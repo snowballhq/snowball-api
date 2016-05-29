@@ -3,25 +3,35 @@ defmodule Snowball.UserController do
 
   alias Snowball.User
 
-  plug Snowball.Plug.Authenticate when action in [:index, :show, :update, :delete]
+  plug Snowball.Plug.Authenticate when action in [:show, :update]
   plug :scrub_params, "user" when action in [:update]
 
   def show(conn, %{"id" => id}) do
-    user = Repo.get!(User, id)
-    render(conn, "show.json", user: user)
+    if user = Repo.get(User, id) do
+      render(conn, "show.json", user: user)
+    else
+      conn
+      |> put_status(:not_found)
+      |> render(Snowball.ErrorView, "404.json")
+    end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Repo.get!(User, id)
-    changeset = User.changeset(user, user_params)
-
-    case Repo.update(changeset) do
-      {:ok, user} ->
-        render(conn, "show.json", user: user)
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(Snowball.ErrorView, "error-changeset.json", changeset: changeset)
+    user = conn.assigns.current_user
+    if id == user.id do
+      changeset = User.changeset(user, user_params)
+      case Repo.update(changeset) do
+        {:ok, user} ->
+          render(conn, "show.json", user: user)
+        {:error, changeset} ->
+          conn
+          |> put_status(:unprocessable_entity)
+          |> render(Snowball.ErrorView, "error.json", changeset: changeset)
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> render(Snowball.ErrorView, "401.json")
     end
   end
 end
