@@ -80,4 +80,56 @@ defmodule Snowball.UserTest do
     assert User.unfollow(follower, followed)
     refute User.following?(follower, followed)
   end
+
+  test "like_for/2 when the like exists returns the like" do
+    like = insert(:like)
+    assert User.like_for(like.user, like.clip).id == like.id
+  end
+
+  test "like_for/2 when the like does not exist returns nil" do
+    user = insert(:user)
+    clip = insert(:clip)
+    refute User.like_for(user, clip)
+  end
+
+  test "likes?/2 when the like exists returns true" do
+    like = insert(:like)
+    assert User.likes?(like.user, like.clip)
+  end
+
+  test "likes?/2 when the like does not exist returns false" do
+    user = insert(:user)
+    clip = insert(:clip)
+    refute User.likes?(user, clip)
+  end
+
+  test "like/2 when not liked likes the clip and returns true" do
+    user = insert(:user)
+    clip = insert(:clip)
+    refute User.likes?(user, clip)
+    assert User.like(user, clip)
+    assert User.likes?(user, clip)
+  end
+
+  test "like/2 when liked does not create a duplicate like and returns true" do
+    like = insert(:like)
+    assert User.likes?(like.user, like.clip)
+    assert User.like(like.user, like.clip)
+    assert Repo.one(from l in Like, select: count(l.id)) == 1
+  end
+
+  test "unlike/2 when liked unlikes the clip and returns true" do
+    like = insert(:like)
+    assert User.likes?(like.user, like.clip)
+    assert User.unlike(like.user, like.clip)
+    refute User.likes?(like.user, like.clip)
+  end
+
+  test "unlike/2 when not liked returns true" do
+    user = insert(:user)
+    clip = insert(:clip)
+    refute User.likes?(user, clip)
+    assert User.unlike(user, clip)
+    refute User.likes?(user, clip)
+  end
 end

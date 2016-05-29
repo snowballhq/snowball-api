@@ -18,6 +18,13 @@ defmodule Snowball.Factory do
     }
   end
 
+  def like_factory do
+    %Snowball.Like {
+      user: build(:user),
+      clip: build(:clip)
+    }
+  end
+
   def user_factory do
     %Snowball.User{
       username: Faker.Name.first_name,

@@ -1,7 +1,7 @@
 defmodule Snowball.User do
   use Snowball.Web, :model
 
-  alias Snowball.{Follow, Repo}
+  alias Snowball.{Follow, Like, Repo}
 
   schema "users" do
     field :username, :string
@@ -134,6 +134,47 @@ defmodule Snowball.User do
     if follow = follow_for(follower, followed) do
       case Repo.delete(follow) do
         {:ok, _follow} -> true
+        {:error, _changeset} -> false
+      end
+    else
+      true
+    end
+  end
+
+  def like_for(user, clip) do
+    Repo.get_by(Like,
+      user_id: user.id,
+      clip_id: clip.id
+    )
+  end
+
+  def likes?(user, clip) do
+    if like_for(user, clip) do
+      true
+    else
+      false
+    end
+  end
+
+  def like(user, clip) do
+    cond do
+      like_for(user, clip) -> true
+      true ->
+        changeset = Like.changeset(%Like{}, %{
+          user_id: user.id,
+          clip_id: clip.id
+        })
+        case Repo.insert(changeset) do
+          {:ok, _like} -> true
+          {:error, _changeset} -> false
+        end
+    end
+  end
+
+  def unlike(user, clip) do
+    if like = like_for(user, clip) do
+      case Repo.delete(like) do
+        {:ok, _like} -> true
         {:error, _changeset} -> false
       end
     else
