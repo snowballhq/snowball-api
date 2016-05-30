@@ -4,7 +4,6 @@ defmodule Snowball.ClipControllerTest do
   test_authentication_required_for(:get, :clip_path, :index)
 
   test "index/2 returns the main clip stream", %{conn: conn} do
-    # TODO: Check pagination
     insert(:clip) # Random clip, random user, not following, should not exist in stream
     follow = insert(:follow)
     my_clip = insert(:clip, user: follow.follower)
@@ -26,7 +25,6 @@ defmodule Snowball.ClipControllerTest do
   end
 
   test "index/2 with a user_id param returns the specified user's clip stream", %{conn: conn} do
-    # TODO: Check pagination
     insert(:clip) # Random clip, random user, should not exist in stream
     clip = insert(:clip)
     conn = conn
