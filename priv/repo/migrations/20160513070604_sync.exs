@@ -21,10 +21,10 @@ defmodule Snowball.Repo.Migrations.Sync do
       add :avatar_updated_at, :datetime
     end
 
-    create index(:users, [:auth_token], name: :index_users_on_auth_token)
-    create index(:users, [:email], name: :index_users_on_email)
-    create index(:users, [:reset_password_token], name: :index_users_on_reset_password_token)
-    create index(:users, [:username], name: :index_users_on_username)
+    create unique_index(:users, [:auth_token], name: :index_users_on_auth_token)
+    create unique_index(:users, [:email], name: :index_users_on_email)
+    create unique_index(:users, [:reset_password_token], name: :index_users_on_reset_password_token)
+    create unique_index(:users, [:username], name: :index_users_on_username)
 
     create table(:follows, primary_key: false) do
       add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
