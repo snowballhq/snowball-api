@@ -3,8 +3,6 @@ defmodule Snowball.RegistrationController do
 
   alias Snowball.User
 
-  plug :scrub_params, "user" when action in [:create]
-
   def create(conn, %{"user" => user_params}) do
     changeset = User.changeset(%User{}, user_params)
     case Repo.insert(changeset) do

@@ -4,7 +4,6 @@ defmodule Snowball.UserController do
   alias Snowball.User
 
   plug Snowball.Plug.Authenticate when action in [:show, :update]
-  plug :scrub_params, "user" when action in [:update]
 
   def show(conn, %{"id" => id}) do
     if user = Repo.get(User, id) do

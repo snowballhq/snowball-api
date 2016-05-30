@@ -3,8 +3,6 @@ defmodule Snowball.SessionController do
 
   alias Snowball.User
 
-  plug :scrub_params, "user" when action in [:create]
-
   def create(conn, %{"user" => user_params}) do
     user = Repo.get_by(User, email: user_params["email"])
     cond do
