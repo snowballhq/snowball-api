@@ -11,6 +11,13 @@ defmodule Snowball.Factory do
     }
   end
 
+  def device_factory do
+    %Snowball.Device{
+      user: build(:user),
+      arn: to_string(Faker.Lorem.characters)
+    }
+  end
+
   def follow_factory do
     %Snowball.Follow{
       follower: build(:user),

@@ -13,6 +13,7 @@ defmodule Snowball.Router do
     resources "/users", UserController, only: [:show, :update]
     post "/users/sign-up", RegistrationController, :create
     post "/users/sign-in", SessionController, :create
+    put "/users/:user_id/devices", DeviceController, :create
     put "/users/:user_id/follow", FollowController, :create
     delete "/users/:user_id/follow", FollowController, :delete
 

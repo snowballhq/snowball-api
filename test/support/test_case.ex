@@ -6,7 +6,7 @@ defmodule Snowball.TestCase do
       import Ecto.Query
       import Snowball.Factory
 
-      alias Snowball.{Clip, Flag, Follow, Like, User}
+      alias Snowball.{Clip, Device, Flag, Follow, Like, User}
       alias Snowball.Repo
     end
   end
