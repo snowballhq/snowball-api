@@ -6,18 +6,18 @@ defmodule Snowball.Repo.Migrations.Sync do
 
     create table(:users, primary_key: false) do
       add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
-      add :username, :string, null: false
-      add :password_digest, :string, null: false
-      add :name, :string
-      add :email, :string, null: false
-      add :phone_number, :string
-      add :auth_token, :string, null: false
+      add :username, :varchar, null: false
+      add :password_digest, :varchar, null: false
+      add :name, :varchar
+      add :email, :varchar, null: false
+      add :phone_number, :varchar
+      add :auth_token, :varchar, null: false
       timestamps [inserted_at: :created_at]
-      add :reset_password_token, :string
+      add :reset_password_token, :varchar
       add :reset_password_sent_at, :datetime
-      add :avatar_file_name, :string
-      add :avatar_content_type, :string
-      add :avatar_file_size, :string
+      add :avatar_file_name, :varchar
+      add :avatar_content_type, :varchar
+      add :avatar_file_size, :varchar
       add :avatar_updated_at, :datetime
     end
 
@@ -36,13 +36,13 @@ defmodule Snowball.Repo.Migrations.Sync do
     create table(:clips, primary_key: false) do
       add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
       add :user_id, :uuid, null: false
-      add :video_file_name, :string, null: false
-      add :video_content_type, :string, null: false
-      add :thumbnail_file_name, :string, null: false
-      add :thumbnail_content_type, :string, null: false
+      add :video_file_name, :varchar, null: false
+      add :video_content_type, :varchar, null: false
+      add :thumbnail_file_name, :varchar, null: false
+      add :thumbnail_content_type, :varchar, null: false
       timestamps [inserted_at: :created_at]
-      add :video_file_size, :string
-      add :thumbnail_file_size, :string
+      add :video_file_size, :varchar
+      add :thumbnail_file_size, :varchar
       add :video_updated_at, :datetime
       add :thumbnail_updated_at, :datetime
     end
@@ -64,7 +64,7 @@ defmodule Snowball.Repo.Migrations.Sync do
       add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
       add :user_id, :uuid, null: false
       timestamps [inserted_at: :created_at]
-      add :arn, :string, null: false
+      add :arn, :varchar, null: false
     end
   end
 end
