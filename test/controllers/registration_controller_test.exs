@@ -35,8 +35,7 @@ defmodule Snowball.RegistrationControllerTest do
   end
 
   test "create/2 with an invalid password returns an error", %{conn: conn} do
-    # TODO: Password should be handled correctly when it's an empty string
-    user_params = params_for(:user_before_registration, password: "a")
+    user_params = params_for(:user_before_registration, password: "")
     conn = post conn, registration_path(conn, :create), user: user_params
     assert json_response(conn, 422) == error_changeset_response(:password, "should be at least 5 characters")
   end
