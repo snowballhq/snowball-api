@@ -8,14 +8,12 @@ defmodule Snowball.RegistrationControllerTest do
     assert json_response(conn, 201) == user_auth_response(user)
   end
 
-  # TODO: Put this test back when uniqueness constraints are back
-  # test "create/2 with a taken username returns an error", %{conn: conn} do
-  #   user = insert(:user)
-  #   user_params = params_for(:user_before_registration, username: user.username)
-  #   conn = post conn, registration_path(conn, :create), user: user_params
-  #   user = Repo.one(from x in User, order_by: [desc: x.id], limit: 1) # Last user
-  #   assert json_response(conn, 422) == error_changeset_response(:username, "is taken")
-  # end
+  test "create/2 with a taken username (case insensitive) returns an error", %{conn: conn} do
+    user = insert(:user)
+    user_params = params_for(:user_before_registration, username: user.username |> String.upcase)
+    conn = post conn, registration_path(conn, :create), user: user_params
+    assert json_response(conn, 422) == error_changeset_response(:username, "has already been taken")
+  end
 
   test "create/2 with an invalid username returns an error", %{conn: conn} do
     user_params = params_for(:user_before_registration, username: "a")
@@ -23,14 +21,12 @@ defmodule Snowball.RegistrationControllerTest do
     assert json_response(conn, 422) == error_changeset_response(:username, "should be at least 3 characters")
   end
 
-  # TODO: Put this test back when uniqueness constraints are back
-  # test "create/2 with a taken email returns an error", %{conn: conn} do
-  #   user = insert(:user)
-  #   user_params = params_for(:user_before_registration, email: user.email)
-  #   conn = post conn, registration_path(conn, :create), user: user_params
-  #   user = Repo.one(from x in User, order_by: [desc: x.id], limit: 1) # Last user
-  #   assert json_response(conn, 422) == error_changeset_response(:email, "has already been registered")
-  # end
+  test "create/2 with a taken email (case insensitive) returns an error", %{conn: conn} do
+    user = insert(:user)
+    user_params = params_for(:user_before_registration, email: user.email |> String.upcase)
+    conn = post conn, registration_path(conn, :create), user: user_params
+    assert json_response(conn, 422) == error_changeset_response(:email, "has already been taken")
+  end
 
   test "create/2 with an invalid email returns an error", %{conn: conn} do
     user_params = params_for(:user_before_registration, email: "a")
