@@ -36,21 +36,22 @@ defmodule Snowball.ConnCaseHelpers do
   def clip_response(clip) do
     %{
       "id" => clip.id,
-      "user" => user_response(clip.user)
+      "user" => user_response(clip.user),
+      "thumbnail_url" => nil,
+      "video_url" => nil,
+      "created_at" => clip.created_at |> Ecto.DateTime.to_iso8601
     }
   end
 
-  def user_response(user) do
-    %{"id" => user.id,
-    "username" => user.username,
-    "email" => user.email}
-  end
-
-  def user_auth_response(user) do
-    %{"id" => user.id,
-    "username" => user.username,
-    "email" => user.email,
-    "auth_token" => user.auth_token}
+  def user_response(user, opts \\ []) do
+    opts
+    |> Snowball.Enum.keyword_keys_to_strings
+    |> Enum.into(
+      %{"id" => user.id,
+      "username" => user.username,
+      "avatar_url" => nil,
+      "email" => user.email}
+    )
   end
 
   def error_changeset_response(field, message) do

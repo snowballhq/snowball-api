@@ -16,6 +16,7 @@ defmodule Snowball.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       username: user.username,
+      avatar_url: nil,
       email: user.email}
   end
 
@@ -23,6 +24,7 @@ defmodule Snowball.UserView do
     %{id: user.id,
       username: user.username,
       email: user.email,
+      avatar_url: nil,
       auth_token: user.auth_token}
   end
 end

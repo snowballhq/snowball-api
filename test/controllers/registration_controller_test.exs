@@ -5,7 +5,7 @@ defmodule Snowball.RegistrationControllerTest do
     params = params_for(:user_before_registration)
     conn = post conn, registration_path(conn, :create), params
     user = Repo.one(from x in User, order_by: [desc: x.id], limit: 1) # Last user
-    assert json_response(conn, 201) == user_auth_response(user)
+    assert json_response(conn, 201) == user_response(user, auth_token: user.auth_token)
   end
 
   test "create/2 with a taken username (case insensitive) returns an error", %{conn: conn} do
