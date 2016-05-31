@@ -48,7 +48,6 @@ defmodule Snowball.User do
     |> validate_required([:password])
   end
 
-  # TODO: Ensure this is compatible with current production
   defp hash_password(changeset) do
     if password = get_change(changeset, :password) do
       changeset
@@ -58,8 +57,6 @@ defmodule Snowball.User do
     end
   end
 
-  # TODO: Ensure auth token is unique
-  # TODO: Ensure this is compatible with current production
   defp generate_auth_token(changeset) do
     if get_field(changeset, :auth_token) do
       changeset
