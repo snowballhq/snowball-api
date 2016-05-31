@@ -15,7 +15,6 @@ defmodule Snowball.ClipControllerTest do
   end
 
   test "index/2 is paginated", %{conn: conn} do
-    insert(:follow) # TODO: Remove this. This is a dumb hack to make the stream work. I'll fix this later.
     user = insert(:user)
     for _ <- 0..25, do: insert(:clip, user: user)
     conn = conn
