@@ -16,10 +16,9 @@ defmodule Snowball.UserTest do
     refute "is invalid" in errors_on(%User{}, :phone_number, "+353872942731") # Ireland
     refute "is invalid" in errors_on(%User{}, :phone_number, "+491622797078") # Germany
 
-    # TODO: Add case insensitive
     user = insert(:user)
-    assert "has already been taken" in errors_on(build(:user), &User.changeset/2, :email, user.email, true)
-    assert "has already been taken" in errors_on(build(:user), &User.changeset/2, :username, user.username, true)
+    assert "has already been taken" in errors_on(build(:user), &User.changeset/2, :email, user.email |> String.upcase, true)
+    assert "has already been taken" in errors_on(build(:user), &User.changeset/2, :username, user.username |> String.upcase, true)
   end
 
   test "registration_changeset/2" do

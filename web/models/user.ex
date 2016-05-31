@@ -36,8 +36,8 @@ defmodule Snowball.User do
     |> validate_length(:username, min: 3, max: 15)
     |> validate_length(:password, min: 5)
     |> validate_phone_number
-    |> unique_constraint(:email, name: :index_users_on_email) # TODO: should be case insensitive
-    |> unique_constraint(:username, name: :index_users_on_username) # TODO: should be case insensitive
+    |> unique_constraint(:email, name: :index_users_on_email)
+    |> unique_constraint(:username, name: :index_users_on_username)
     |> unique_constraint(:auth_token, name: :index_users_on_auth_token)
   end
 
