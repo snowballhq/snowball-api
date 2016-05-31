@@ -27,7 +27,7 @@ defmodule Snowball.User do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :email], [:password, :phone_number])
+    |> cast(params, [:username, :email], [:password, :phone_number, :password_digest])
     |> hash_password
     |> generate_auth_token
     |> validate_required([:email, :username, :auth_token])
@@ -36,9 +36,9 @@ defmodule Snowball.User do
     |> validate_length(:username, min: 3, max: 15)
     |> validate_length(:password, min: 5)
     |> validate_phone_number
-    |> unique_constraint(:email) # TODO: should be case insensitive
-    |> unique_constraint(:username) # TODO: should be case insensitive
-    |> unique_constraint(:auth_token)
+    |> unique_constraint(:email, name: :index_users_on_email) # TODO: should be case insensitive
+    |> unique_constraint(:username, name: :index_users_on_username) # TODO: should be case insensitive
+    |> unique_constraint(:auth_token, name: :index_users_on_auth_token)
   end
 
   def registration_changeset(struct, params \\ %{}) do
