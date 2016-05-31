@@ -17,7 +17,7 @@ defmodule Snowball.ClipController do
     else
       user_ids = Follow
       |> where([f], f.follower_id == ^current_user.id)
-      |> select([f], f.following_id)
+      |> select([f], f.followed_id)
       |> Repo.all
 
       Clip

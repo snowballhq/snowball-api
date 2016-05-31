@@ -17,9 +17,9 @@ defmodule Snowball.FollowControllerTest do
     follow = insert(:follow)
     conn = conn
     |> authenticate(follow.follower.auth_token)
-    |> put(follow_path(conn, :create, follow.following))
-    assert json_response(conn, 201) == user_response(follow.following)
-    assert User.following?(follow.follower, follow.following)
+    |> put(follow_path(conn, :create, follow.followed))
+    assert json_response(conn, 201) == user_response(follow.followed)
+    assert User.following?(follow.follower, follow.followed)
   end
 
   test "create/2 when trying to follow self returns an error", %{conn: conn} do
@@ -42,12 +42,12 @@ defmodule Snowball.FollowControllerTest do
 
   test "delete/2 when following unfollows and returns the user", %{conn: conn} do
     follow = insert(:follow)
-    assert User.following?(follow.follower, follow.following)
+    assert User.following?(follow.follower, follow.followed)
     conn = conn
     |> authenticate(follow.follower.auth_token)
-    |> delete(follow_path(conn, :delete, follow.following))
-    assert json_response(conn, 200) == user_response(follow.following)
-    refute User.following?(follow.follower, follow.following)
+    |> delete(follow_path(conn, :delete, follow.followed))
+    assert json_response(conn, 200) == user_response(follow.followed)
+    refute User.following?(follow.follower, follow.followed)
   end
 
   test "delete/2 when not following returns the user", %{conn: conn} do

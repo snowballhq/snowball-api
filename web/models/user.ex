@@ -20,7 +20,7 @@ defmodule Snowball.User do
 
     # has_many :follows, Follow
     # has_many :followers, through: [:follows, :follower]
-    # has_many :followeds, through: [:follows, :following]
+    # has_many :followeds, through: [:follows, :followed]
 
     timestamps [inserted_at: :created_at]
   end
@@ -102,7 +102,7 @@ defmodule Snowball.User do
   def follow_for(follower, followed) do
     Repo.get_by(Follow,
       follower_id: follower.id,
-      following_id: followed.id
+      followed_id: followed.id
     )
   end
 
@@ -121,7 +121,7 @@ defmodule Snowball.User do
       true ->
         changeset = Follow.changeset(%Follow{}, %{
           follower_id: follower.id,
-          following_id: followed.id
+          followed_id: followed.id
         })
         case Repo.insert(changeset) do
           {:ok, _follow} -> true

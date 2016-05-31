@@ -7,7 +7,7 @@ defmodule Snowball.ClipControllerTest do
     insert(:clip) # Random clip, random user, not following, should not exist in stream
     follow = insert(:follow)
     my_clip = insert(:clip, user: follow.follower)
-    following_clip = insert(:clip, user: follow.following, created_at: Ecto.DateTime.cast!("2014-04-17T14:00:00Z"))
+    following_clip = insert(:clip, user: follow.followed, created_at: Ecto.DateTime.cast!("2014-04-17T14:00:00Z"))
     conn = conn
     |> authenticate(follow.follower.auth_token)
     |> get(clip_path(conn, :index))

@@ -21,7 +21,7 @@ defmodule Snowball.Factory do
   def follow_factory do
     %Snowball.Follow{
       follower: build(:user),
-      following: build(:user)
+      followed: build(:user)
     }
   end
 

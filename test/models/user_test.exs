@@ -25,7 +25,7 @@ defmodule Snowball.UserTest do
 
   test "follow_for/2 when the follow exists returns the follow" do
     follow = insert(:follow)
-    assert User.follow_for(follow.follower, follow.following).id == follow.id
+    assert User.follow_for(follow.follower, follow.followed).id == follow.id
   end
 
   test "follow_for/2 when the follow does not exist returns nil" do
@@ -36,7 +36,7 @@ defmodule Snowball.UserTest do
 
   test "following?/2 when the follow exists returns true" do
     follow = insert(:follow)
-    assert User.following?(follow.follower, follow.following)
+    assert User.following?(follow.follower, follow.followed)
   end
 
   test "following?/2 when the follow does not exist returns false" do
@@ -55,8 +55,8 @@ defmodule Snowball.UserTest do
 
   test "follow/2 when following does not create a duplicate follow and returns true" do
     follow = insert(:follow)
-    assert User.following?(follow.follower, follow.following)
-    assert User.follow(follow.follower, follow.following)
+    assert User.following?(follow.follower, follow.followed)
+    assert User.follow(follow.follower, follow.followed)
     assert Repo.one(from f in Follow, select: count(f.id)) == 1
   end
 
@@ -68,9 +68,9 @@ defmodule Snowball.UserTest do
 
   test "unfollow/2 when following unfollows the user and returns true" do
     follow = insert(:follow)
-    assert User.following?(follow.follower, follow.following)
-    assert User.unfollow(follow.follower, follow.following)
-    refute User.following?(follow.follower, follow.following)
+    assert User.following?(follow.follower, follow.followed)
+    assert User.unfollow(follow.follower, follow.followed)
+    refute User.following?(follow.follower, follow.followed)
   end
 
   test "unfollow/2 when not following returns true" do
