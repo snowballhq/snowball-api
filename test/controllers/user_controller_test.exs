@@ -26,7 +26,7 @@ defmodule Snowball.UserControllerTest do
     params = %{email: "example@example.com"}
     conn = conn
     |> authenticate(user.auth_token)
-    |> patch(user_path(conn, :update, user), user: params)
+    |> patch(user_path(conn, :update, user), params)
     user = Repo.get(User, user.id)
     assert user.email == params[:email]
     assert json_response(conn, 200) == user_response(user)
@@ -38,7 +38,7 @@ defmodule Snowball.UserControllerTest do
     params = %{email: "example@example.com"}
     conn = conn
     |> authenticate(user.auth_token)
-    |> patch(user_path(conn, :update, user_to_update), user: params)
+    |> patch(user_path(conn, :update, user_to_update), params)
     user = Repo.get(User, user.id)
     assert user.email != params[:email]
     assert json_response(conn, 401) == error_unauthorized_response
@@ -49,7 +49,7 @@ defmodule Snowball.UserControllerTest do
     params = %{email: "example"}
     conn = conn
     |> authenticate(user.auth_token)
-    |> patch(user_path(conn, :update, user), user: params)
+    |> patch(user_path(conn, :update, user), params)
     user = Repo.get(User, user.id)
     refute user.email == params[:email]
     assert json_response(conn, 422) == error_changeset_response(:email, "has invalid format")

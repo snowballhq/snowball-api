@@ -7,7 +7,7 @@ defmodule Snowball.DeviceControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(device_path(conn, :create, user), device: [token: "token"])
+    |> put(device_path(conn, :create, user), token: "token")
     assert json_response(conn, 201) == user_response(user)
   end
 
@@ -16,7 +16,7 @@ defmodule Snowball.DeviceControllerTest do
     device = insert(:device)
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(device_path(conn, :create, user), device: [token: device.arn])
+    |> put(device_path(conn, :create, user), token: device.arn)
     assert json_response(conn, 201) == user_response(user)
     assert Repo.one(from d in Device, select: count(d.id)) == 1
   end
@@ -25,7 +25,7 @@ defmodule Snowball.DeviceControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(device_path(conn, :create, user), device: [token: ""])
+    |> put(device_path(conn, :create, user), token: "")
     assert json_response(conn, 422) == error_changeset_response(:arn, "can't be blank")
   end
 end

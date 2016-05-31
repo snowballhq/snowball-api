@@ -5,13 +5,13 @@ defmodule Snowball.DeviceController do
 
   plug Snowball.Plug.Authenticate when action in [:create]
 
-  def create(conn, %{"device" => device_params}) do
+  def create(conn, params) do
     user = conn.assigns.current_user
 
     # TODO: This needs to go to Amazon to get the ARN!
-    arn = device_params["token"]
+    arn = params["token"]
 
-    if device = Device |> where(arn: ^arn) |> Repo.one do
+    if Device |> where(arn: ^arn) |> Repo.one do
       conn
       |> put_status(:created)
       |> render(Snowball.UserView, "show.json", user: user)

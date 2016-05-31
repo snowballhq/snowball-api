@@ -15,10 +15,10 @@ defmodule Snowball.UserController do
     end
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
+  def update(conn, params) do
     user = conn.assigns.current_user
-    if id == user.id do
-      changeset = User.changeset(user, user_params)
+    if params["id"] == user.id do
+      changeset = User.changeset(user, params)
       case Repo.update(changeset) do
         {:ok, user} ->
           render(conn, "show.json", user: user)

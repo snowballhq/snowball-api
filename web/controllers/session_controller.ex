@@ -3,10 +3,10 @@ defmodule Snowball.SessionController do
 
   alias Snowball.User
 
-  def create(conn, %{"user" => user_params}) do
-    user = Repo.get_by(User, email: user_params["email"])
+  def create(conn, params) do
+    user = Repo.get_by(User, email: params["email"])
     cond do
-      user && Comeonin.Bcrypt.checkpw(user_params["password"], user.password_digest) ->
+      user && Comeonin.Bcrypt.checkpw(params["password"], user.password_digest) ->
         conn
         |> put_status(:created)
         |> render(Snowball.UserView, "show-auth.json", user: user)
