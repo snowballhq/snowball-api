@@ -37,3 +37,8 @@ TODO: Add environment variable config
 ### Remote Console
 
 1. `heroku run iex -S mix`
+You can then run commands like:
+```elixir
+iex > import Ecto.Query
+iex > Snowball.User |> Snowball.Repo.all
+```
