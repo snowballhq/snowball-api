@@ -15,12 +15,16 @@ defmodule Snowball.ClipController do
         |> Snowball.Paginator.page(params["page"])
       )
     else
-      Repo.all(
-        Clip
-        |> join(:inner, [c], f in Follow, c.user_id == f.following_id or c.user_id == ^current_user.id)
-        |> order_by([desc: :created_at])
-        |> Snowball.Paginator.page(params["page"])
-      )
+      user_ids = Follow
+      |> where([f], f.follower_id == ^current_user.id)
+      |> select([f], f.following_id)
+      |> Repo.all
+
+      Clip
+      |> where([c], c.user_id in ^(user_ids ++ [current_user.id]))
+      |> order_by([desc: :created_at])
+      |> Snowball.Paginator.page(params["page"])
+      |> Repo.all
     end
     render(conn, "index.json", clips: clips)
   end
