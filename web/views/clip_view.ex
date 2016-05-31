@@ -10,6 +10,9 @@ defmodule Snowball.ClipView do
   end
 
   def render("clip.json", %{clip: clip}) do
-    %{id: clip.id}
+    %{
+      id: clip.id,
+      user: render(Snowball.UserView, "show.json", %{user: clip.user})
+    }
   end
 end

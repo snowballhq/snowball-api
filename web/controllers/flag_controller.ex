@@ -7,7 +7,11 @@ defmodule Snowball.FlagController do
 
   def create(conn, %{"clip_id" => id}) do
     user = conn.assigns.current_user
-    if clip = Repo.get(Clip, id) do
+    clip = Clip
+    |> where([c], c.id == ^id)
+    |> preload(:user)
+    |> Repo.one
+    if clip do
       if User.flag(user, clip) do
         conn
         |> put_status(:created)

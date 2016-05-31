@@ -34,7 +34,10 @@ defmodule Snowball.ConnCaseHelpers do
   end
 
   def clip_response(clip) do
-    %{"id" => clip.id}
+    %{
+      "id" => clip.id,
+      "user" => user_response(clip.user)
+    }
   end
 
   def user_response(user) do

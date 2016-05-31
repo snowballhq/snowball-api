@@ -13,6 +13,7 @@ defmodule Snowball.ClipController do
         |> where([c], c.user_id == ^user_id)
         |> order_by([desc: :created_at])
         |> Snowball.Paginator.page(params["page"])
+        |> preload(:user)
       )
     else
       user_ids = Follow
@@ -24,13 +25,17 @@ defmodule Snowball.ClipController do
       |> where([c], c.user_id in ^(user_ids ++ [current_user.id]))
       |> order_by([desc: :created_at])
       |> Snowball.Paginator.page(params["page"])
+      |> preload(:user)
       |> Repo.all
     end
     render(conn, "index.json", clips: clips)
   end
 
   def delete(conn, %{"id" => id}) do
-    clip = Repo.get(Clip, id)
+    clip = Clip
+    |> where([c], c.id == ^id)
+    |> preload(:user)
+    |> Repo.one
     cond do
       clip == nil ->
         conn

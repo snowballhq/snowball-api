@@ -7,7 +7,11 @@ defmodule Snowball.LikeController do
 
   def create(conn, %{"clip_id" => id}) do
     user = conn.assigns.current_user
-    if clip = Repo.get(Clip, id) do
+    clip = Clip
+    |> where([c], c.id == ^id)
+    |> preload(:user)
+    |> Repo.one
+    if clip do
       if User.like(user, clip) do
         conn
         |> put_status(:created)
@@ -26,7 +30,11 @@ defmodule Snowball.LikeController do
 
   def delete(conn, %{"clip_id" => id}) do
     user = conn.assigns.current_user
-    if clip = Repo.get(Clip, id) do
+    clip = Clip
+    |> where([c], c.id == ^id)
+    |> preload(:user)
+    |> Repo.one
+    if clip do
       if User.unlike(user, clip) do
         render(conn, Snowball.ClipView, "show.json", clip: clip)
       else
