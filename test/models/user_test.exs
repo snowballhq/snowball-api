@@ -22,7 +22,8 @@ defmodule Snowball.UserTest do
   end
 
   test "registration_changeset/2" do
-    # TODO: Can I also check that this runs changeset/2?
+    # This email validation is just here to ensure that this calls changeset/2
+    assert "can't be blank" in errors_on(%User{}, :email)
     assert "can't be blank" in errors_on(%User{}, &User.registration_changeset/2, :password, nil)
   end
 
