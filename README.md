@@ -2,5 +2,5 @@
 
 ### Start Server
 ```
-$ mix run --no-halt
+$ mix server
 ```

@@ -8,6 +8,7 @@ defmodule Snowball.Mixfile do
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     aliases: aliases,
      deps: deps]
   end
 
@@ -26,5 +27,9 @@ defmodule Snowball.Mixfile do
      {:plug, "~> 1.1.5"},
      {:poison, "~> 2.0"},
      {:credo, "~> 0.3", only: [:dev, :test]}]
+  end
+
+  defp aliases do
+    ["server": "run --no-halt"]
   end
 end
