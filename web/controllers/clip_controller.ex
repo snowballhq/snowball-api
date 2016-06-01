@@ -8,13 +8,14 @@ defmodule Snowball.ClipController do
   def index(conn, params) do
     current_user = conn.assigns.current_user
     clips = if user_id = params["user_id"] do
-      Repo.all(
+      clips = Repo.all(
         Clip
         |> where([c], c.user_id == ^user_id)
         |> order_by([desc: :created_at])
         |> Snowball.Paginator.page(params["page"])
         |> preload(:user)
       )
+      clips |> Clip.set_user_following(Snowball.User.following?(current_user, List.first(clips).user))
     else
       user_ids = Follow
       |> where([f], f.follower_id == ^current_user.id)
@@ -27,6 +28,7 @@ defmodule Snowball.ClipController do
       |> Snowball.Paginator.page(params["page"])
       |> preload(:user)
       |> Repo.all
+      |> Clip.set_user_following(true)
     end
     render(conn, "index.json", clips: clips)
   end
@@ -43,7 +45,7 @@ defmodule Snowball.ClipController do
         |> render(Snowball.ErrorView, "404.json", %{})
       clip.user_id == conn.assigns.current_user.id ->
         Repo.delete!(clip)
-        render(conn, "show.json", clip: clip)
+        render(conn, "show.json", clip: clip |> Clip.set_user_following(false))
       true ->
         conn
         |> put_status(:unauthorized)
