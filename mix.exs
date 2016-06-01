@@ -19,6 +19,7 @@ defmodule Snowball.Mixfile do
     [{:postgrex, ">= 0.0.0"},
      {:ecto, "~> 2.0.0-beta"},
      {:cowboy, "~> 1.0.4"},
-     {:plug, "~> 1.1.5"}]
+     {:plug, "~> 1.1.5"},
+     {:poison, "~> 2.0"}]
   end
 end

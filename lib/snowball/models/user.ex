@@ -42,6 +42,12 @@ defmodule Snowball.User do
     |> validate_required([:password])
   end
 
+  def json(user) do
+    %{
+      id: user.id
+    }
+  end
+
   defp hash_password(changeset) do
     if password = get_change(changeset, :password) do
       changeset
