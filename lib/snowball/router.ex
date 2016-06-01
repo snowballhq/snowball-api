@@ -10,6 +10,8 @@ defmodule Snowball.Router do
     send_resp(conn, 200, "⛄")
   end
 
+  get "/users", do: Snowball.UserController.index(conn)
+
   match _ do
     send_resp(conn, 404, "oops")
   end
