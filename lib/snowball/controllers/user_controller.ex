@@ -1,5 +1,5 @@
 defmodule Snowball.UserController do
-  import Plug.Conn
+  use Snowball.ApplicationController
 
   def index(conn) do
     send_resp(conn, 200, "users")
