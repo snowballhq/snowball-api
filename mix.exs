@@ -11,10 +11,11 @@ defmodule Snowball.Mixfile do
   end
 
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :postgrex, :ecto]]
   end
 
   defp deps do
-    []
+    [{:postgrex, ">= 0.0.0"},
+     {:ecto, "~> 2.0.0-beta"}]
   end
 end
