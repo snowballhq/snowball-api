@@ -1,0 +1,2 @@
+defmodule Snowball do
+end
