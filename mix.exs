@@ -11,7 +11,8 @@ defmodule Snowball.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :postgrex, :ecto, :cowboy, :plug]]
+    [mod: {Snowball, []},
+     applications: [:logger, :postgrex, :ecto, :cowboy, :plug]]
   end
 
   defp deps do

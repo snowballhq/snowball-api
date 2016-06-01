@@ -3,8 +3,11 @@ defmodule Snowball do
 
   def start(_type, _args) do
     import Supervisor.Spec
-    tree = [supervisor(Snowball.Repo, [])]
+    children = [
+      supervisor(Snowball.Repo, []),
+      Plug.Adapters.Cowboy.child_spec(:http, Snowball.Router, [], [port: 4000])
+    ]
     opts = [strategy: :one_for_one, name: Snowball.Supervisor]
-    Supervisor.start_link(tree, opts)
+    Supervisor.start_link(children, opts)
   end
 end
