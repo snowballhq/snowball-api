@@ -5,6 +5,7 @@ defmodule Snowball.Mixfile do
     [app: :snowball,
      version: "0.0.1",
      elixir: "~> 1.2",
+     elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -14,6 +15,9 @@ defmodule Snowball.Mixfile do
     [mod: {Snowball, []},
      applications: [:logger, :postgrex, :ecto, :cowboy, :plug]]
   end
+
+  defp elixirc_paths(:test), do: ["app", "lib", "test/support"]
+  defp elixirc_paths(_), do: ["app", "lib"]
 
   defp deps do
     [{:postgrex, ">= 0.0.0"},
