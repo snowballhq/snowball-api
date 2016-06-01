@@ -5,6 +5,6 @@ defmodule Snowball.UserController do
 
   def index(conn) do
     users = User |> Repo.all |> User.to_json
-    send_resp(conn, 200, users)
+    render(conn, json: users)
   end
 end

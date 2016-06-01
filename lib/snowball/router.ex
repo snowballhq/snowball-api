@@ -8,9 +8,9 @@ defmodule Snowball.Router do
   plug :match
   plug :dispatch
 
-  get "/", do: send_resp(conn, 200, "⛄")
+  get "/", do: Snowball.ApplicationController.render(conn, text: "⛄")
   get "/users", do: Snowball.UserController.index(conn)
 
-  match _, do: send_resp(conn, 404, "Oops")
-  defp handle_errors(conn, _error), do: send_resp(conn, conn.status, "Something went wrong")
+  match _, do: Snowball.ApplicationController.head(conn, 404)
+  defp handle_errors(conn, _error), do: Snowball.ApplicationController.head(conn, 500)
 end
