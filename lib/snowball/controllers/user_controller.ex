@@ -2,6 +2,7 @@ defmodule Snowball.UserController do
   use Snowball.ApplicationController
 
   def index(conn) do
-    send_resp(conn, 200, "users")
+    result = Snowball.User |> Repo.all
+    send_resp(conn, 200, result)
   end
 end
