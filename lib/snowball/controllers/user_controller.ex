@@ -1,5 +1,5 @@
 defmodule Snowball.UserController do
-  use Snowball.ApplicationController
+  use Snowball.BaseController
 
   alias Snowball.User
 
