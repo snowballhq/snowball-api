@@ -1,7 +1,7 @@
 defmodule Snowball.User do
   use Snowball.Model
 
-  alias Snowball.{Flag, Follow, Like}
+  alias Snowball.{Flag, Follow, Like, Repo}
 
   schema "users" do
     field :username, :string
