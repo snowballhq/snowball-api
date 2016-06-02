@@ -26,7 +26,12 @@ defmodule Snowball.Mixfile do
      {:cowboy, "~> 1.0.4"},
      {:plug, "~> 1.1.5"},
      {:poison, "~> 2.0"},
-     {:credo, "~> 0.3", only: [:dev, :test]}]
+     {:comeonin, "~> 2.4"},
+     {:secure_random, "~> 0.2"},
+     {:ex_phone_number, github: "socialpaymentsbv/ex_phone_number", branch: :develop},
+     {:credo, "~> 0.3", only: [:dev, :test]},
+     {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test},
+     {:faker, "~> 0.5", only: :test}]
   end
 
   defp aliases do
