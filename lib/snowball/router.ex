@@ -9,6 +9,7 @@ defmodule Snowball.Router do
   plug :dispatch
 
   get "/", do: Snowball.HomeController.index(conn)
+  get "/clips/stream", do: Snowball.ClipController.index(conn, options)
   get "/users", do: Snowball.UserController.index(conn)
 
   match _, do: Snowball.Controller.head(conn, 404)

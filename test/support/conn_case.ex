@@ -1,12 +1,12 @@
 defmodule Snowball.ConnCase do
   use ExUnit.CaseTemplate
-  import Plug.Conn
+  use Plug.Test
 
   using do
     quote do
       use Snowball.TestCase
+      use Plug.Test
 
-      import Plug.Conn
       import Snowball.ConnCase
 
       @endpoint Snowball.Endpoint
@@ -16,11 +16,22 @@ defmodule Snowball.ConnCase do
   setup tags do
     Snowball.TestCase.setup(tags)
 
-    {:ok, conn: Phoenix.ConnTest.build_conn}
+    :ok
   end
 
   def generic_uuid do
     "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"
+  end
+
+  def response(conn, status) do
+    conn = Snowball.Router.call(conn, Snowball.Router.init([]))
+    assert conn.status == status
+    assert conn.resp_body
+    conn.resp_body
+  end
+
+  def json_response(conn, status) do
+    response(conn, status) |> Poison.Parser.parse |> elem(1)
   end
 
   def authenticate(conn, auth_token) do
