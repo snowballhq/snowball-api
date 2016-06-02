@@ -17,7 +17,6 @@ defmodule Snowball.User do
     field :avatar_content_type, :string
     field :avatar_file_size, :string
     field :avatar_updated_at, Ecto.DateTime
-    field :following, :boolean, virtual: true
 
     # has_many :follows, Follow
     # has_many :followers, through: [:follows, :follower]

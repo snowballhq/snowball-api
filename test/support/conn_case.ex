@@ -33,10 +33,10 @@ defmodule Snowball.ConnCaseHelpers do
     conn |> put_req_header("authorization", header_content)
   end
 
-  def clip_response(clip, opts \\ []) do
+  def clip_response(clip) do
     %{
       "id" => clip.id,
-      "user" => user_response(clip.user, opts[:user] || []),
+      "user" => user_response(clip.user),
       "thumbnail_url" => nil,
       "video_url" => nil,
       "created_at" => clip.created_at |> Ecto.DateTime.to_iso8601
@@ -50,8 +50,7 @@ defmodule Snowball.ConnCaseHelpers do
       %{"id" => user.id,
       "username" => user.username,
       "avatar_url" => nil,
-      "email" => user.email,
-      "following" => user.following}
+      "email" => user.email}
     )
   end
 
