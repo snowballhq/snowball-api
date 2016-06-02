@@ -1,11 +1,11 @@
-defmodule Snowball.BaseController do
+defmodule Snowball.Controller do
   import Plug.Conn
 
   defmacro __using__(_opts) do
     quote do
       import Plug.Conn
       import Ecto.Query
-      import Snowball.BaseController
+      import Snowball.Controller
 
       alias Snowball.Repo
     end

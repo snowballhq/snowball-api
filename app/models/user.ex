@@ -1,5 +1,7 @@
 defmodule Snowball.User do
-  use Snowball.BaseModel
+  use Snowball.Model
+
+  alias Snowball.{Flag, Follow, Like}
 
   schema "users" do
     field :username, :string
@@ -42,6 +44,7 @@ defmodule Snowball.User do
     |> validate_required([:password])
   end
 
+  # TODO: UNTESTED
   def json(user) do
     %{
       id: user.id
@@ -79,21 +82,114 @@ defmodule Snowball.User do
 
   defp validate_phone_number(changeset) do
     changeset
-    # if phone_number_string = get_change(changeset, :phone_number) do
-    #   case ExPhoneNumber.parse(phone_number_string, "US") do
-    #     {:ok, phone_number} ->
-    #       if ExPhoneNumber.is_valid_number?(phone_number) do
-    #         changeset
-    #       else
-    #         changeset
-    #         |> add_error(:phone_number, "is invalid")
-    #       end
-    #     {:error, _message} ->
-    #       changeset
-    #       |> add_error(:phone_number, "is invalid")
-    #   end
-    # else
-    #   changeset
-    # end
+    if phone_number_string = get_change(changeset, :phone_number) do
+      case ExPhoneNumber.parse(phone_number_string, "US") do
+        {:ok, phone_number} ->
+          if ExPhoneNumber.is_valid_number?(phone_number) do
+            changeset
+          else
+            changeset
+            |> add_error(:phone_number, "is invalid")
+          end
+        {:error, _message} ->
+          changeset
+          |> add_error(:phone_number, "is invalid")
+      end
+    else
+      changeset
+    end
+  end
+
+  def follow_for(follower, followed) do
+    Repo.get_by(Follow,
+      follower_id: follower.id,
+      followed_id: followed.id
+    )
+  end
+
+  def following?(follower, followed) do
+    if follow_for(follower, followed) do
+      true
+    else
+      false
+    end
+  end
+
+  def follow(follower, followed) do
+    cond do
+      follower.id == followed.id -> false
+      follow_for(follower, followed) -> true
+      true ->
+        changeset = Follow.changeset(%Follow{}, %{
+          follower_id: follower.id,
+          followed_id: followed.id
+        })
+        case Repo.insert(changeset) do
+          {:ok, _follow} -> true
+          {:error, _changeset} -> false
+        end
+    end
+  end
+
+  def unfollow(follower, followed) do
+    if follow = follow_for(follower, followed) do
+      case Repo.delete(follow) do
+        {:ok, _follow} -> true
+        {:error, _changeset} -> false
+      end
+    else
+      true
+    end
+  end
+
+  def like_for(user, clip) do
+    Repo.get_by(Like,
+      user_id: user.id,
+      clip_id: clip.id
+    )
+  end
+
+  def likes?(user, clip) do
+    if like_for(user, clip) do
+      true
+    else
+      false
+    end
+  end
+
+  def like(user, clip) do
+    cond do
+      like_for(user, clip) -> true
+      true ->
+        changeset = Like.changeset(%Like{}, %{
+          user_id: user.id,
+          clip_id: clip.id
+        })
+        case Repo.insert(changeset) do
+          {:ok, _like} -> true
+          {:error, _changeset} -> false
+        end
+    end
+  end
+
+  def unlike(user, clip) do
+    if like = like_for(user, clip) do
+      case Repo.delete(like) do
+        {:ok, _like} -> true
+        {:error, _changeset} -> false
+      end
+    else
+      true
+    end
+  end
+
+  def flag(_user, clip) do
+    changeset = Flag.changeset(%Flag{}, %{
+      clip_id: clip.id
+    })
+    case Repo.insert(changeset) do
+      {:ok, _flag} -> true
+      {:error, _changeset} -> false
+    end
   end
 end

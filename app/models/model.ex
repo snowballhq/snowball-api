@@ -1,4 +1,4 @@
-defmodule Snowball.BaseModel do
+defmodule Snowball.Model do
   defmacro __using__(_opts) do
     quote do
       use Ecto.Schema
