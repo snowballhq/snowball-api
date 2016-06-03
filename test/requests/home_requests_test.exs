@@ -3,6 +3,6 @@ defmodule Snowball.HomeRequestsTest do
 
   test "GET /" do
     conn = conn(:get, "/")
-    assert conn |> response(200) == "⛄"
+    assert conn |> text_response(200) == "⛄"
   end
 end

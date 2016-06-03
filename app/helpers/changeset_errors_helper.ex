@@ -1,4 +1,28 @@
-defmodule Snowball.ChangesetErrorFormatter do
+defmodule Snowball.ChangesetErrorsHelper do
+  def json(changeset) do
+    changeset.errors
+    |> reformat_errors
+    |> json_for_errors
+  end
+
+  def json_for_error(error) do
+    key = error |> Keyword.keys |> List.first
+    errors = [{Atom.to_string(key), Keyword.get_values(error, key)}] |> Enum.into(%{})
+    json_for_errors(errors)
+  end
+
+  defp json_for_errors(errors) do
+    errors = errors
+    |> Map.keys
+    |> Enum.map(fn(key) ->
+      %{field: key, message: List.first(errors[key])}
+    end)
+    %{
+      message: "Validation failed",
+      errors: errors
+    }
+  end
+
   def reformat_errors(errors) do
     keys = errors
     |> Keyword.new

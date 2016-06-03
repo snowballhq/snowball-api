@@ -29,13 +29,13 @@ defmodule Snowball.ModelCase do
         case Snowball.Repo.insert(changeset_function.(struct, params)) do
           {:ok, _struct} -> false
           {:error, changeset} ->
-            errors = changeset.errors |> Snowball.ChangesetErrorFormatter.reformat_errors
+            errors = changeset.errors |> Snowball.ChangesetErrorsHelper.reformat_errors
             Snowball.Repo.rollback(errors)
         end
       end) |> elem(1)
     else
       changeset_function.(struct, params).errors
-      |> Snowball.ChangesetErrorFormatter.reformat_errors
+      |> Snowball.ChangesetErrorsHelper.reformat_errors
     end
     if errors && errors[attribute] do
       errors[attribute]

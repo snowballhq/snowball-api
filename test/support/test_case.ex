@@ -7,6 +7,7 @@ defmodule Snowball.TestCase do
       import Snowball.Factory
 
       alias Snowball.{Clip, Device, Flag, Follow, Like, User}
+      alias Snowball.{ChangesetErrorsHelper, ChangesetErrorsHelper}
       alias Snowball.Repo
     end
   end

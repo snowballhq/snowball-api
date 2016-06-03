@@ -17,14 +17,27 @@ defmodule Snowball.ConnCase do
     :ok
   end
 
-  def response(conn, status) do
-    conn = Snowball.Router.call(conn, Snowball.Router.init([]))
-    assert conn.status == status
-    assert conn.resp_body
-    conn.resp_body
+  def generic_uuid, do: "696c7ceb-c8ec-4f2b-a16a-21c822c9e984"
+
+  def text_response(conn, status) do
+    response(conn, status, "text/plain")
   end
 
   def json_response(conn, status) do
-    response(conn, status) |> Poison.Parser.parse |> elem(1)
+    response(conn, status, "application/json") |> Poison.Parser.parse!(keys: :atoms)
+  end
+
+  def head_response(conn, status) do
+    body = response(conn, status)
+    assert String.length(body) == 0
+    body
+  end
+
+  defp response(conn, status, content_type \\ nil) do
+    conn = Snowball.Router.call(conn, Snowball.Router.init([]))
+    assert conn.status == status
+    if content_type, do: assert {"content-type", "#{content_type}; charset=utf-8"} in conn.resp_headers
+    assert conn.resp_body
+    conn.resp_body
   end
 end
