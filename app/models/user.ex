@@ -81,7 +81,6 @@ defmodule Snowball.User do
   end
 
   defp validate_phone_number(changeset) do
-    changeset
     if phone_number_string = get_change(changeset, :phone_number) do
       case ExPhoneNumber.parse(phone_number_string, "US") do
         {:ok, phone_number} ->
