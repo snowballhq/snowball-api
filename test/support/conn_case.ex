@@ -33,10 +33,10 @@ defmodule Snowball.ConnCaseHelpers do
     conn |> put_req_header("authorization", header_content)
   end
 
-  def clip_response(clip) do
+  def clip_response(clip, opts \\ []) do
     %{
       "id" => clip.id,
-      "user" => user_response(clip.user),
+      "user" => user_response(clip.user, opts),
       "thumbnail_url" => nil,
       "video_url" => nil,
       "created_at" => clip.created_at |> Ecto.DateTime.to_iso8601
@@ -44,14 +44,23 @@ defmodule Snowball.ConnCaseHelpers do
   end
 
   def user_response(user, opts \\ []) do
-    opts
-    |> Snowball.Enum.keyword_keys_to_strings
-    |> Enum.into(
-      %{"id" => user.id,
+    json = %{
+      "id" => user.id,
       "username" => user.username,
       "avatar_url" => nil,
-      "email" => user.email}
-    )
+      "email" => user.email
+    }
+    if current_user = opts[:current_user] do
+      json = Map.merge(json, %{
+        "following" => Snowball.User.following?(current_user, user)
+      })
+    end
+    if auth_token = opts[:auth_token] do
+      json = Map.merge(json, %{
+        "auth_token" => auth_token
+      })
+    end
+    json
   end
 
   def error_changeset_response(field, message) do

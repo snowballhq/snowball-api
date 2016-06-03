@@ -8,7 +8,7 @@ defmodule Snowball.UserControllerTest do
     conn = conn
     |> authenticate(user.auth_token)
     |> get(user_path(conn, :show, user))
-    assert json_response(conn, 200) == user_response(user)
+    assert json_response(conn, 200) == user_response(user, current_user: user)
   end
 
   test "show/2 returns a 404 if the user does not exist", %{conn: conn} do
@@ -29,7 +29,7 @@ defmodule Snowball.UserControllerTest do
     |> patch(user_path(conn, :update, user), params)
     user = Repo.get(User, user.id)
     assert user.email == params[:email]
-    assert json_response(conn, 200) == user_response(user)
+    assert json_response(conn, 200) == user_response(user, current_user: user)
   end
 
   test "update/2 does not update the user if unauthorized", %{conn: conn} do

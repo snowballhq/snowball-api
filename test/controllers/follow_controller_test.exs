@@ -9,7 +9,7 @@ defmodule Snowball.FollowControllerTest do
     conn = conn
     |> authenticate(follower.auth_token)
     |> put(follow_path(conn, :create, followed))
-    assert json_response(conn, 201) == user_response(followed)
+    assert json_response(conn, 201) == user_response(followed, current_user: follower)
     assert User.following?(follower, followed)
   end
 
@@ -18,7 +18,7 @@ defmodule Snowball.FollowControllerTest do
     conn = conn
     |> authenticate(follow.follower.auth_token)
     |> put(follow_path(conn, :create, follow.followed))
-    assert json_response(conn, 201) == user_response(follow.followed)
+    assert json_response(conn, 201) == user_response(follow.followed, current_user: follow.follower)
     assert User.following?(follow.follower, follow.followed)
   end
 
@@ -46,7 +46,7 @@ defmodule Snowball.FollowControllerTest do
     conn = conn
     |> authenticate(follow.follower.auth_token)
     |> delete(follow_path(conn, :delete, follow.followed))
-    assert json_response(conn, 200) == user_response(follow.followed)
+    assert json_response(conn, 200) == user_response(follow.followed, current_user: follow.follower)
     refute User.following?(follow.follower, follow.followed)
   end
 
@@ -56,7 +56,7 @@ defmodule Snowball.FollowControllerTest do
     conn = conn
     |> authenticate(follower.auth_token)
     |> delete(follow_path(conn, :delete, followed))
-    assert json_response(conn, 200) == user_response(followed)
+    assert json_response(conn, 200) == user_response(followed, current_user: follower)
     refute User.following?(follower, followed)
   end
 

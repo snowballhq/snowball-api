@@ -9,7 +9,7 @@ defmodule Snowball.FlagControllerTest do
     conn = conn
     |> authenticate(clip.user.auth_token)
     |> put(flag_path(conn, :create, clip))
-    assert json_response(conn, 201) == clip_response(clip)
+    assert json_response(conn, 201) == clip_response(clip, current_user: clip.user)
   end
 
   test "create/2 when the clip does not exist returns an error", %{conn: conn} do

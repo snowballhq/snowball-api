@@ -11,7 +11,7 @@ defmodule Snowball.ClipControllerTest do
     conn = conn
     |> authenticate(follow.follower.auth_token)
     |> get(clip_path(conn, :index))
-    assert json_response(conn, 200) == [clip_response(my_clip), clip_response(following_clip)]
+    assert json_response(conn, 200) == [clip_response(my_clip, current_user: follow.follower), clip_response(following_clip, current_user: follow.follower)]
   end
 
   test "index/2 is paginated", %{conn: conn} do
@@ -29,7 +29,7 @@ defmodule Snowball.ClipControllerTest do
     conn = conn
     |> authenticate(clip.user.auth_token)
     |> get(clip_path(conn, :index, user_id: clip.user_id))
-    assert json_response(conn, 200) == [clip_response(clip)]
+    assert json_response(conn, 200) == [clip_response(clip, current_user: clip.user)]
   end
 
   test_authentication_required_for(:delete, :clip_path, :delete, generic_uuid)
@@ -39,7 +39,7 @@ defmodule Snowball.ClipControllerTest do
     conn = conn
     |> authenticate(clip.user.auth_token)
     |> delete(clip_path(conn, :delete, clip))
-    assert json_response(conn, 200) == clip_response(clip)
+    assert json_response(conn, 200) == clip_response(clip, current_user: clip.user)
     refute Snowball.Repo.get(Clip, clip.id)
   end
 

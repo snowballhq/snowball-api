@@ -8,7 +8,7 @@ defmodule Snowball.LikeControllerTest do
     conn = conn
     |> authenticate(clip.user.auth_token)
     |> put(like_path(conn, :create, clip))
-    assert json_response(conn, 201) == clip_response(clip)
+    assert json_response(conn, 201) == clip_response(clip, current_user: clip.user)
     assert User.likes?(clip.user, clip)
   end
 
@@ -17,7 +17,7 @@ defmodule Snowball.LikeControllerTest do
     conn = conn
     |> authenticate(clip.user.auth_token)
     |> put(like_path(conn, :create, clip))
-    assert json_response(conn, 201) == clip_response(clip)
+    assert json_response(conn, 201) == clip_response(clip, current_user: clip.user)
     assert User.likes?(clip.user, clip)
   end
 
@@ -37,7 +37,7 @@ defmodule Snowball.LikeControllerTest do
     conn = conn
     |> authenticate(like.user.auth_token)
     |> delete(like_path(conn, :delete, like.clip))
-    assert json_response(conn, 200) == clip_response(like.clip)
+    assert json_response(conn, 200) == clip_response(like.clip, current_user: like.user)
     refute User.likes?(like.user, like.clip)
   end
 
@@ -46,7 +46,7 @@ defmodule Snowball.LikeControllerTest do
     conn = conn
     |> authenticate(clip.user.auth_token)
     |> delete(like_path(conn, :delete, clip))
-    assert json_response(conn, 200) == clip_response(clip)
+    assert json_response(conn, 200) == clip_response(clip, current_user: clip.user)
     refute User.likes?(clip.user, clip)
   end
 
