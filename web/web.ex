@@ -3,7 +3,6 @@ defmodule Snowball.Web do
     quote do
       use Ecto.Schema
 
-      import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
@@ -17,19 +16,16 @@ defmodule Snowball.Web do
     quote do
       use Phoenix.Controller
 
-      alias Snowball.Repo
-      import Ecto
       import Ecto.Query
-
       import Snowball.Router.Helpers
+
+      alias Snowball.Repo
     end
   end
 
   def view do
     quote do
       use Phoenix.View, root: "web/templates"
-
-      import Snowball.Router.Helpers
     end
   end
 
