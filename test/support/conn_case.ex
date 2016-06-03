@@ -16,4 +16,15 @@ defmodule Snowball.ConnCase do
     Snowball.TestCase.setup(tags)
     :ok
   end
+
+  def response(conn, status) do
+    conn = Snowball.Router.call(conn, Snowball.Router.init([]))
+    assert conn.status == status
+    assert conn.resp_body
+    conn.resp_body
+  end
+
+  def json_response(conn, status) do
+    response(conn, status) |> Poison.Parser.parse |> elem(1)
+  end
 end
