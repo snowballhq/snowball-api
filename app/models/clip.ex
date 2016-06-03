@@ -26,17 +26,4 @@ defmodule Snowball.Clip do
       id: clip.id
     }
   end
-
-  # # TODO: Remove this. It's littered across the models.
-  # # Untested
-  # def set_user_following(clip_or_clips, value) do
-  #   if is_list(clip_or_clips) do
-  #     clip_or_clips |> Enum.map(fn(clip) ->
-  #       set_user_following(clip, value)
-  #     end)
-  #   else
-  #     clip = clip_or_clips
-  #     Map.put(clip, :user, Map.put(clip.user, :following, value))
-  #   end
-  # end
 end
