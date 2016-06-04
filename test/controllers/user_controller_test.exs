@@ -54,4 +54,22 @@ defmodule Snowball.UserControllerTest do
     refute user.email == params[:email]
     assert json_response(conn, 422) == error_changeset_response(:email, "has invalid format")
   end
+
+  test_authentication_required_for(:post, :user_path, :search)
+
+  test "search/2 returns a list of users that match the search not including self", %{conn: conn} do
+    insert(:user) # Should not show up
+    user1 = insert(:user, phone_number: "3344434159")
+    user2 = insert(:user, phone_number: "9786951682")
+    params = %{
+      phone_numbers: [
+        user1.phone_number,
+        user2.phone_number
+      ]
+    }
+    conn = conn
+    |> authenticate(user1.auth_token)
+    |> post(user_path(conn, :search), params)
+    assert json_response(conn, 200) == [user_response(user2, current_user: user1)]
+  end
 end

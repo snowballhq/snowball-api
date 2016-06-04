@@ -3,7 +3,7 @@ defmodule Snowball.UserController do
 
   alias Snowball.User
 
-  plug Snowball.Plug.Authenticate when action in [:show, :update]
+  plug Snowball.Plug.Authenticate when action in [:show, :update, :search]
 
   def show(conn, %{"id" => id}) do
     if user = Repo.get(User, id) do
@@ -32,5 +32,12 @@ defmodule Snowball.UserController do
       |> put_status(:unauthorized)
       |> render(Snowball.ErrorView, "401.json")
     end
+  end
+
+  def search(conn, params) do
+    phone_numbers = params["phone_numbers"]
+    users = User |> where([u], u.phone_number in ^params["phone_numbers"]) |> Repo.all
+    users = List.delete(users, conn.assigns.current_user)
+    render(conn, "index.json", users: users)
   end
 end
