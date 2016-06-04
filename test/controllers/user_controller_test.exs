@@ -57,8 +57,7 @@ defmodule Snowball.UserControllerTest do
 
   test_authentication_required_for(:post, :user_path, :search)
 
-  test "search/2 returns a list of users that match the search not including self", %{conn: conn} do
-    insert(:user) # Should not show up
+  test "search/2 when provided phone numbers return users where phone number matches without current user", %{conn: conn} do
     user1 = insert(:user, phone_number: "3344434159")
     user2 = insert(:user, phone_number: "9786951682")
     params = %{
@@ -71,5 +70,17 @@ defmodule Snowball.UserControllerTest do
     |> authenticate(user1.auth_token)
     |> post(user_path(conn, :search), params)
     assert json_response(conn, 200) == [user_response(user2, current_user: user1)]
+  end
+
+  test "search/2 when provided username return users where username matches without current user", %{conn: conn} do
+    current_user = insert(:user)
+    user = insert(:user)
+    params = %{
+      username: user.username
+    }
+    conn = conn
+    |> authenticate(current_user.auth_token)
+    |> post(user_path(conn, :search), params)
+    assert json_response(conn, 200) == [user_response(user, current_user: current_user)]
   end
 end

@@ -35,9 +35,12 @@ defmodule Snowball.UserController do
   end
 
   def search(conn, params) do
-    phone_numbers = params["phone_numbers"]
-    users = User |> where([u], u.phone_number in ^params["phone_numbers"]) |> Repo.all
-    users = List.delete(users, conn.assigns.current_user)
+    users = cond do
+      phone_numbers = params["phone_numbers"] -> query = User |> where([u], u.phone_number in ^phone_numbers)
+      username = params["username"] -> query = User |> where(username: ^username)
+    end
+    |> Repo.all
+    |> List.delete(conn.assigns.current_user)
     render(conn, "index.json", users: users)
   end
 end
