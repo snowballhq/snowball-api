@@ -44,14 +44,15 @@ defmodule Snowball.UserController do
     render(conn, "index.json", users: users)
   end
 
-  def following(conn, %{"user_id" => id}) do
-    if user = Repo.get(User, id) do
-      followed = Repo.all(
-        from f in Snowball.Follow,
+  def following(conn, params) do
+    if user = Repo.get(User, params["user_id"]) do
+      query = from f in Snowball.Follow,
         join: u in User, on: f.followed_id == u.id,
         where: f.follower_id == ^user.id,
         select: u
-      )
+      followed = query
+      |> Snowball.Paginator.page(params["page"])
+      |> Repo.all
       render(conn, "index.json", users: followed)
     else
       conn
@@ -60,14 +61,15 @@ defmodule Snowball.UserController do
     end
   end
 
-  def followers(conn, %{"user_id" => id}) do
-    if user = Repo.get(User, id) do
-      followers = Repo.all(
-        from f in Snowball.Follow,
+  def followers(conn, params) do
+    if user = Repo.get(User, params["user_id"]) do
+      query = from f in Snowball.Follow,
         join: u in User, on: f.follower_id == u.id,
         where: f.followed_id == ^user.id,
         select: u
-      )
+      followers = query
+      |> Snowball.Paginator.page(params["page"])
+      |> Repo.all
       render(conn, "index.json", users: followers)
     else
       conn

@@ -94,6 +94,15 @@ defmodule Snowball.UserControllerTest do
     assert json_response(conn, 200) == [user_response(follow.followed, current_user: follow.follower)]
   end
 
+  test "following/2 is paginated", %{conn: conn} do
+    user = insert(:user)
+    for _ <- 0..25, do: insert(:follow, follower: user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(user_path(conn, :following, user, page: 2))
+    assert Enum.count(json_response(conn, 200)) == 1
+  end
+
   test "following/2 when the user does not exist returns an error", %{conn: conn} do
     user = insert(:user)
     conn = conn
@@ -110,6 +119,15 @@ defmodule Snowball.UserControllerTest do
     |> authenticate(follow.followed.auth_token)
     |> get(user_path(conn, :followers, follow.followed))
     assert json_response(conn, 200) == [user_response(follow.follower, current_user: follow.followed)]
+  end
+
+  test "followers/2 is paginated", %{conn: conn} do
+    user = insert(:user)
+    for _ <- 0..25, do: insert(:follow, followed: user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(user_path(conn, :followers, user, page: 2))
+    assert Enum.count(json_response(conn, 200)) == 1
   end
 
   test "followers/2 when the user does not exist returns an error", %{conn: conn} do
