@@ -16,6 +16,7 @@ defmodule Snowball.Web do
     quote do
       use Phoenix.Controller
 
+      import Ecto
       import Ecto.Query
       import Snowball.Router.Helpers
 

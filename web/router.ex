@@ -16,6 +16,8 @@ defmodule Snowball.Router do
     post "/users/search", UserController, :search
     put "/users/:user_id/devices", DeviceController, :create
     put "/users/:user_id/follow", FollowController, :create
+    get "/users/:user_id/following", UserController, :following
+    get "/users/:user_id/followers", UserController, :followers
     delete "/users/:user_id/follow", FollowController, :delete
 
     resources "/clips", ClipController, only: [:delete]

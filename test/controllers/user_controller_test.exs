@@ -83,4 +83,40 @@ defmodule Snowball.UserControllerTest do
     |> post(user_path(conn, :search), params)
     assert json_response(conn, 200) == [user_response(user, current_user: current_user)]
   end
+
+  test_authentication_required_for(:get, :user_path, :following, generic_uuid)
+
+  test "following/2 when the user exists returns a list of users that the user is following", %{conn: conn} do
+    follow = insert(:follow)
+    conn = conn
+    |> authenticate(follow.follower.auth_token)
+    |> get(user_path(conn, :following, follow.follower))
+    assert json_response(conn, 200) == [user_response(follow.followed, current_user: follow.follower)]
+  end
+
+  test "following/2 when the user does not exist returns an error", %{conn: conn} do
+    user = insert(:user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(user_path(conn, :following, generic_uuid))
+    assert json_response(conn, 404) == error_not_found_response
+  end
+
+  test_authentication_required_for(:get, :user_path, :followers, generic_uuid)
+
+  test "followers/2 when the user exists returns a list of users that are following the user", %{conn: conn} do
+    follow = insert(:follow)
+    conn = conn
+    |> authenticate(follow.followed.auth_token)
+    |> get(user_path(conn, :followers, follow.followed))
+    assert json_response(conn, 200) == [user_response(follow.follower, current_user: follow.followed)]
+  end
+
+  test "followers/2 when the user does not exist returns an error", %{conn: conn} do
+    user = insert(:user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(user_path(conn, :followers, generic_uuid))
+    assert json_response(conn, 404) == error_not_found_response
+  end
 end

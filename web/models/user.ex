@@ -19,8 +19,8 @@ defmodule Snowball.User do
     field :avatar_updated_at, Ecto.DateTime
 
     # has_many :follows, Follow
-    # has_many :followers, through: [:follows, :follower]
     # has_many :followeds, through: [:follows, :followed]
+    # has_many :followers, through: [:follows, :follower]
 
     timestamps [inserted_at: :created_at]
   end
