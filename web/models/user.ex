@@ -197,12 +197,8 @@ defmodule Snowball.User do
   end
 
   def send_push_notification(user, message) do
-    # Stubbing out during testing
-    # TODO: Mock Snowball.SNS so that this can be run in regular test runs
-    unless Mix.env == :test do
-      assoc(user, :devices) |> Repo.all |> Enum.each(fn(device) ->
-        Snowball.SNS.publish(message, %{target_arn: device.arn})
-      end)
-    end
+    assoc(user, :devices) |> Repo.all |> Enum.each(fn(device) ->
+      Snowball.SNS.send_push_to_device_arn(message, device.arn)
+    end)
   end
 end
