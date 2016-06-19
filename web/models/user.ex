@@ -1,7 +1,7 @@
 defmodule Snowball.User do
   use Snowball.Web, :model
 
-  alias Snowball.{Flag, Follow, Like, Repo}
+  alias Snowball.{Device, Flag, Follow, Like, Repo}
 
   schema "users" do
     field :username, :string
@@ -21,6 +21,8 @@ defmodule Snowball.User do
     # has_many :follows, Follow
     # has_many :followeds, through: [:follows, :followed]
     # has_many :followers, through: [:follows, :follower]
+
+    has_many :devices, Device
 
     timestamps [inserted_at: :created_at]
   end
@@ -154,7 +156,7 @@ defmodule Snowball.User do
   end
 
   def like(user, clip) do
-    cond do
+    result = cond do
       like_for(user, clip) -> true
       true ->
         changeset = Like.changeset(%Like{}, %{
@@ -166,6 +168,11 @@ defmodule Snowball.User do
           {:error, _changeset} -> false
         end
     end
+    if result do
+      clip_user = assoc(clip, :user)
+      send_push_notification(user, "#{user.username} liked your clip. 👍")
+    end
+    result
   end
 
   def unlike(user, clip) do
@@ -186,6 +193,16 @@ defmodule Snowball.User do
     case Repo.insert(changeset) do
       {:ok, _flag} -> true
       {:error, _changeset} -> false
+    end
+  end
+
+  def send_push_notification(user, message) do
+    # Stubbing out during testing
+    # TODO: Mock Snowball.SNS so that this can be run in regular test runs
+    unless Mix.env == :test do
+      assoc(user, :devices) |> Repo.all |> Enum.each(fn(device) ->
+        Snowball.SNS.publish(message, %{target_arn: device.arn})
+      end)
     end
   end
 end
