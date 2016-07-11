@@ -27,9 +27,9 @@ defmodule Snowball.Mixfile do
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [{:phoenix, "~> 1.2.0-rc"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 3.0-rc"},
+    [{:phoenix, "~> 1.2.0"},
+     {:postgrex, "~> 0.11.2"},
+     {:phoenix_ecto, "~> 3.0"},
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.4"},
      {:secure_random, "~> 0.2"},
