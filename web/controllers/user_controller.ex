@@ -17,20 +17,14 @@ defmodule Snowball.UserController do
 
   def update(conn, params) do
     user = conn.assigns.current_user
-    if params["id"] == user.id do
-      changeset = User.changeset(user, params)
-      case Repo.update(changeset) do
-        {:ok, user} ->
-          render(conn, "show.json", user: user)
-        {:error, changeset} ->
-          conn
-          |> put_status(:unprocessable_entity)
-          |> render(Snowball.ErrorView, "error.json", changeset: changeset)
-      end
-    else
-      conn
-      |> put_status(:unauthorized)
-      |> render(Snowball.ErrorView, "401.json")
+    changeset = User.changeset(user, params)
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        render(conn, "show.json", user: user)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(Snowball.ErrorView, "error.json", changeset: changeset)
     end
   end
 

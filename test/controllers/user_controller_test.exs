@@ -19,29 +19,17 @@ defmodule Snowball.UserControllerTest do
     assert json_response(conn, 404) == error_not_found_response
   end
 
-  test_authentication_required_for(:patch, :user_path, :update, generic_uuid)
+  test_authentication_required_for(:patch, :user_path, :update)
 
-  test "update/2 updates and returns the user if the user exists", %{conn: conn} do
+  test "update/2 updates and returns the current user", %{conn: conn} do
     user = insert(:user)
     params = %{email: "example@example.com"}
     conn = conn
     |> authenticate(user.auth_token)
-    |> patch(user_path(conn, :update, user), params)
+    |> patch(user_path(conn, :update), params)
     user = Repo.get(User, user.id)
     assert user.email == params[:email]
     assert json_response(conn, 200) == user_response(user, current_user: user)
-  end
-
-  test "update/2 does not update the user if unauthorized", %{conn: conn} do
-    user = insert(:user)
-    user_to_update = insert(:user)
-    params = %{email: "example@example.com"}
-    conn = conn
-    |> authenticate(user.auth_token)
-    |> patch(user_path(conn, :update, user_to_update), params)
-    user = Repo.get(User, user.id)
-    assert user.email != params[:email]
-    assert json_response(conn, 401) == error_unauthorized_response
   end
 
   test "update/2 does not update and returns an error if a param is invalid", %{conn: conn} do
@@ -49,7 +37,7 @@ defmodule Snowball.UserControllerTest do
     params = %{email: "example"}
     conn = conn
     |> authenticate(user.auth_token)
-    |> patch(user_path(conn, :update, user), params)
+    |> patch(user_path(conn, :update), params)
     user = Repo.get(User, user.id)
     refute user.email == params[:email]
     assert json_response(conn, 422) == error_changeset_response(:email, "has invalid format")
