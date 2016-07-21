@@ -24,6 +24,10 @@ defmodule Snowball.Plug.Authenticate do
     Repo.get_by(User, %{auth_token: auth_token})
   end
 
+  defp user_for_credentials(["Token token=" <> token]) do
+    Repo.get_by(User, %{auth_token: token})
+  end
+
   # Handle scenarios where there are no basic auth credentials supplied
   defp user_for_credentials(_credentials) do
     nil

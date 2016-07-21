@@ -29,8 +29,7 @@ defmodule Snowball.ConnCaseHelpers do
   end
 
   def authenticate(conn, auth_token) do
-    header_content = "Basic " <> Base.encode64("#{auth_token}:")
-    conn |> put_req_header("authorization", header_content)
+    conn |> put_req_header("authorization", "Token token=#{auth_token}")
   end
 
   def clip_response(clip, opts \\ []) do
