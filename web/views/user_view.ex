@@ -25,6 +25,11 @@ defmodule Snowball.UserView do
       json = Map.merge(json, %{
         following: Snowball.User.following?(current_user, user)
       })
+      if current_user.id == user.id do
+        json = Map.merge(json, %{
+            phone_number: user.phone_number
+        })
+      end
     end
     json
   end

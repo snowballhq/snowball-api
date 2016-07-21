@@ -53,6 +53,11 @@ defmodule Snowball.ConnCaseHelpers do
       json = Map.merge(json, %{
         "following" => Snowball.User.following?(current_user, user)
       })
+      if user.id == current_user.id do
+        json = Map.merge(json, %{
+          "phone_number" => user.phone_number
+        })
+      end
     end
     if auth_token = opts[:auth_token] do
       json = Map.merge(json, %{
