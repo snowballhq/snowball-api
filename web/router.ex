@@ -5,7 +5,7 @@ defmodule Snowball.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Snowball do
+  scope "/v1", Snowball do
     pipe_through :api
 
     get "/", HomeController, :index
