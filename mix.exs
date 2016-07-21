@@ -21,7 +21,17 @@ defmodule Snowball.Mixfile do
   defp applications(:dev), do: [:dotenv | applications]
   defp applications(:test), do: [:dotenv | applications]
   defp applications(_), do: applications
-  defp applications, do: [:phoenix, :cowboy, :logger, :phoenix_ecto, :postgrex, :comeonin, :ex_aws, :httpoison, :sweet_xml]
+  defp applications do
+    [:phoenix,
+     :cowboy,
+     :logger,
+     :phoenix_ecto,
+     :postgrex,
+     :comeonin,
+     :ex_aws,
+     :httpoison,
+     :sweet_xml]
+  end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
   defp elixirc_paths(_),     do: ["lib", "web"]
