@@ -1,14 +1,14 @@
 defmodule Snowball.DeviceControllerTest do
   use Snowball.ConnCase, async: true
 
-  test_authentication_required_for(:put, :device_path, :create, generic_uuid)
+  test_authentication_required_for(:put, :device_path, :create)
 
-  test "create/2 creates a device for the specified user", %{conn: conn} do
+  test "create/2 creates a device for the current user", %{conn: conn} do
     user = insert(:user)
     token = "740f4707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bb78ad"
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(device_path(conn, :create, user), token: token)
+    |> put(device_path(conn, :create), token: token)
     assert json_response(conn, 201) == user_response(user, current_user: user)
   end
 
@@ -18,7 +18,7 @@ defmodule Snowball.DeviceControllerTest do
     token = "740f4707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bb78ad"
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(device_path(conn, :create, user), token: token)
+    |> put(device_path(conn, :create), token: token)
     assert json_response(conn, 201) == user_response(user, current_user: user)
     assert Repo.one(from d in Device, select: count(d.id)) == 1
   end
@@ -27,7 +27,7 @@ defmodule Snowball.DeviceControllerTest do
     user = insert(:user)
     conn = conn
     |> authenticate(user.auth_token)
-    |> put(device_path(conn, :create, user), token: "")
+    |> put(device_path(conn, :create), token: "")
     assert json_response(conn, 422) == %{"message" => "An error occured while registering the token."}
   end
 end
