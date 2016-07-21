@@ -15,7 +15,7 @@ defmodule Snowball.Router do
     post "/users/sign-up", RegistrationController, :create
     post "/users/sign-in", SessionController, :create
     post "/users/search", UserController, :search
-    put "/users/me/devices", DeviceController, :create
+    put "/users/me/installations", InstallationController, :create
     put "/users/:user_id/follow", FollowController, :create
     get "/users/:user_id/following", UserController, :following
     get "/users/:user_id/followers", UserController, :followers

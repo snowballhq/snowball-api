@@ -1,25 +1,25 @@
-defmodule Snowball.DeviceController do
+defmodule Snowball.InstallationController do
   use Snowball.Web, :controller
 
-  alias Snowball.Device
+  alias Snowball.Installation
 
   plug Snowball.Plug.Authenticate when action in [:create]
 
   def create(conn, params) do
     user = conn.assigns.current_user
     if token = params["token"] do
-      if arn = Snowball.SNS.register_device_token(token) do
-        if Device |> where(arn: ^arn) |> Repo.one do
+      if arn = Snowball.SNS.register_installation_token(token) do
+        if Installation |> where(arn: ^arn) |> Repo.one do
           conn
           |> put_status(:created)
           |> render(Snowball.UserView, "show.json", user: user)
         else
-          changeset = Device.changeset(%Device{}, %{
+          changeset = Installation.changeset(%Installation{}, %{
             arn: arn,
             user_id: user.id
           })
           case Repo.insert(changeset) do
-            {:ok, _device} ->
+            {:ok, _installation} ->
               conn
               |> put_status(:created)
               |> render(Snowball.UserView, "show.json", user: user)

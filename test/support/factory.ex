@@ -11,8 +11,8 @@ defmodule Snowball.Factory do
     }
   end
 
-  def device_factory do
-    %Snowball.Device{
+  def installation_factory do
+    %Snowball.Installation{
       user: build(:user),
       arn: to_string(Faker.Lorem.characters)
     }

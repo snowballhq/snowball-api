@@ -3,7 +3,7 @@ defmodule Snowball.SNS do
 
   import SweetXml
 
-  def register_device_token(token) do
+  def register_installation_token(token) do
     if Mix.env == :test do
       unless token == "" do
         "arn:aws:sns:us-west-2:235811926729:endpoint/APNS/snowball-ios-production/514e2e2a-0990-36e7-bc0c-04548bf13572"
@@ -18,7 +18,7 @@ defmodule Snowball.SNS do
     end
   end
 
-  def send_push_to_device_arn(message, arn) do
+  def send_push_to_installation_arn(message, arn) do
     unless Mix.env == :test do
       Snowball.SNS.publish(message, %{target_arn: arn})
     end

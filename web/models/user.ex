@@ -1,7 +1,7 @@
 defmodule Snowball.User do
   use Snowball.Web, :model
 
-  alias Snowball.{Device, Flag, Follow, Like, Repo}
+  alias Snowball.{Installation, Flag, Follow, Like, Repo}
 
   schema "users" do
     field :username, :string
@@ -22,7 +22,7 @@ defmodule Snowball.User do
     # has_many :followeds, through: [:follows, :followed]
     # has_many :followers, through: [:follows, :follower]
 
-    has_many :devices, Device
+    has_many :installations, Installation
 
     timestamps [inserted_at: :created_at]
   end
@@ -197,8 +197,8 @@ defmodule Snowball.User do
   end
 
   def send_push_notification(user, message) do
-    assoc(user, :devices) |> Repo.all |> Enum.each(fn(device) ->
-      Snowball.SNS.send_push_to_device_arn(message, device.arn)
+    assoc(user, :installations) |> Repo.all |> Enum.each(fn(installation) ->
+      Snowball.SNS.send_push_to_installation_arn(message, installation.arn)
     end)
   end
 end
