@@ -3,7 +3,7 @@ defmodule Snowball.UserController do
 
   alias Snowball.User
 
-  plug Snowball.Plug.Authenticate when action in [:show, :update, :search, :following, :followers]
+  plug Snowball.Plug.Authenticate when action in [:show, :update, :search]
 
   def show(conn, %{"id" => id}) do
     if user = Repo.get(User, id) do
@@ -36,39 +36,5 @@ defmodule Snowball.UserController do
     |> Repo.all
     |> List.delete(conn.assigns.current_user)
     render(conn, "index.json", users: users)
-  end
-
-  def following(conn, params) do
-    if user = Repo.get(User, params["user_id"]) do
-      query = from f in Snowball.Follow,
-        join: u in User, on: f.followed_id == u.id,
-        where: f.follower_id == ^user.id,
-        select: u
-      followed = query
-      |> Snowball.Paginator.page(params["page"])
-      |> Repo.all
-      render(conn, "index.json", users: followed)
-    else
-      conn
-      |> put_status(:not_found)
-      |> render(Snowball.ErrorView, "404.json")
-    end
-  end
-
-  def followers(conn, params) do
-    if user = Repo.get(User, params["user_id"]) do
-      query = from f in Snowball.Follow,
-        join: u in User, on: f.follower_id == u.id,
-        where: f.followed_id == ^user.id,
-        select: u
-      followers = query
-      |> Snowball.Paginator.page(params["page"])
-      |> Repo.all
-      render(conn, "index.json", users: followers)
-    else
-      conn
-      |> put_status(:not_found)
-      |> render(Snowball.ErrorView, "404.json")
-    end
   end
 end

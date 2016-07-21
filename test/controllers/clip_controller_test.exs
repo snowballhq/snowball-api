@@ -23,7 +23,7 @@ defmodule Snowball.ClipControllerTest do
     assert Enum.count(json_response(conn, 200)) == 1
   end
 
-  test "index/2 with a user_id param returns the specified user's clip stream", %{conn: conn} do
+  test "index/2 with a user_id in url returns the specified user's clip stream", %{conn: conn} do
     insert(:clip) # Random clip, random user, should not exist in stream
     clip = insert(:clip)
     conn = conn
