@@ -25,6 +25,8 @@ defmodule Snowball.Router do
     put "/clips/:clip_id/like", LikeController, :create
     delete "/clips/:clip_id/like", LikeController, :delete
     put "/clips/:clip_id/flag", FlagController, :create
+
+    get "/users/:user_id/clips/stream", ClipController, :index
     get "/clips/stream", ClipController, :index
   end
 end
