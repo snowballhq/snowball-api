@@ -32,6 +32,28 @@ defmodule Snowball.ClipControllerTest do
     assert json_response(conn, 200) == [clip_response(clip, current_user: clip.user)]
   end
 
+  test_authentication_required_for(:post, :clip_path, :create)
+
+  # TODO: Bring this back
+  # test "create/2 creates and returns the clip", %{conn: conn} do
+  #   user = insert(:user)
+  #   params = params_for(:new_clip)
+  #   conn = conn
+  #   |> authenticate(user.auth_token)
+  #   |> post(clip_path(conn, :create), params)
+  #   clip = Repo.one(from x in Clip, order_by: [desc: x.id], limit: 1) # Last clip
+  #   assert json_response(conn, 201) == clip_response(clip, current_user: clip.user)
+  #   assert User.likes?(clip.user, clip)
+  # end
+
+  test "create/2 with invalid params returns an error", %{conn: conn} do
+    user = insert(:user)
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> post(clip_path(conn, :create))
+    assert json_response(conn, 422) == error_changeset_response(:video_file_name, "can't be blank")
+  end
+
   test_authentication_required_for(:delete, :clip_path, :delete, generic_uuid)
 
   test "delete/2 with valid params deletes the specified clip", %{conn: conn} do

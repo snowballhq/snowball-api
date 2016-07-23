@@ -25,7 +25,7 @@ defmodule Snowball.Router do
     post "/users/search", UserController, :search, as: :user_search
     put "/users/me/installations", InstallationController, :create
 
-    resources "/clips", ClipController, only: [:delete] do
+    resources "/clips", ClipController, only: [:create, :delete] do
       put "/like", LikeController, :create
       delete "/like", LikeController, :delete
       put "/flag", FlagController, :create

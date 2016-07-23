@@ -14,7 +14,7 @@ defmodule Snowball.ClipView do
     %{
       id: clip.id,
       thumbnail_url: nil,
-      video_url: nil,
+      video_url: Snowball.ClipVideo.url({clip.video_file_name, clip}),
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),
       created_at: clip.created_at
     }

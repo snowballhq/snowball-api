@@ -4,12 +4,19 @@ defmodule Snowball.Factory do
   def clip_factory do
     %Snowball.Clip{
       user: build(:user),
-      video_file_name: "video_file_name",
+      video_file_name: %{file_name: "test/fixtures/video.mp4", updated_at: Ecto.DateTime.utc},
       video_content_type: "video_content_type",
       thumbnail_file_name: "thumbnail_file_name",
       thumbnail_content_type: "thumbnail_content_type"
     }
   end
+
+  # def new_clip_factory do
+  #   %Snowball.Clip{
+  #     user: build(:user),
+  #     video_file_name: %Plug.Upload{path: "test/fixtures/video.mp4", filename: "video.mp4"}
+  #   }
+  # end
 
   def installation_factory do
     %Snowball.Installation{
