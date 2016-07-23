@@ -13,8 +13,8 @@ defmodule Snowball.ClipView do
     clip = assigns.clip
     %{
       id: clip.id,
-      thumbnail_url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :thumbnail),
-      video_url: Snowball.ClipVideo.url({clip.video_file_name, clip}),
+      thumbnail_url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :image_standard),
+      video_url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :standard),
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),
       created_at: clip.created_at
     }
