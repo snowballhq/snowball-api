@@ -36,7 +36,7 @@ defmodule Snowball.ConnCaseHelpers do
     %{
       "id" => clip.id,
       "user" => user_response(clip.user, opts),
-      "thumbnail_url" => nil,
+      "thumbnail_url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :thumbnail),
       "video_url" => Snowball.ClipVideo.url({clip.video_file_name, clip}),
       "created_at" => clip.created_at |> Ecto.DateTime.to_iso8601
     }
