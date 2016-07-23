@@ -36,8 +36,22 @@ defmodule Snowball.ConnCaseHelpers do
     %{
       "id" => clip.id,
       "user" => user_response(clip.user, opts),
-      "thumbnail_url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :image_standard),
-      "video_url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :standard),
+      "image" => %{
+        "low_resolution" => %{
+          "url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :image_low)
+        },
+        "standard_resolution" => %{
+          "url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :image_standard)
+        }
+      },
+      "video" => %{
+        "low_resolution" => %{
+          "url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :low)
+        },
+        "standard_resolution" => %{
+          "url" => Snowball.ClipVideo.url({clip.video_file_name, clip}, :standard)
+        }
+      },
       "created_at" => clip.created_at |> Ecto.DateTime.to_iso8601
     }
   end
