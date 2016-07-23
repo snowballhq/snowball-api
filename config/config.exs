@@ -24,6 +24,7 @@ config :ex_aws,
   ]
 
 config :arc,
-  bucket: "snowball-development"
+  bucket: "snowball-development",
+  virtual_host: true
 
 import_config "#{Mix.env}.exs"
