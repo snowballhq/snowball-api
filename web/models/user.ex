@@ -1,5 +1,6 @@
 defmodule Snowball.User do
   use Snowball.Web, :model
+  use Arc.Ecto.Schema
 
   alias Snowball.{Installation, Flag, Follow, Like, Repo}
 
@@ -13,7 +14,7 @@ defmodule Snowball.User do
     field :auth_token, :string
     field :reset_password_token, :string
     field :reset_password_sent_at, Ecto.DateTime
-    field :avatar_file_name, :string
+    field :avatar_file_name, Snowball.UserAvatar.Type
     field :avatar_content_type, :string
     field :avatar_file_size, :string
     field :avatar_updated_at, Ecto.DateTime
@@ -30,6 +31,7 @@ defmodule Snowball.User do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:username, :email], [:password, :phone_number, :password_digest])
+    |> maybe_cast_attachments(params)
     |> hash_password
     |> generate_auth_token
     |> validate_required([:email, :username, :auth_token])
@@ -48,6 +50,14 @@ defmodule Snowball.User do
     |> changeset(params)
     |> cast(params, [:password], [])
     |> validate_required([:password])
+  end
+
+  defp maybe_cast_attachments(struct, params) do
+    cond do
+      params[:avatar_file_name] || params["avatar_file_name"] ->
+        struct |> cast_attachments(params, [:avatar_file_name])
+      true -> struct
+    end
   end
 
   defp hash_password(changeset) do

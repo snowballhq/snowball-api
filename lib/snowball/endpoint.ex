@@ -9,7 +9,7 @@ defmodule Snowball.Endpoint do
   plug Plug.Logger
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :json],
+    parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Poison
 
