@@ -4,23 +4,17 @@ defmodule Snowball.Clip do
 
   schema "clips" do
     belongs_to :user, Snowball.User
-    field :video_file_name, Snowball.ClipVideo.Type
-    field :video_content_type, :string
+    field :video, Snowball.ClipVideo.Type
     field :thumbnail_file_name, :string
-    field :thumbnail_content_type, :string
-    field :video_file_size, :string
-    field :thumbnail_file_size, :string
-    field :video_updated_at, Ecto.DateTime
-    field :thumbnail_updated_at, Ecto.DateTime
     timestamps [inserted_at: :created_at]
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id], [:video_content_type, :thumbnail_file_name, :thumbnail_content_type]) # TODO: Remove these three
+    |> cast(params, [:user_id])
     |> put_uuid # A UUID does not exist when a clip is created. In order to save the video path correctly, we generate one manually
-    |> cast_attachments(params, [:video_file_name])
-    |> validate_required([:video_file_name, :video_content_type, :thumbnail_file_name, :thumbnail_content_type, :user_id])
+    |> cast_attachments(params, [:video])
+    |> validate_required([:video, :user_id])
   end
 
   defp put_uuid(changeset) do

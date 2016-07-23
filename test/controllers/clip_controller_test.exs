@@ -51,7 +51,7 @@ defmodule Snowball.ClipControllerTest do
     conn = conn
     |> authenticate(user.auth_token)
     |> post(clip_path(conn, :create))
-    assert json_response(conn, 422) == error_changeset_response(:video_file_name, "can't be blank")
+    assert json_response(conn, 422) == error_changeset_response(:video, "can't be blank")
   end
 
   test_authentication_required_for(:delete, :clip_path, :delete, generic_uuid)

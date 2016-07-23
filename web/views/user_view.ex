@@ -18,7 +18,7 @@ defmodule Snowball.UserView do
     json = %{
       id: user.id,
       username: user.username,
-      avatar_url: Snowball.UserAvatar.url({user.avatar_file_name, user}),
+      avatar_url: Snowball.UserAvatar.url({user.avatar, user}),
       email: user.email
     }
     if current_user = assigns[:current_user] do

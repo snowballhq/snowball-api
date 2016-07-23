@@ -15,18 +15,18 @@ defmodule Snowball.ClipView do
       id: clip.id,
       image: %{
         low_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :image_low)
+          url: Snowball.ClipVideo.url({clip.video, clip}, :image_low)
         },
         standard_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :image_standard)
+          url: Snowball.ClipVideo.url({clip.video, clip}, :image_standard)
         }
       },
       video: %{
         low_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :low)
+          url: Snowball.ClipVideo.url({clip.video, clip}, :low)
         },
         standard_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video_file_name, clip}, :standard)
+          url: Snowball.ClipVideo.url({clip.video, clip}, :standard)
         }
       },
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),

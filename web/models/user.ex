@@ -14,10 +14,7 @@ defmodule Snowball.User do
     field :auth_token, :string
     field :reset_password_token, :string
     field :reset_password_sent_at, Ecto.DateTime
-    field :avatar_file_name, Snowball.UserAvatar.Type
-    field :avatar_content_type, :string
-    field :avatar_file_size, :string
-    field :avatar_updated_at, Ecto.DateTime
+    field :avatar, Snowball.UserAvatar.Type
 
     # has_many :follows, Follow
     # has_many :followeds, through: [:follows, :followed]
@@ -54,8 +51,8 @@ defmodule Snowball.User do
 
   defp maybe_cast_attachments(struct, params) do
     cond do
-      params[:avatar_file_name] || params["avatar_file_name"] ->
-        struct |> cast_attachments(params, [:avatar_file_name])
+      params[:avatar] || params["avatar"] ->
+        struct |> cast_attachments(params, [:avatar])
       true -> struct
     end
   end
