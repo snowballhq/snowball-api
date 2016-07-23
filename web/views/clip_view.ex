@@ -15,22 +15,42 @@ defmodule Snowball.ClipView do
       id: clip.id,
       image: %{
         low_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video, clip}, :image_low)
+          url: generate_image_url(clip, :image_low)
         },
         standard_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video, clip}, :image_standard)
+          url: generate_image_url(clip, :image_standard)
         }
       },
       video: %{
         low_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video, clip}, :low)
+          url: generate_video_url(clip, :low)
         },
         standard_resolution: %{
-          url: Snowball.ClipVideo.url({clip.video, clip}, :standard)
+          url: generate_video_url(clip, :standard)
         }
       },
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),
       created_at: clip.created_at
     }
+  end
+
+  # This is so we can holdover old legacy images until moved in S3
+  # TODO: Once the S3 migration is completed, remove this
+  defp generate_image_url(clip, version) do
+    if clip.thumbnail_file_name do
+      "https://snowball-production.s3.amazonaws.com/clips/thumbnails/#{clip.id}/original/" <> clip.thumbnail_file_name
+    else
+      Snowball.ClipVideo.url({clip.video, clip}, version)
+    end
+  end
+
+  # This is so we can holdover old legacy videos until moved in S3
+  # TODO: Once the S3 migration is completed, remove this
+  defp generate_video_url(clip, version) do
+    if clip.thumbnail_file_name do
+      "https://snowball-production.s3.amazonaws.com/clips/videos/#{clip.id}/original/" <> clip.video.file_name
+    else
+      Snowball.ClipVideo.url({clip.video, clip}, version)
+    end
   end
 end
