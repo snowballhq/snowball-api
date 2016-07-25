@@ -45,8 +45,8 @@ defmodule Snowball.Mixfile do
      {:sweet_xml, "~> 0.6.1"},
      {:arc, "~> 0.5.2"},
      {:arc_ecto, "~> 0.4.2"},
-     {:envy, "~> 1.0.0", only: [:dev, :test]},
      {:ex_phone_number, github: "socialpaymentsbv/ex_phone_number", branch: :develop},
+     {:envy, "~> 1.0.0", only: [:dev, :test]},
      {:credo, "~> 0.3", only: [:dev, :test]},
      {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test},
      {:faker, "~> 0.5", only: :test}]
