@@ -15,12 +15,9 @@ defmodule Snowball.Mixfile do
 
   def application do
     [mod: {Snowball, []},
-     applications: applications(Mix.env)]
+     applications: applications]
   end
 
-  defp applications(:dev), do: [:dotenv | applications]
-  defp applications(:test), do: [:dotenv | applications]
-  defp applications(_), do: applications
   defp applications do
     [:phoenix,
      :cowboy,
@@ -43,12 +40,12 @@ defmodule Snowball.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.4"},
      {:secure_random, "~> 0.2"},
-     {:dotenv, "~> 2.0.0"},
      {:ex_aws, "~> 0.5.0", github: "jamescmartinez/ex_aws", override: true},
      {:httpoison, "~> 0.8.0"},
      {:sweet_xml, "~> 0.6.1"},
      {:arc, "~> 0.5.2"},
      {:arc_ecto, "~> 0.4.2"},
+     {:envy, "~> 1.0.0", only: [:dev, :test]},
      {:ex_phone_number, github: "socialpaymentsbv/ex_phone_number", branch: :develop},
      {:credo, "~> 0.3", only: [:dev, :test]},
      {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test},

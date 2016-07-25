@@ -2,6 +2,11 @@ defmodule Snowball do
   use Application
 
   def start(_type, _args) do
+    unless Mix.env == :prod do
+      Envy.auto_load
+      Envy.reload_config
+    end
+
     import Supervisor.Spec
     children = [
       supervisor(Snowball.Endpoint, []),
