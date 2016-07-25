@@ -25,6 +25,7 @@ config :ex_aws,
 
 config :arc,
   bucket: System.get_env("AWS_S3_BUCKET_NAME"),
-  virtual_host: true
+  virtual_host: true,
+  asset_host: System.get_env("AWS_CLOUDFRONT_DOMAIN")
 
 import_config "#{Mix.env}.exs"
