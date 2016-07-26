@@ -23,7 +23,7 @@ defmodule Snowball.Router do
     post "/users/sign-up", RegistrationController, :create
     post "/users/sign-in", SessionController, :create
     post "/users/search", UserController, :search, as: :user_search
-    put "/users/me/installations", InstallationController, :create
+    put "/installations", InstallationController, :create
 
     resources "/clips", ClipController, only: [:create, :delete] do
       put "/like", LikeController, :create
