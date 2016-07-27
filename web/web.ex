@@ -9,7 +9,7 @@ defmodule Snowball.Web do
 
       @primary_key {:id, :binary_id, read_after_writes: true}
       @foreign_key_type :binary_id
-      @timestamps_opts [inserted_at: :created_at]
+      @timestamps_opts [usec: true]
     end
   end
 
