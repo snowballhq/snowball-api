@@ -41,14 +41,14 @@ defmodule Snowball.Mixfile do
      {:comeonin, "~> 2.4"},
      {:secure_random, "~> 0.2"},
      {:ex_aws, "~> 0.5.0", github: "jamescmartinez/ex_aws", override: true},
-     {:httpoison, "~> 0.8.0"},
+     {:httpoison, "~> 0.9.0"},
      {:sweet_xml, "~> 0.6.1"},
      {:arc, "~> 0.5.2"},
      {:arc_ecto, "~> 0.4.2"},
      {:ex_phone_number, github: "socialpaymentsbv/ex_phone_number", branch: :develop},
      {:envy, "~> 1.0.0", only: [:dev, :test]},
      {:credo, "~> 0.3", only: [:dev, :test]},
-     {:ex_machina, "~> 1.0.0-beta.1", github: "thoughtbot/ex_machina", only: :test},
+     {:ex_machina, "~> 1.0", only: :test},
      {:faker, "~> 0.5", only: :test}]
   end
 
