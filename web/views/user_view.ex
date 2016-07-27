@@ -9,36 +9,32 @@ defmodule Snowball.UserView do
     render_one(assigns.user, Snowball.UserView, "user.json", assigns)
   end
 
-  def render("show-auth.json", %{user: user}) do
-    render_one(user, Snowball.UserView, "user-auth.json")
+  def render("show-auth.json", assigns) do
+    json = user_json(assigns)
+    |> Map.merge(%{
+      auth_token: assigns.user.auth_token
+    })
   end
 
   def render("user.json", assigns) do
+    user_json(assigns)
+  end
+
+  defp user_json(assigns) do
     user = assigns.user
+    current_user = assigns.current_user
     json = %{
       id: user.id,
       username: user.username,
       avatar_url: Snowball.UserAvatar.url({user.avatar, user}),
-      email: user.email
+      following: Snowball.User.following?(current_user, user)
     }
-    if current_user = assigns[:current_user] do
+    if current_user.id == user.id do
       json = Map.merge(json, %{
-        following: Snowball.User.following?(current_user, user)
+        phone_number: user.phone_number,
+        email: user.email
       })
-      if current_user.id == user.id do
-        json = Map.merge(json, %{
-            phone_number: user.phone_number
-        })
-      end
     end
     json
-  end
-
-  def render("user-auth.json", %{user: user}) do
-    %{id: user.id,
-      username: user.username,
-      email: user.email,
-      avatar_url: nil,
-      auth_token: user.auth_token}
   end
 end

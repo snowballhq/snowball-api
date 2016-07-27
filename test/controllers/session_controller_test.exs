@@ -5,7 +5,7 @@ defmodule Snowball.SessionControllerTest do
     password = "password"
     user = insert(:user, %{password_digest: Comeonin.Bcrypt.hashpwsalt(password)})
     conn = post conn, session_path(conn, :create), email: user.email, password: password
-    assert json_response(conn, 201) == user_response(user, auth_token: user.auth_token)
+    assert json_response(conn, 201) == user_auth_response(user)
   end
 
   test "create/2 with an invalid email returns an error", %{conn: conn} do

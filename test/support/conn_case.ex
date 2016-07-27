@@ -53,28 +53,27 @@ defmodule Snowball.ConnCaseHelpers do
   end
 
   def user_response(user, opts \\ []) do
+    current_user = opts[:current_user]
     json = %{
       "id" => user.id,
       "username" => user.username,
       "avatar_url" => nil,
-      "email" => user.email
+      "following" => Snowball.User.following?(current_user, user)
     }
-    if current_user = opts[:current_user] do
+    if user.id == current_user.id do
       json = Map.merge(json, %{
-        "following" => Snowball.User.following?(current_user, user)
-      })
-      if user.id == current_user.id do
-        json = Map.merge(json, %{
-          "phone_number" => user.phone_number
-        })
-      end
-    end
-    if auth_token = opts[:auth_token] do
-      json = Map.merge(json, %{
-        "auth_token" => auth_token
+        "phone_number" => user.phone_number,
+        "email" => user.email
       })
     end
     json
+  end
+
+  def user_auth_response(user, opts \\ []) do
+    opts = opts ++ [current_user: user]
+    Map.merge(user_response(user, opts), %{
+      "auth_token" => user.auth_token
+    })
   end
 
   def error_changeset_response(field, message) do

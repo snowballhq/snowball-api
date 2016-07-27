@@ -8,6 +8,7 @@ defmodule Snowball.RegistrationController do
     case Repo.insert(changeset) do
       {:ok, user} ->
         conn
+        |> assign(:current_user, user) # Log in user for correct response
         |> put_status(:created)
         |> render(Snowball.UserView, "show-auth.json", user: user)
       {:error, changeset} ->

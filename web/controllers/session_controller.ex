@@ -8,6 +8,7 @@ defmodule Snowball.SessionController do
     cond do
       user && Comeonin.Bcrypt.checkpw(params["password"], user.password_digest) ->
         conn
+        |> assign(:current_user, user) # Log in user for correct response
         |> put_status(:created)
         |> render(Snowball.UserView, "show-auth.json", user: user)
       user ->
