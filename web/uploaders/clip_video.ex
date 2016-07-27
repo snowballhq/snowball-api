@@ -3,7 +3,7 @@ defmodule Snowball.ClipVideo do
   use Arc.Ecto.Definition
 
   @acl :public_read
-  @versions [:original, :standard, :low, :image_standard, :image_low]
+  @versions [:original, :standard, :image_standard]
 
   def validate({file, _}) do
     ~w(.mp4) |> Enum.member?(Path.extname(file.file_name))
@@ -12,7 +12,6 @@ defmodule Snowball.ClipVideo do
   def filename(version, {file, scope}), do: Path.rootname(file.file_name)
 
   def storage_dir(:image_standard, {file, scope}), do: "clips/thumbnails/#{scope.id}/standard"
-  def storage_dir(:image_low, {file, scope}), do: "clips/thumbnails/#{scope.id}/low"
 
   def storage_dir(version, {file, scope}), do: "clips/videos/#{scope.id}/#{version}"
 
@@ -20,15 +19,7 @@ defmodule Snowball.ClipVideo do
     {:ffmpeg, fn(input, output) -> "-i #{input} -vf scale=640:-1 -r 30 -ar 44100 -ac 1 -acodec aac -f mp4 #{output}" end, :mp4}
   end
 
-  def transform(:low, _) do
-    {:ffmpeg, fn(input, output) -> "-i #{input} -vf scale=480:-1 -r 30 -ar 44100 -ac 1 -acodec aac -f mp4 #{output}" end, :mp4}
-  end
-
   def transform(:image_standard, _) do
     {:ffmpeg, fn(input, output) -> "-i #{input} -vf scale=640:-1 -vframes 1 -f image2 #{output}" end, :jpg}
-  end
-
-  def transform(:image_low, _) do
-    {:ffmpeg, fn(input, output) -> "-i #{input} -vf scale=480:-1 -vframes 1 -f image2 #{output}" end, :jpg}
   end
 end

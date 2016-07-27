@@ -16,17 +16,11 @@ defmodule Snowball.ClipView do
     %{
       id: clip.id,
       image: %{
-        low_resolution: %{
-          url: generate_image_url(clip, :image_low)
-        },
         standard_resolution: %{
           url: generate_image_url(clip, :image_standard)
         }
       },
       video: %{
-        low_resolution: %{
-          url: generate_video_url(clip, :low)
-        },
         standard_resolution: %{
           url: generate_video_url(clip, :standard)
         }
