@@ -9,7 +9,7 @@ defmodule Snowball.UserAvatar do
     ~w(.jpg .jpeg .gif .png) |> Enum.member?(Path.extname(file.file_name))
   end
 
-  def filename(version, {file, scope}), do: Path.rootname(file.file_name)
+  def filename(_version, {file, _scope}), do: Path.rootname(file.file_name)
 
-  def storage_dir(version, {file, scope}), do: "users/avatars/#{scope.id}/#{version}"
+  def storage_dir(version, {_file, scope}), do: "users/avatars/#{scope.id}/#{version}"
 end

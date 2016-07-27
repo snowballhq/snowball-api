@@ -9,11 +9,11 @@ defmodule Snowball.ClipVideo do
     ~w(.mp4) |> Enum.member?(Path.extname(file.file_name))
   end
 
-  def filename(version, {file, scope}), do: Path.rootname(file.file_name)
+  def filename(_version, {file, _scope}), do: Path.rootname(file.file_name)
 
-  def storage_dir(:image_standard, {file, scope}), do: "clips/thumbnails/#{scope.id}/standard"
+  def storage_dir(:image_standard, {_file, scope}), do: "clips/thumbnails/#{scope.id}/standard"
 
-  def storage_dir(version, {file, scope}), do: "clips/videos/#{scope.id}/#{version}"
+  def storage_dir(version, {_file, scope}), do: "clips/videos/#{scope.id}/#{version}"
 
   def transform(:standard, _) do
     {:ffmpeg, fn(input, output) -> "-i #{input} -t 3 -vf scale=640:-1 -r 30 -ar 44100 -ac 1 -acodec aac -f mp4 #{output}" end, :mp4}

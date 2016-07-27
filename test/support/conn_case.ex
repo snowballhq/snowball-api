@@ -62,12 +62,15 @@ defmodule Snowball.ConnCaseHelpers do
       "avatar_url" => nil,
       "following" => Snowball.User.following?(current_user, user)
     }
-    if user.id == current_user.id do
-      json = Map.merge(json, %{
-        "phone_number" => user.phone_number,
-        "email" => user.email
-      })
-    end
+    json =
+      if user.id == current_user.id do
+        Map.merge(json, %{
+          "phone_number" => user.phone_number,
+          "email" => user.email
+        })
+      else
+        json
+      end
     json
   end
 
