@@ -52,7 +52,7 @@ defmodule Snowball.ConnCaseHelpers do
           "url" => Snowball.ClipVideo.url({clip.video, clip}, :standard)
         }
       },
-      "created_at" => clip.created_at |> Ecto.DateTime.to_iso8601
+      "created_at" => Ecto.DateTime.to_iso8601(clip.created_at) <> "Z"
     }
   end
 

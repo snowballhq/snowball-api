@@ -11,6 +11,8 @@ defmodule Snowball.ClipView do
 
   def render("clip.json", assigns) do
     clip = assigns.clip
+    # TODO: This type of formatting shouldn't have to happen to remove microseconds. Fix?
+    created_at = Ecto.DateTime.to_iso8601(clip.created_at) |> String.split(".") |> List.first
     %{
       id: clip.id,
       image: %{
@@ -30,7 +32,7 @@ defmodule Snowball.ClipView do
         }
       },
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),
-      created_at: clip.created_at
+      created_at: created_at <> "Z"
     }
   end
 
