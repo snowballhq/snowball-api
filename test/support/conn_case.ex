@@ -34,6 +34,8 @@ defmodule Snowball.ConnCaseHelpers do
 
   def clip_response(clip, opts \\ []) do
     current_user = opts[:current_user]
+    # TODO: This type of formatting shouldn't have to happen to remove microseconds. Fix?
+    created_at = Ecto.DateTime.to_iso8601(clip.created_at) |> String.split(".") |> List.first
     %{
       "id" => clip.id,
       "user" => user_response(clip.user, opts),
@@ -48,7 +50,7 @@ defmodule Snowball.ConnCaseHelpers do
         }
       },
       "liked" => Snowball.User.likes?(current_user, clip),
-      "created_at" => Ecto.DateTime.to_iso8601(clip.created_at) <> "Z"
+      "created_at" => created_at <> "Z"
     }
   end
 
