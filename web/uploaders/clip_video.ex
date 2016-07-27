@@ -16,7 +16,7 @@ defmodule Snowball.ClipVideo do
   def storage_dir(version, {file, scope}), do: "clips/videos/#{scope.id}/#{version}"
 
   def transform(:standard, _) do
-    {:ffmpeg, fn(input, output) -> "-i #{input} -vf scale=640:-1 -r 30 -ar 44100 -ac 1 -acodec aac -f mp4 #{output}" end, :mp4}
+    {:ffmpeg, fn(input, output) -> "-i #{input} -t 3 -vf scale=640:-1 -r 30 -ar 44100 -ac 1 -acodec aac -f mp4 #{output}" end, :mp4}
   end
 
   def transform(:image_standard, _) do
