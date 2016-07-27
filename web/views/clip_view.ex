@@ -26,6 +26,7 @@ defmodule Snowball.ClipView do
         }
       },
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),
+      liked: Snowball.User.likes?(assigns.current_user, clip),
       created_at: created_at <> "Z"
     }
   end

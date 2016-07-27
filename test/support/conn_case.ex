@@ -33,25 +33,21 @@ defmodule Snowball.ConnCaseHelpers do
   end
 
   def clip_response(clip, opts \\ []) do
+    current_user = opts[:current_user]
     %{
       "id" => clip.id,
       "user" => user_response(clip.user, opts),
       "image" => %{
-        "low_resolution" => %{
-          "url" => Snowball.ClipVideo.url({clip.video, clip}, :image_low)
-        },
         "standard_resolution" => %{
           "url" => Snowball.ClipVideo.url({clip.video, clip}, :image_standard)
         }
       },
       "video" => %{
-        "low_resolution" => %{
-          "url" => Snowball.ClipVideo.url({clip.video, clip}, :low)
-        },
         "standard_resolution" => %{
           "url" => Snowball.ClipVideo.url({clip.video, clip}, :standard)
         }
       },
+      "liked" => Snowball.User.likes?(current_user, clip),
       "created_at" => Ecto.DateTime.to_iso8601(clip.created_at) <> "Z"
     }
   end
