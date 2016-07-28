@@ -3,6 +3,10 @@ defmodule Snowball.PushNotificationService do
 
   import SweetXml
 
+  def config_root do
+    Application.get_all_env(:ex_aws)
+  end
+
   def register_installation_token(token) do
     if Mix.env == :test do
       # This is here to stub in the test environment. Figure out a better way.
