@@ -8,7 +8,7 @@ defmodule Snowball.InstallationController do
   def create(conn, params) do
     user = conn.assigns.current_user
     if token = params["token"] do
-      if arn = Snowball.SNS.register_installation_token(token) do
+      if arn = Snowball.PushNotificationService.register_installation_token(token) do
         if Installation |> where(arn: ^arn) |> Repo.one do
           conn
           |> put_status(:created)

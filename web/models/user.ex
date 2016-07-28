@@ -205,7 +205,7 @@ defmodule Snowball.User do
 
   def send_push_notification(user, message) do
     assoc(user, :installations) |> Repo.all |> Enum.each(fn(installation) ->
-      Snowball.SNS.send_push_to_installation_arn(message, installation.arn)
+      Snowball.PushNotificationService.send_push_to_installation_arn(message, installation.arn)
     end)
   end
 end
