@@ -34,6 +34,7 @@ defmodule Snowball.Web do
   def router do
     quote do
       use Phoenix.Router
+      use Honeybadger.Plug
     end
   end
 

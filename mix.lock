@@ -20,6 +20,7 @@
   "faker": {:hex, :faker, "0.6.0", "2d2ff0879d6b10fab5fb47eb2c1149b811e4af780a17022aa249deb3a7156d2b", [:mix], []},
   "gettext": {:hex, :gettext, "0.11.0", "80c1dd42d270482418fa158ec5ba073d2980e3718bacad86f3d4ad71d5667679", [:mix], []},
   "hackney": {:hex, :hackney, "1.6.1", "ddd22d42db2b50e6a155439c8811b8f6df61a4395de10509714ad2751c6da817", [:rebar3], [{:certifi, "0.4.0", [hex: :certifi, optional: false]}, {:idna, "1.2.0", [hex: :idna, optional: false]}, {:metrics, "1.0.1", [hex: :metrics, optional: false]}, {:mimerl, "1.0.2", [hex: :mimerl, optional: false]}, {:ssl_verify_fun, "1.1.0", [hex: :ssl_verify_fun, optional: false]}]},
+  "honeybadger": {:hex, :honeybadger, "0.6.0", "5170732ef33eb220db99c8afeed4ec11de77efafb388347b6cd81dac1d6b32e6", [:mix], [{:httpoison, "~> 0.9", [hex: :httpoison, optional: false]}, {:plug, ">= 0.13.0 and < 2.0.0", [hex: :plug, optional: false]}, {:poison, ">= 1.4.0 and < 3.0.0", [hex: :poison, optional: false]}]},
   "httpoison": {:hex, :httpoison, "0.9.0", "68187a2daddfabbe7ca8f7d75ef227f89f0e1507f7eecb67e4536b3c516faddb", [:mix], [{:hackney, "~> 1.6.0", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "1.2.0", "ac62ee99da068f43c50dc69acf700e03a62a348360126260e87f2b54eced86b2", [:rebar3], []},
   "meck": {:hex, :meck, "0.8.4", "59ca1cd971372aa223138efcf9b29475bde299e1953046a0c727184790ab1520", [:rebar, :make], []},

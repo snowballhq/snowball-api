@@ -28,4 +28,8 @@ config :arc,
   virtual_host: true,
   asset_host: System.get_env("AWS_CLOUDFRONT_DOMAIN")
 
+config :honeybadger,
+  api_key: System.get_env("HONEYBADGER_API_KEY"),
+  environment_name: Mix.env
+
 import_config "#{Mix.env}.exs"

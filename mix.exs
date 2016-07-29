@@ -27,7 +27,8 @@ defmodule Snowball.Mixfile do
      :comeonin,
      :ex_aws,
      :httpoison,
-     :sweet_xml]
+     :sweet_xml,
+     :honeybadger]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -45,6 +46,7 @@ defmodule Snowball.Mixfile do
      {:sweet_xml, "~> 0.6.1"},
      {:arc, "~> 0.5.2"},
      {:arc_ecto, "~> 0.4.2"},
+     {:honeybadger, "~> 0.5"},
      {:ex_phone_number, github: "socialpaymentsbv/ex_phone_number", branch: :develop},
      {:envy, "~> 1.0.0", only: [:dev, :test]},
      {:credo, "~> 0.3", only: [:dev, :test]},
