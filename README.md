@@ -42,3 +42,10 @@ You can then run commands like:
 iex > import Ecto.Query
 iex > Snowball.User |> Snowball.Repo.all
 ```
+or
+```elixir
+iex > for u <- Snowball.User |> Snowball.Repo.all do
+iex > changeset = Ecto.Changeset.change(u, name: nil)
+iex > Snowball.Repo.update(changeset)
+iex > end
+```
