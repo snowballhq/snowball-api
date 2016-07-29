@@ -2,8 +2,7 @@ use Mix.Config
 
 config :snowball, Snowball.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "localhost", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]]
+  url: [scheme: "https", host: "example.com", port: 443]
 
 config :logger, level: :info
 
