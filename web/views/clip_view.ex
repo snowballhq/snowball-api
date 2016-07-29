@@ -17,37 +17,17 @@ defmodule Snowball.ClipView do
       id: clip.id,
       image: %{
         standard_resolution: %{
-          url: generate_image_url(clip, :image_standard)
+          url: Snowball.ClipVideo.url({clip.video, clip}, :image_standard)
         }
       },
       video: %{
         standard_resolution: %{
-          url: generate_video_url(clip, :standard)
+          url: Snowball.ClipVideo.url({clip.video, clip}, :standard)
         }
       },
       user: render_one(clip.user, Snowball.UserView, "user.json", assigns),
       liked: Snowball.User.likes?(assigns.current_user, clip),
       created_at: created_at <> "Z"
     }
-  end
-
-  # This is so we can holdover old legacy images until moved in S3
-  # TODO: Once the S3 migration is completed, remove this
-  defp generate_image_url(clip, version) do
-    if clip.thumbnail_file_name do
-      "https://snowball-production.s3.amazonaws.com/clips/thumbnails/#{clip.id}/original/" <> clip.thumbnail_file_name
-    else
-      Snowball.ClipVideo.url({clip.video, clip}, version)
-    end
-  end
-
-  # This is so we can holdover old legacy videos until moved in S3
-  # TODO: Once the S3 migration is completed, remove this
-  defp generate_video_url(clip, version) do
-    if clip.thumbnail_file_name do
-      "https://snowball-production.s3.amazonaws.com/clips/videos/#{clip.id}/original/" <> clip.video.file_name
-    else
-      Snowball.ClipVideo.url({clip.video, clip}, version)
-    end
   end
 end
