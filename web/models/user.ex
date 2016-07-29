@@ -176,8 +176,8 @@ defmodule Snowball.User do
         end
     end
     if result do
-      clip_user = assoc(clip, :user)
-      send_push_notification(user, "#{user.username} liked your clip. 👍")
+      clip_user = assoc(clip, :user) |> Repo.one
+      send_push_notification(clip_user, "#{user.username} liked your clip. 👍")
     end
     result
   end
