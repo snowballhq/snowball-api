@@ -3,7 +3,7 @@ defmodule Snowball.UserController do
 
   alias Snowball.User
 
-  plug Snowball.Plug.Authenticate when action in [:show, :update, :search]
+  plug Snowball.Plug.Authenticate when action in [:show, :update, :search, :recommended]
 
   def show(conn, %{"id" => id}) do
     if user = Repo.get(User, id) do
@@ -41,6 +41,33 @@ defmodule Snowball.UserController do
     end
     |> Repo.all
     |> List.delete(conn.assigns.current_user)
+    render(conn, "index.json", users: users)
+  end
+
+  def recommended(conn, params) do
+    user = conn.assigns.current_user
+
+    user_ids_following = Repo.all(
+      from f in Snowball.Follow,
+      select: f.followed_id,
+      where: f.follower_id == ^user.id
+    )
+
+    recommended_user_ids = Repo.all(
+      from f in Snowball.Follow,
+      join: f2 in Snowball.Follow, on: f.followed_id == f2.follower_id,
+      where: f.follower_id == ^user.id,
+      where: f2.followed_id != ^user.id,
+      where: not(f2.followed_id in ^user_ids_following),
+      select: f2.followed_id
+    )
+
+    users =
+      User
+      |> where([u], u.id in ^recommended_user_ids)
+      |> Snowball.Paginator.page(params["page"])
+      |> Repo.all
+
     render(conn, "index.json", users: users)
   end
 end

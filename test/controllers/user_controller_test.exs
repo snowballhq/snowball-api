@@ -77,4 +77,27 @@ defmodule Snowball.UserControllerTest do
     |> post(user_search_path(conn, :search), params)
     assert json_response(conn, 200) == [user_response(user, current_user: current_user)]
   end
+
+  test_authentication_required_for(:get, :user_recommended_path, :recommended)
+
+  test "recommended/2 returns friends of friends of the current user", %{conn: conn} do
+    user = insert(:user)
+    user1 = insert(:follow, follower: user).followed
+    user2 = insert(:follow, follower: user1).followed
+    insert(:follow, follower: user1, followed: user) # Current user should not be in response
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(user_recommended_path(conn, :recommended))
+    assert json_response(conn, 200) == [user_response(user2, current_user: user)]
+  end
+
+  test "recommended/2 is paginated", %{conn: conn} do
+    user = insert(:user)
+    user1 = insert(:follow, follower: user).followed
+    for _ <- 0..25, do: insert(:follow, follower: user1).followed
+    conn = conn
+    |> authenticate(user.auth_token)
+    |> get(user_recommended_path(conn, :recommended, page: 2))
+    assert Enum.count(json_response(conn, 200)) == 1
+  end
 end

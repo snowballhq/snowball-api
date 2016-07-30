@@ -12,6 +12,12 @@ defmodule Snowball.Router do
 
     get "/", HomeController, :index
 
+    patch "/users/me", UserController, :update
+    post "/users/sign-up", RegistrationController, :create
+    post "/users/sign-in", SessionController, :create
+    post "/users/search", UserController, :search, as: :user_search
+    get "/users/recommended", UserController, :recommended, as: :user_recommended
+
     resources "/users", UserController, only: [:show] do
       get "/clips/stream", ClipController, :index
 
@@ -21,11 +27,7 @@ defmodule Snowball.Router do
       delete "/follow", FollowController, :delete
     end
 
-    patch "/users/me", UserController, :update
-    post "/users/sign-up", RegistrationController, :create
-    post "/users/sign-in", SessionController, :create
-    post "/users/search", UserController, :search, as: :user_search
-    put "/installations", InstallationController, :create
+    get "/clips/stream", ClipController, :index
 
     resources "/clips", ClipController, only: [:create, :delete] do
       put "/like", LikeController, :create
@@ -33,6 +35,6 @@ defmodule Snowball.Router do
       put "/flag", FlagController, :create
     end
 
-    get "/clips/stream", ClipController, :index
+    put "/installations", InstallationController, :create
   end
 end
