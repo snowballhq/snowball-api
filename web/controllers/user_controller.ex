@@ -34,6 +34,7 @@ defmodule Snowball.UserController do
         e164_phone_numbers = Enum.map(phone_numbers, fn(phone_number_string) ->
           case ExPhoneNumber.parse(phone_number_string, "US") do
             {:ok, phone_number} -> ExPhoneNumber.format(phone_number, :e164)
+            {:error, _ } -> nil
           end
         end)
         query = User |> where([u], u.phone_number in ^e164_phone_numbers)

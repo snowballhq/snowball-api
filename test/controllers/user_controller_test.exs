@@ -55,7 +55,8 @@ defmodule Snowball.UserControllerTest do
         # Testing phone number search when params number formatting not E.164
         user.phone_number,
         "+13344434159",
-        "(978)695-1682"
+        "(978)695-1682",
+        "test"
       ]
     }
     conn = conn
