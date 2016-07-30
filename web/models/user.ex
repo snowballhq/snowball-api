@@ -122,7 +122,7 @@ defmodule Snowball.User do
   end
 
   def follow(follower, followed) do
-    cond do
+    result = cond do
       follower.id == followed.id -> false
       follow_for(follower, followed) -> true
       true ->
@@ -135,6 +135,10 @@ defmodule Snowball.User do
           {:error, _changeset} -> false
         end
     end
+    if result do
+      send_push_notification(followed, "#{follower.username} followed you. 🙌")
+    end
+    result
   end
 
   def unfollow(follower, followed) do
