@@ -36,7 +36,7 @@ defmodule Snowball.User do
     |> validate_format(:username, ~r/\A[a-zA-Z0-9_]{3,15}\z/)
     |> validate_length(:username, min: 3, max: 15)
     |> validate_length(:password, min: 5)
-    |> validate_phone_number
+    |> format_and_validate_phone_number
     |> unique_constraint(:email, name: :index_users_on_email)
     |> unique_constraint(:username, name: :index_users_on_username)
     |> unique_constraint(:auth_token, name: :index_users_on_auth_token)
@@ -86,12 +86,13 @@ defmodule Snowball.User do
     end
   end
 
-  defp validate_phone_number(changeset) do
+  defp format_and_validate_phone_number(changeset) do
     if phone_number_string = get_change(changeset, :phone_number) do
       case ExPhoneNumber.parse(phone_number_string, "US") do
         {:ok, phone_number} ->
           if ExPhoneNumber.is_valid_number?(phone_number) do
             changeset
+            |> put_change(:phone_number, ExPhoneNumber.format(phone_number, :e164))
           else
             changeset
             |> add_error(:phone_number, "is invalid")

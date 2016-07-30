@@ -21,14 +21,15 @@ defmodule Snowball.UserControllerTest do
 
   test_authentication_required_for(:patch, :user_path, :update)
 
-  test "update/2 updates and returns the current user", %{conn: conn} do
+  test "update/2 updates (formatting phone numbers) and returns the current user", %{conn: conn} do
     user = insert(:user)
-    params = %{email: "example@example.com"}
+    params = %{email: "example@example.com", phone_number: "3344434159"}
     conn = conn
     |> authenticate(user.auth_token)
     |> patch(user_path(conn, :update), params)
     user = Repo.get(User, user.id)
     assert user.email == params[:email]
+    assert user.phone_number == "+13344434159" # Ensure format saved as E.164
     assert json_response(conn, 200) == user_response(user, current_user: user)
   end
 
@@ -46,18 +47,21 @@ defmodule Snowball.UserControllerTest do
   test_authentication_required_for(:post, :user_search_path, :search)
 
   test "search/2 when provided phone numbers return users where phone number matches without current user", %{conn: conn} do
-    user1 = insert(:user, phone_number: "3344434159")
-    user2 = insert(:user, phone_number: "9786951682")
+    user = insert(:user, phone_number: "+14151234567")
+    user1 = insert(:user, phone_number: "+13344434159")
+    user2 = insert(:user, phone_number: "+19786951682")
     params = %{
       phone_numbers: [
-        user1.phone_number,
-        user2.phone_number
+        # Testing phone number search when params number formatting not E.164
+        user.phone_number,
+        "+13344434159",
+        "(978)695-1682"
       ]
     }
     conn = conn
-    |> authenticate(user1.auth_token)
+    |> authenticate(user.auth_token)
     |> post(user_search_path(conn, :search), params)
-    assert json_response(conn, 200) == [user_response(user2, current_user: user1)]
+    assert json_response(conn, 200) == [user_response(user1, current_user: user), user_response(user2, current_user: user)]
   end
 
   test "search/2 when provided username return users where username matches without current user", %{conn: conn} do

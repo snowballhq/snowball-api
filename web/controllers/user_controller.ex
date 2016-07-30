@@ -30,7 +30,13 @@ defmodule Snowball.UserController do
 
   def search(conn, params) do
     users = cond do
-      phone_numbers = params["phone_numbers"] -> query = User |> where([u], u.phone_number in ^phone_numbers)
+      phone_numbers = params["phone_numbers"] ->
+        e164_phone_numbers = Enum.map(phone_numbers, fn(phone_number_string) ->
+          case ExPhoneNumber.parse(phone_number_string, "US") do
+            {:ok, phone_number} -> ExPhoneNumber.format(phone_number, :e164)
+          end
+        end)
+        query = User |> where([u], u.phone_number in ^e164_phone_numbers)
       username = params["username"] -> query = from u in User, where: ilike(u.username, ^"%#{username}%")
     end
     |> Repo.all
