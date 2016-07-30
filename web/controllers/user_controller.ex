@@ -39,6 +39,7 @@ defmodule Snowball.UserController do
         query = User |> where([u], u.phone_number in ^e164_phone_numbers)
       username = params["username"] -> query = from u in User, where: ilike(u.username, ^"%#{username}%")
     end
+    |> Snowball.Paginator.page(params["page"])
     |> Repo.all
     |> List.delete(conn.assigns.current_user)
     render(conn, "index.json", users: users)
