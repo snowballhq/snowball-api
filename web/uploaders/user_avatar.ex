@@ -6,7 +6,7 @@ defmodule Snowball.UserAvatar do
   @versions [:original]
 
   def validate({file, _}) do
-    ~w(.jpg .jpeg .gif .png) |> Enum.member?(Path.extname(file.file_name))
+    ~w(.jpg) |> Enum.member?(Path.extname(file.file_name))
   end
 
   def filename(version, {_file, _scope}), do: version
