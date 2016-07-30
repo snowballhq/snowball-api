@@ -31,7 +31,7 @@ defmodule Snowball.UserController do
   def search(conn, params) do
     users = cond do
       phone_numbers = params["phone_numbers"] -> query = User |> where([u], u.phone_number in ^phone_numbers)
-      username = params["username"] -> query = User |> where(username: ^username)
+      username = params["username"] -> query = from u in User, where: ilike(u.username, ^"%#{username}%")
     end
     |> Repo.all
     |> List.delete(conn.assigns.current_user)

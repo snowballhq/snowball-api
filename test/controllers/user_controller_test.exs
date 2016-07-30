@@ -63,8 +63,10 @@ defmodule Snowball.UserControllerTest do
   test "search/2 when provided username return users where username matches without current user", %{conn: conn} do
     current_user = insert(:user)
     user = insert(:user)
+    # Slice the last 2 characters off the username and upcase to test "like" search
+    username = String.slice(user.username, 0..String.length(user.username)-3) |> String.upcase
     params = %{
-      username: user.username
+      username: username
     }
     conn = conn
     |> authenticate(current_user.auth_token)
