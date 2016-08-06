@@ -11,7 +11,8 @@ defmodule Snowball.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Poison
+    json_decoder: Poison,
+    read_timeout: 30_000
 
   plug Plug.Head
 
