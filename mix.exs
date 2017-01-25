@@ -9,13 +9,13 @@ defmodule Snowball.Mixfile do
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     aliases: aliases(),
+     deps: deps()]
   end
 
   def application do
     [mod: {Snowball, []},
-     applications: applications]
+     applications: applications()]
   end
 
   defp applications do
