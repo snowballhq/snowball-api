@@ -36,16 +36,12 @@ TODO: Add environment variable config
 
 ### Remote Console
 
+#### Updating a password
 1. `heroku run iex -S mix`
-You can then run commands like:
 ```elixir
 iex > import Ecto.Query
-iex > Snowball.User |> Snowball.Repo.all
-```
-or
-```elixir
-iex > for u <- Snowball.User |> Snowball.Repo.all do
-iex > changeset = Ecto.Changeset.change(u, name: nil)
+iex > user = Snowball.User |> where([u], u.email == "jamescmartinez@gmail.com") |> Snowball.Repo.one
+iex > params = %{password: "newpassword"}
+iex > changeset = Snowball.User.changeset(user, params)
 iex > Snowball.Repo.update(changeset)
-iex > end
 ```
