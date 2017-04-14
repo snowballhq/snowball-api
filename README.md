@@ -31,13 +31,13 @@ TODO: Add environment variable config
 
 ### Deployment Instructions
 
-1. `heroku git:remote -a snowball-api`
+1. `heroku git:remote -a snowball-api-production`
 1. `git push heroku`
 
 ### Remote Console
 
 #### Updating a password
-1. `heroku run iex -S mix`
+1. `heroku run iex -S mix -a snowball-api-production`
 ```elixir
 iex > import Ecto.Query
 iex > user = Snowball.User |> where([u], u.email == "jamescmartinez@gmail.com") |> Snowball.Repo.one
